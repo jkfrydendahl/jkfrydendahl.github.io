@@ -17,6 +17,10 @@ function magicFunction() {
     const button = document.getElementById('spell-toggle');
     const randomNum = Math.floor(Math.random() * 11);
 
+    if (button.textContent != '--> Cast a Spell !') {
+      return;
+    }
+
     if (randomNum >= 0 && randomNum <= 1) 
     {
       button.textContent = 'It’s alive !';
