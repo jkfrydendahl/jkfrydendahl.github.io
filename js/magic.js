@@ -34,8 +34,8 @@ function magicFunction() {
         "You gained Bardic Inspiration: You're not a bug, you're a feature!",
         "You gained Bardic Inspiration: Code like no one's watching!",
         "You gained Bardic Inspiration: Push to prod. Live a little.",
-        "You gained Bardic Inspiration: You miss 100% of the semicolons you don't type ;",
-        "You gained Bardic Inspiration: Good code is its own best documentation."
+        "You cast Vicious Mockery: You miss 100% of the semicolons you don't type ;",
+        "You cast Vicious Mockery: Good code is its own best documentation."
       ];
       button.textContent = messages[Math.floor(Math.random() * messages.length)];
     } 
