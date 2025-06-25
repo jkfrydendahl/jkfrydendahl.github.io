@@ -104,4 +104,8 @@ function magicFunction() {
     typewriterTimeout = setTimeout(() => {
       button.textContent = '--> Cast a spell !';
     }, 4000);
+
+    typewriterTimeout = setTimeout(() => {
+       typewritersection.style.display = 'none';
+    }, 60000); // 60 seconds
 }
