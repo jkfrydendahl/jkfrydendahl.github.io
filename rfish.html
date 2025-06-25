@@ -1,0 +1,314 @@
+<html>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, intial-scale=1, maximum-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <style type="text/css">
+        body,td,th {
+             color: #000;
+             font-family: Helvetica, sans-serif;
+        }
+        div {
+          height: 400px;
+          text-align: center;
+          line-height: 400px;
+          overflow: hidden;
+        }
+        </style>
+    <body>
+            <script LANGUAGE="JAVASCRIPT">
+            var r_text = new Array ();
+            r_text[0] = "Bruskfisk";
+            r_text[1] = "Majsild";
+            r_text[2] = "Glaskutling";
+            r_text[3] = "Panserulk";
+            r_text[4] = "Havbars";
+            r_text[5] = "Flyvefisk";
+            r_text[6] = "Heltling";
+            r_text[7] = "Belugastør";
+            r_text[8] = "Helleflynder";
+            r_text[9] = "Søhest";
+            r_text[10] = "Skærising";
+            r_text[11] = "Thunnin";
+            r_text[12] = "Gedde";
+            r_text[13] = "Havkvabbe";
+            r_text[14] = "Byrkelange";
+            r_text[15] = "Havtaske";
+            r_text[16] = "Glansfisk";
+            r_text[17] = "Sildehaj";
+            r_text[18] = "Båndgrundling";
+            r_text[19] = "Blåhaj";
+            r_text[20] = "Sej";
+            r_text[21] = "Lubbe";
+            r_text[22] = "Rødfisk";
+            r_text[23] = "Grønlandshaj";
+            r_text[24] = "Elrokke";
+            r_text[25] = "Suder";
+            r_text[26] = "Tangnål";
+            r_text[27] = "Laks";
+            r_text[28] = "Sildekonge";
+            r_text[29] = "Hvidrokke";
+            r_text[30] = "Sværdfisk";
+            r_text[31] = "Glansfisk";
+            r_text[32] = "Prikfisk";
+            r_text[33] = "Langhale";
+            r_text[34] = "Aftrækkerfisk";
+            r_text[35] = "Stribefisk";
+            r_text[36] = "Havkatte";
+            r_text[37] = "Pighaj";
+            r_text[38] = "Prikfisk";
+            r_text[39] = "Tudsefisk";
+            r_text[40] = "Torsk";
+            r_text[41] = "Gedd";
+            r_text[42] = "Glathaj";
+            r_text[43] = "Sildekonge";
+            r_text[44] = "Rødspætte";
+            r_text[45] = "Stribefisk";
+            r_text[46] = "Ål";
+            r_text[47] = "Lampretter";
+            r_text[48] = "Slimål";
+            r_text[49] = "Stjernestør";
+            r_text[50] = "Sølvkarusse";
+            r_text[51] = "Glastunge";
+            r_text[52] = "Strømsild";
+            r_text[53] = "Guldlaks";
+            r_text[54] = "Flire";
+            r_text[55] = "Hornfisk";
+            r_text[56] = "Pigsmerling";
+            r_text[57] = "Havkarusse";
+            r_text[58] = "Guldmulte";
+            r_text[59] = "Sølvkarpe";
+            r_text[60] = "Ringhaj";
+            r_text[61] = "Pletrokke";
+            r_text[62] = "Glashvarre";
+            r_text[63] = "Trekanthaj";
+            r_text[64] = "Pukkellaks";
+            r_text[65] = "Sandkutling";
+            r_text[66] = "Skælbrosme";
+            r_text[67] = "Pighaj";
+            r_text[68] = "Stør";
+            r_text[69] = "Lanternehaj";
+            r_text[70] = "Sugefisk";
+            r_text[71] = "Lakstobis";
+            r_text[72] = "Slimål";
+            r_text[73] = "Tobis";
+            r_text[74] = "Mall";
+            r_text[75] = "Fjæsing";
+            r_text[76] = "Pighaj";
+            r_text[77] = "Rødhaj";
+            r_text[78] = "Sild";
+            r_text[79] = "Diamantstør";
+            r_text[80] = "Brosme";
+            r_text[81] = "Krystalkutling";
+            r_text[82] = "Dyndsmerling";
+            r_text[83] = "Dværgulk";
+            r_text[84] = "Smelt";
+            r_text[85] = "Regnbueørred";
+            r_text[86] = "Rødspætte";
+            r_text[87] = "Pighvarre";
+            r_text[88] = "Guldbrasen";
+            r_text[89] = "Stalling";
+            r_text[90] = "Pigrokke";
+            r_text[91] = "Sildehaj";
+            r_text[92] = "Aborre";
+            r_text[93] = "Dybvandsrødhajer";
+            r_text[94] = "Smelt";
+            r_text[95] = "Ørnerokke";
+            r_text[96] = "Bars";
+            r_text[97] = "Klumpfisk";
+            r_text[98] = "Kulmule";
+            r_text[99] = "Havtaske";
+            r_text[100] = "Havål";
+            r_text[101] = "Bajonetfisk";
+            r_text[102] = "Fløjfisk";
+            r_text[103] = "Hornfisk";
+            r_text[104] = "Dragekæft";
+            r_text[105] = "Rokk";
+            r_text[106] = "Fladfisk";
+            r_text[107] = "Sværdfisk";
+            r_text[109] = "Trommefisk";
+            r_text[110] = "Tungehvarre";
+            r_text[111] = "Kysttobis";
+            r_text[112] = "Tærbe";
+            r_text[113] = "Karpe";
+            r_text[114] = "Blåkæft";
+            r_text[115] = "Grundling";
+            r_text[116] = "Slimål";
+            r_text[117] = "Lange";
+            r_text[118] = "Rimte";
+            r_text[119] = "Kuller";
+            r_text[120] = "Knude";
+            r_text[121] = "Ulkekutling";
+            r_text[122] = "Sabelkarpe";
+            r_text[123] = "Elritse";
+            r_text[124] = "Rødhaj";
+            r_text[125] = "Sardin";
+            r_text[126] = "Ulk";
+            r_text[127] = "Sandart";
+            r_text[128] = "Sortvels";
+            r_text[129] = "Hestemakrel";
+            r_text[130] = "Fjæsing";
+            r_text[131] = "Tangspræl";
+            r_text[132] = "Sneppeål";
+            r_text[133] = "Ansjos";
+            r_text[134] = "Karpe";
+            r_text[135] = "Dværgmalle";
+            r_text[136] = "Slangemakrel";
+            r_text[137] = "Pigsmerling";
+            r_text[138] = "Silde";
+            r_text[139] = "Solaborre";
+            r_text[140] = "Havbrasen";
+            r_text[141] = "Hvarre";
+            r_text[142] = "Panserulke";
+            r_text[143] = "Vågmær";
+            r_text[144] = "Sildehaj";
+            r_text[145] = "Hundefisk";
+            r_text[146] = "Havrude";
+            r_text[147] = "Skælbrosme";
+            r_text[148] = "Karp";
+            r_text[149] = "Beryx";
+            r_text[150] = "Brasen";
+            r_text[151] = "Havtobis";
+            r_text[152] = "Løje";
+            r_text[153] = "Buskhoved";
+            r_text[154] = "Gråhaj";
+            r_text[155] = "Snippe";
+            r_text[156] = "Ansjos";
+            r_text[157] = "Kulmule";
+            r_text[158] = "Hvilling";
+            r_text[159] = "Berggylte";
+            r_text[160] = "Flodlampret";
+            r_text[161] = "Aborre";
+            r_text[162] = "Vragfisk";
+            r_text[163] = "Slethvarre";
+            r_text[164] = "Leopardkutling";
+            r_text[165] = "Småhvarre";
+            r_text[166] = "Skægtorsk";
+            r_text[167] = "Gaffelmakrel";
+            r_text[168] = "Storskade";
+            r_text[169] = "Flyvefisk";
+            r_text[170] = "Stenbider";
+            r_text[171] = "Ringbug";
+            r_text[172] = "Hundestejle";
+            r_text[173] = "Torske";
+            r_text[174] = "Beryx";
+            r_text[175] = "Ferskvandsål";
+            r_text[176] = "Rævehaj";
+            r_text[177] = "Havengel";
+            r_text[178] = "Knurhane";
+            r_text[179] = "Nålefisk";
+            r_text[180] = "Tunge";
+            r_text[181] = "Makrel";
+            r_text[182] = "Vragfisk";
+            r_text[183] = "Bundhaj";
+            r_text[184] = "Havmus";
+            r_text[185] = "Karusse";
+            r_text[186] = "Havgalt";
+            r_text[187] = "Junkergylte";
+            r_text[188] = "Helt";
+            r_text[189] = "Havål";
+            r_text[190] = "Sorthale";
+            r_text[191] = "Stenbider";
+            r_text[192] = "Græskarpe";
+            r_text[193] = "Håising";
+            r_text[194] = "Hork";
+            r_text[195] = "Sortkutling";
+            r_text[196] = "Sorthaj";
+            r_text[197] = "Rødtunge";
+            r_text[198] = "Geddetryne";
+            r_text[199] = "Bæklampret";
+            r_text[200] = "Havlampret";
+            r_text[201] = "Lerkutling";
+            r_text[202] = "Skrubbe";
+            r_text[203] = "Tangsnarre";
+            r_text[204] = "Makrelgedde";
+            r_text[205] = "Savgylte";
+            r_text[206] = "Fjeldørred";
+            r_text[207] = "Ørred";
+            r_text[208] = "Sperling";
+            r_text[209] = "Vågmær";
+            r_text[210] = "Havmus";
+            r_text[211] = "Brugde";
+            r_text[212] = "Hestemakrel";
+            r_text[213] = "Trekanthaj";
+            r_text[214] = "Læbefisk";
+            r_text[215] = "Stør";
+            r_text[216] = "Sanktpetersfisk";
+            r_text[218] = "Aborre";
+            r_text[219] = "Smelt";
+            r_text[220] = "Havengel";
+            r_text[221] = "Havmus";
+            r_text[222] = "Guldlaks";
+            r_text[223] = "Smerling";
+            r_text[224] = "Stavsild";
+            r_text[225] = "Dværgskade";
+            r_text[226] = "Brugde";
+            r_text[227] = "Nøgentobis";
+            r_text[228] = "Ising";
+            r_text[229] = "Strømskalle";
+            r_text[230] = "Regnløje";
+            r_text[231] = "Ørnerokke";
+            r_text[232] = "Kildeørred";
+            r_text[233] = "Skalle";
+            r_text[234] = "Tunge";
+            r_text[235] = "Ålekvabbe";
+            r_text[236] = "Sanktpetersfisk";
+            r_text[237] = "Havtaske";
+            r_text[238] = "Kutlinge";
+            r_text[239] = "Multe";
+            r_text[240] = "Sortfisk";
+            r_text[241] = "Havgalt";
+            r_text[242] = "Guldlakse";
+            r_text[243] = "Nålefisk";
+            r_text[244] = "Laks";
+            r_text[245] = "Lampret";
+            r_text[246] = "Slimål";
+            r_text[247] = "Ålekvabbe";
+            r_text[248] = "Sanktpetersfisk";
+            r_text[249] = "Vågmære";
+            r_text[250] = "Buskhoved";
+            r_text[251] = "Sølvøkse";
+            r_text[252] = "Havkal";
+            r_text[253] = "Rødfisk";
+            r_text[254] = "Makrelgedde";
+            r_text[255] = "Flagfinne";
+            r_text[256] = "Stør";
+            r_text[257] = "Okseøjefisk";
+            r_text[258] = "Plovjernsrokke";
+            r_text[259] = "Havmus";
+            r_text[260] = "Sild";
+            r_text[261] = "Torsk";
+            r_text[262] = "Blåhvilling";
+            r_text[263] = "Stjernehaj";
+            r_text[264] = "Klumpfisk";
+            r_text[265] = "Tangspræl";
+            r_text[266] = "Sømrokke";
+            r_text[267] = "Brisling";
+            r_text[268] = "Tun";
+            r_text[269] = "Makrel";
+            r_text[270] = "Rudskalle";
+            r_text[271] = "Glyse";
+            r_text[272] = "Hårhvarre";
+            
+            var i = Math.floor(r_text.length * Math.random());
+            
+             </script>
+        <h1 style="text-align: center;">Gæt en fiskeart!</h1>
+        <h2 style="text-align: center;">hint:</h2>
+            <script>
+            
+            document.write("<center><FONT SIZE=60><FONT COLOR='#000'>" + r_text[i][0]  + "&nbsp  %%   &nbsp" + r_text[i].charAt(r_text[i].length-1) + "</FONT></center><br />");
+                
+            </script>
+        <div id="go-to-fish">
+             <script>
+
+            document.write("<center><FONT SIZE=60><FONT COLOR='#000'>" +
+            r_text[i]  + "</FONT></center><br />");
+            
+            </script>
+        </div>
+         <!--<p style="text-align: center; position: absolute; font-size: 14px; bottom: 0; left: 25%; right: 25%;">Læs mere om fiskene <a href="https://skagenfood.dk/da-dk/kend-din-fisk" target="blank">her</a></p>-->
+    </body>
+</html>
+
+
+

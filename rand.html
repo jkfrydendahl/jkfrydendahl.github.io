@@ -1,0 +1,384 @@
+<html>
+<meta name="viewport" content="width=device-width, intial-scale=1, maximum-scale=1">
+
+<style>
+	* {
+		font-size: 18px;
+		font-family: sans-serif;
+		color: #000;
+		touch-action: manipulation;
+	}
+	body {
+		max-width: 415px;
+		margin: 0;
+	}
+	#wrapper {
+		max-height: 800px;
+		background-image: linear-gradient(to bottom right, rgba(215, 217, 173, 0.5), rgba(179, 230, 185, 0.5));
+		padding: 15px;
+	}
+	#history {
+		background-color: #fff;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	#current {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+
+var numArray = {};
+
+function D4(min, max) {
+
+	numArray.randomNumbers = [];
+
+	min = 1;
+	max = 4;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		numArray.randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("result").innerHTML = numArray.randomNumbers
+	}
+}
+function D6(min, max) {
+
+	numArray.randomNumbers = [];
+
+	min = 1;
+	max = 6;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		numArray.randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("result").innerHTML = numArray.randomNumbers
+	}
+}
+function D8(min, max) {
+
+	numArray.randomNumbers = [];
+
+	min = 1;
+	max = 8;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");
+	
+	for(var i=numInputval; i>0; i--) {
+		numArray.randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("result").innerHTML = numArray.randomNumbers
+	}
+}
+function D10(min, max) {
+
+	numArray.randomNumbers = [];
+
+	min = 1;
+	max = 10;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		numArray.randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("result").innerHTML = numArray.randomNumbers
+	}
+}
+function D12(min, max) {
+
+	numArray.randomNumbers = [];
+
+	min = 1;
+	max = 12;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");
+	
+	for(var i=numInputval; i>0; i--) {
+		numArray.randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("result").innerHTML = numArray.randomNumbers
+	}
+}
+function D20(min, max) {
+
+	numArray.randomNumbers = [];
+
+	min = 1;
+	max = 20;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		numArray.randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("result").innerHTML = numArray.randomNumbers
+	}
+}
+function D100(min, max) {
+
+	numArray.randomNumbers = [];
+
+	min = 1;
+	max = 100;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");
+	
+	for(var i=numInputval; i>0; i--) {
+		numArray.randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("result").innerHTML = numArray.randomNumbers
+	}
+}
+</script>
+
+<script>
+
+var diceType = [];
+
+function DT4() {
+
+	let numInputval = document.getElementById('numInput').value;
+	
+	for(var i=numInputval; i>0; i--) {
+		diceType.push("D4");
+		document.getElementById("current").innerHTML = diceType
+	}
+}
+function DT6() {
+
+	let numInputval = document.getElementById('numInput').value;
+	
+	for(var i=numInputval; i>0; i--) {
+		diceType.push("D6");
+		document.getElementById("current").innerHTML = diceType
+	}
+}
+function DT8() {
+
+	let numInputval = document.getElementById('numInput').value;
+	
+	for(var i=numInputval; i>0; i--) {
+		diceType.push("D8");
+		document.getElementById("current").innerHTML = diceType
+	}
+}
+function DT10() {
+
+	let numInputval = document.getElementById('numInput').value;
+	
+	for(var i=numInputval; i>0; i--) {
+		diceType.push("D10");
+		document.getElementById("current").innerHTML = diceType
+	}
+}
+function DT12() {
+
+	let numInputval = document.getElementById('numInput').value;
+	
+	for(var i=numInputval; i>0; i--) {
+		diceType.push("D12");
+		document.getElementById("current").innerHTML = diceType
+	}
+}
+function DT20() {
+
+	let numInputval = document.getElementById('numInput').value;
+	
+	for(var i=numInputval; i>0; i--) {
+		diceType.push("D20");
+		document.getElementById("current").innerHTML = diceType
+	}
+}
+function DT100() {
+
+	let numInputval = document.getElementById('numInput').value;
+	
+	for(var i=numInputval; i>0; i--) {
+		diceType.push("D100");
+		document.getElementById("current").innerHTML = diceType
+	}
+}
+
+var histNumbers = [];
+
+function H4(min, max) {
+
+	min = 1;
+	max = 4;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");
+	
+	for(var i=numInputval; i>0; i--) {
+		histNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("history").innerHTML = histNumbers
+	}
+}
+function H6(min, max) {
+
+	min = 1;
+	max = 6;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		histNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("history").innerHTML = histNumbers
+	}
+}
+function H8(min, max) {
+
+	min = 1;
+	max = 8;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		histNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("history").innerHTML = histNumbers
+	}
+}
+function H10(min, max) {
+
+	min = 1;
+	max = 10;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		histNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("history").innerHTML = histNumbers
+	}
+}
+function H12(min, max) {
+
+	min = 1;
+	max = 12;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		histNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("history").innerHTML = histNumbers
+	}
+}
+function H20(min, max) {
+
+	min = 1;
+	max = 20;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		histNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("history").innerHTML = histNumbers
+	}
+}
+function H100(min, max) {
+
+	min = 1;
+	max = 100;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		histNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("history").innerHTML = histNumbers
+	}
+}
+</script>
+
+<script>
+
+function countSum() {
+	let sum = 0;
+	let mod = parseInt(document.getElementById('modifier').value);
+	for (const value of numArray.randomNumbers) {
+		sum += value;
+	}
+	let total = sum + mod
+	document.getElementById("summary").innerHTML = total
+}
+
+function histSum() {
+	let sum = 0;
+	let mod = parseInt(document.getElementById('modifier').value);
+	for (const value of histNumbers) {
+		sum += value;
+	}
+	let total = sum + mod
+	document.getElementById("sumhist").innerHTML = total
+}
+
+function clearDiv() {
+	document.getElementById("history").innerHTML = "";
+	document.getElementById("current").innerHTML = "";
+	document.getElementById("sumhist").innerHTML = "";
+	histNumbers = [];
+	diceType = [];
+}
+
+</script>
+
+<body>
+<div id="wrapper">
+	<input type ="button" name="clear" value="Clear results" onclick="clearDiv()" style="margin-bottom: 30px; background-color: #ed6905; border: none; padding: 10px;"/><br>
+
+	<form>
+	<label>Dice Type</label ><br>
+	<input type ="button" name="4" value="D4" onclick="D4();H4();countSum();histSum();DT4()" style="margin-top: 5px; background-color: #40cc31; border: none; padding: 10px;"/>
+	<input type ="button" name="6" value="D6" onclick="D6();H6();countSum();histSum();DT6()" style="background-color: #40cc31; border: none; padding: 10px;"/>
+	<input type ="button" name="8" value="D8" onclick="D8();H8();countSum();histSum();DT8()" style="background-color: #40cc31; border: none; padding: 10px;"/>
+	<input type ="button" name="10" value="D10" onclick="D10();H10();countSum();histSum();DT10()" style="background-color: #40cc31; border: none; padding: 10px;"/>
+	<input type ="button" name="12" value="D12" onclick="D12();H12();countSum();histSum();DT12()" style="background-color: #40cc31; border: none; padding: 10px;"/>
+	<input type ="button" name="20" value="D20" onclick="D20();H20();countSum();histSum();DT20()" style="background-color: #40cc31; border: none; padding: 10px;"/>
+	<input type ="button" name="100" value="D100" onclick="D100();H100();countSum();histSum();DT100()" style="background-color: #40cc31; border: none; padding: 10px;"/>
+	<p></p>
+	<label>Dice Amount</label><br>
+	<input type="number" id="numInput" value="1" name="numInput" style="padding: 5px;">
+	<input type="reset" value="Reset">
+	</form>
+	<form>
+	<label>Modifier</label><br>
+		<input type="number" id="modifier" value="0" name="modifier" style="padding: 5px;">
+		<input type="reset" value="Reset">
+	</form>
+
+	<!--<label><strong>Results</strong></label><br>-->
+	<div id="result" style="border: 1px solid black; width: 60%; min-height: 50px; padding: 5px; display: none;"></div>
+
+	<!--<label>Sum of results</label><br>-->
+	<div id ="summary" style="border-bottom: 3px solid black; width: 40%; min-height: 38px; padding: 5px; margin-bottom: 50px; display: none;"></div>
+
+	<label>Currently rolling</label>
+	<div id="current" style="min-height: 50px; padding: 5px;"></div>
+
+	<label><strong>Latest results</strong></label><br>
+	<div id="history" style="border: 1px solid black; width: 80%; min-height: 38px; padding: 10px; margin-bottom: 15px; margin-top:2px;">
+	</div>
+
+	<label>Sum of latest results</label><br>
+	<div id ="sumhist" style="border-bottom: 2px solid black; width: 40%; min-height: 24px; padding: 5px; margin-bottom: 20px;"></div>
+	<br>
+</div>
+</body>
+</html>
+
+
+
