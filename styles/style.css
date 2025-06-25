@@ -21,6 +21,7 @@
 
     html {
       cursor: var(--cursor);
+      scroll-behavior: smooth;
     }
 
     body {
@@ -112,4 +113,37 @@
         transform: translateY(100vh);
         opacity: 1;
       }
+    }
+
+    .pixel-bonfire-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 40px 0;
+      font-family: 'Press Start 2P', monospace; /* Optional retro font */
+    }
+    
+    .bonfire-gif {
+      width: 200px;
+      height: auto;
+      image-rendering: pixelated;
+      margin-top: -70px;
+    }
+    
+    .bonfire-text {
+      color: #f5e9d5;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      text-shadow: 1px 1px #000;
+      animation: flickerText 2s infinite;
+    }
+    
+    @keyframes flickerText {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.75; }
+    }
+
+    #footer {
+      text-align: center;
     }
