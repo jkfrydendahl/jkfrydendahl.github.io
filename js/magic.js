@@ -102,7 +102,7 @@ function magicFunction() {
     }
 
     typewriterTimeout = setTimeout(() => {
-      button.textContent = '--> Cast a spell !';
+      button.textContent = '--> Cast a Spell !';
     }, 4000);
 
     typewriterTimeout = setTimeout(() => {
