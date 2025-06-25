@@ -3,7 +3,7 @@
 
 <style>
 	* {
-		font-size: 17px;
+		font-size: 16px;
 		font-family: 'Fira Code', monospace;
 		color: #e4e4e4;
 		touch-action: manipulation;
@@ -37,11 +37,13 @@
 		color: #0d0d0d;
 		background-color: #fff;
 		border: #fff;
+		margin-top: 5px;
 	}
 	#modifier {
 		color: #0d0d0d;
 		background-color: #fff;
 		border: #fff;
+		margin-top: 5px;
 	}
 	.reset {
 		color: #0d0d0d;
@@ -364,13 +366,13 @@ function clearDiv() {
 
 	<form>
 	<label>Dice Type</label ><br>
-	<input type ="button" name="4" value="D4" onclick="D4();H4();countSum();histSum();DT4()" style="margin-top: 5px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="6" value="D6" onclick="D6();H6();countSum();histSum();DT6()" style="background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="8" value="D8" onclick="D8();H8();countSum();histSum();DT8()" style="background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="10" value="D10" onclick="D10();H10();countSum();histSum();DT10()" style="background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="12" value="D12" onclick="D12();H12();countSum();histSum();DT12()" style="background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="20" value="D20" onclick="D20();H20();countSum();histSum();DT20()" style="background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="100" value="D100" onclick="D100();H100();countSum();histSum();DT100()" style="background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
+	<input type ="button" name="4" value="D4" onclick="D4();H4();countSum();histSum();DT4()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
+	<input type ="button" name="6" value="D6" onclick="D6();H6();countSum();histSum();DT6()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
+	<input type ="button" name="8" value="D8" onclick="D8();H8();countSum();histSum();DT8()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
+	<input type ="button" name="10" value="D10" onclick="D10();H10();countSum();histSum();DT10()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
+	<input type ="button" name="12" value="D12" onclick="D12();H12();countSum();histSum();DT12()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
+	<input type ="button" name="20" value="D20" onclick="D20();H20();countSum();histSum();DT20()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
+	<input type ="button" name="100" value="D100" onclick="D100();H100();countSum();histSum();DT100()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
 	<p></p>
 	<label>Dice Amount</label><br>
 	<input type="number" id="numInput" value="1" name="numInput" style="padding: 5px;">
@@ -386,16 +388,16 @@ function clearDiv() {
 	<div id="result" style="border: 1px solid white; width: 60%; min-height: 50px; padding: 5px; display: none;"></div>
 
 	<!--<label>Sum of results</label><br>-->
-	<div id ="summary" style="border-bottom: 3px solid white; width: 40%; min-height: 38px; padding: 5px; margin-bottom: 50px; display: none;"></div>
+	<div id ="summary" style="border-bottom: 3px solid white; width: 40%; min-height: 38px; padding: 5px; margin-bottom: 5px; display: none;"></div>
 
-	<label>Currently rolling</label>
+	<label><i>Currently rolling</i></label>
 	<div id="current" style="min-height: 50px; padding: 5px;"></div>
 
 	<label><strong>Latest results</strong></label><br>
-	<div id="history" style="border: 1px solid white; width: 80%; min-height: 38px; padding: 10px; margin-bottom: 15px; margin-top:2px;">
+	<div id="history" style="border: 1px solid white; width: 80%; min-height: 38px; padding: 10px; margin-bottom: 15px; margin-top:8px;">
 	</div>
 
-	<label>Sum of latest results</label><br>
+	<label><i>Sum of latest results</i></label><br>
 	<div id ="sumhist" style="border-bottom: 2px solid white; width: 40%; min-height: 24px; padding: 5px; margin-bottom: 20px;"></div>
 	<br>
 </div>
