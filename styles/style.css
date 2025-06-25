@@ -139,7 +139,7 @@
     }
     
     .bonfire-text {
-      color: #f5e9d5;
+      color: var(--fg);
       font-size: 0.9rem;
       margin-top: 10px;
       text-shadow: 1px 1px #000;
