@@ -37,6 +37,10 @@
       margin-right: auto;
     }
 
+    .faded {
+      opacity: 0.5;
+    }
+
     .theme-toggle {
       position: fixed;
       top: 1rem;
