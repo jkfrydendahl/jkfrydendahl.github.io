@@ -9,11 +9,9 @@ function toggleTheme() {
       }
 }
 
-let typewriterInstance = null;
-let typewriterTimeout = null;
+let magicTimeout = null;
 
 function magicFunction() {
-    const typewritersection = document.getElementById('typewriter');
     const button = document.getElementById('spell-toggle');
     const randomNum = Math.floor(Math.random() * 11);
 
@@ -23,27 +21,7 @@ function magicFunction() {
 
     if (randomNum >= 0 && randomNum <= 1) 
     {
-      button.textContent = 'It’s alive !';
-      typewritersection.style.display = 'block';
-        if (!typewriterInstance) {
-          typewriterInstance = new Typewriter('#typewriter', {
-            strings: [
-              'Clean Code + DevEx = 42',
-              'If your first attempt fails, call it version 1.0',
-              'Press CTRL to take control.',
-              'SHIFT your focus.',
-              'Life would be so much easier if we had the source code.',
-              'Eat. Sleep. Code.',
-              'Keep calm and code on.',
-              'I code, therefore I am.',
-              'To err is human, to debug divine.',
-              'Developers: turning coffee into software since 01.01.1753',
-              'There’s no place like 127.0.0.1',
-            ],
-            autoStart: true,
-            loop: true,
-          });
-        }
+      button.textContent = 'You cast... nothing?! Oh well, better luck next time!';
     } 
     else if (randomNum >= 2 && randomNum <= 3) 
     {
@@ -53,11 +31,11 @@ function magicFunction() {
     else if (randomNum >= 4 && randomNum <= 5) 
     {
       const messages = [
-        "Bardic Inspiration: You're not a bug, you're a feature!",
-        "Bardic Inspiration: Code like no one's watching!",
-        "Bardic Inspiration: Push to prod. Live a little.",
-        "Bardic Inspiration: You miss 100% of the semicolons you don't type ;",
-        "Bardic Inspiration: Good code is its own best documentation."
+        "You gained Bardic Inspiration: You're not a bug, you're a feature!",
+        "You gained Bardic Inspiration: Code like no one's watching!",
+        "You gained Bardic Inspiration: Push to prod. Live a little.",
+        "You gained Bardic Inspiration: You miss 100% of the semicolons you don't type ;",
+        "You gained Bardic Inspiration: Good code is its own best documentation."
       ];
       button.textContent = messages[Math.floor(Math.random() * messages.length)];
     } 
@@ -73,7 +51,7 @@ function magicFunction() {
             document.body.style.left = '0px';
           }
         }, 50);
-        button.textContent = 'Casting Thunderwave !';
+        button.textContent = 'You cast Thunderwave !';
     } 
     else if (randomNum >= 8 && randomNum <= 9) 
     {
@@ -85,31 +63,31 @@ function magicFunction() {
             span.style.left = `${Math.random() * 100}%`;
             span.style.top = '-50px';
             span.style.fontSize = `${Math.random() * 32 + 32}px`;
-            span.style.animation = `fall ${Math.random() * 0.5 + 0.5}s linear`;
+            span.style.animation = `fall ${Math.random() * 1 + 1}s linear`;
             span.style.zIndex = 9999;
             document.body.appendChild(span);
 
             span.addEventListener('animationend', () => span.remove());
           }
-        button.textContent = 'Summoning an Emoji Meteor Shower !';
+        button.textContent = 'You summoned an Emoji Meteor Shower !';
     } 
     else if (randomNum === 10) 
     {
-        button.textContent = 'Calling an ELDER GOD (refresh browser to cancel) !';
+        button.textContent = 'You’re calling an ELDER GOD (refresh browser to cancel) !';
         setTimeout(() => {
           window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-        }, 3000);
+        }, 4000);
     }
 
-    if (typewriterTimeout) {
-      clearTimeout(typewriterTimeout);
+    if (magicTimeout) {
+      clearTimeout(magicTimeout);
     }
 
-    typewriterTimeout = setTimeout(() => {
+    magicTimeout = setTimeout(() => {
       button.textContent = '--> Cast a Spell !';
-    }, 4000);
+    }, 6000);
 
-    typewriterTimeout = setTimeout(() => {
+    magicTimeout = setTimeout(() => {
        typewritersection.style.display = 'none';
     }, 60000); // 60 seconds
 }
