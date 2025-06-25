@@ -50,6 +50,10 @@
       box-shadow: 0 0 5px var(--accent);
     }
 
+    #spell-button {
+      padding: 20px 0;
+    }
+
     #spell-toggle {
       background: var(--fg);
       color: var(--bg);
