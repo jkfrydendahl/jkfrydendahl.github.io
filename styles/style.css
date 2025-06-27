@@ -63,6 +63,7 @@
       color: var(--bg);
       border: none;
       font-family: 'Fira Code', monospace;
+          text-align: left;
       padding: 0.5rem 1rem;
       cursor: url('https://ani.cursors-4u.net/cursors/cur-11/cur1076.cur'), auto;
       box-shadow: 0 0 5px var(--fg);
