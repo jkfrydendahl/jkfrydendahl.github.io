@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Love Quote & Nickname</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --primary: #ff6b81;
+      --accent: #ffe9ec;
+      --background: linear-gradient(135deg, #fff5f8, #ffe9ec);
+      --text: #3a3a3a;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1.25rem;
+      box-shadow: 0 10px 20px var(--shadow);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .quote {
+      font-style: italic;
+      font-size: 1.2rem;
+      margin: 2rem 0;
+      color: #555;
+    }
+
+    .nickname {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .reset-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 107, 129, 0.1);
+      border: none;
+      color: var(--primary);
+      padding: 0.4rem 0.9rem;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      backdrop-filter: blur(4px);
+    }
+
+    .reset-button:hover {
+      background: rgba(255, 107, 129, 0.2);
+      color: #d43d56;
+      box-shadow: 0 2px 6px rgba(255, 107, 129, 0.3);
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem;
+        border-radius: 1rem;
+      }
+
+      .quote {
+        font-size: 1rem;
+      }
+
+      .nickname {
+        font-size: 1.3rem;
+      }
+
+      .reset-button {
+        padding: 0.3rem 0.7rem;
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+    <button class="reset-button" onclick="resetCounter()">Reset</button>
+    <h1>Dagens Citat</h1>
+    <br>
+    <div class="nickname" id="nickname"></div>
+    <div class="quote" id="quote">Loading...</div>
+  </div>
+
+  <script>
+    const quotes = [
+        "Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray. – Rumi",
+        "Be a rainbow in someone else's cloud. – Maya Angelou",
+        "The best gift you can give to others is your presence. The best gift you can give to yourself is perseverance. – Maxime Lagacé",
+        "For every minute you are angry you lose sixty seconds of happiness. – Ralph Waldo Emerson",
+        "Out of clutter, find simplicity. From discord, find harmony. In the middle of difficulty lies opportunity. – Albert Einstein",
+        "We must be our own before we can be another's. – Ralph Waldo Emerson",
+        "To love and be loved is to feel the sun from both sides. – David Viscott",
+        "The most precious gift we can offer anyone is our attention. – Thich Nhat Hanh",
+        "Only from the heart can you touch the sky. – Rumi",
+        "Love does not consist in gazing at each other, but in looking outward together in the same direction. – Antoine de Saint-Exupéry",
+        "You don’t love someone for their looks, or their clothes, or for their fancy car, but because they sing a song only you can hear. – Oscar Wilde",
+        "At the touch of love, everyone becomes a poet. – Plato",
+        "There is no charm equal to tenderness of heart. – Jane Austen",
+        "To be fully seen by somebody, then, and be loved anyhow—this is a human offering that can border on miraculous. – Elizabeth Gilbert",
+        "Love recognizes no barriers. It jumps hurdles, leaps fences, penetrates walls to arrive at its destination full of hope. – Maya Angelou",
+        "The heart has its reasons of which reason knows nothing. – Blaise Pascal",
+        "The giving of love is an education in itself. – Eleanor Roosevelt",
+        "The minute I heard my first love story, I started looking for you. – Rumi",
+        "Love is a canvas furnished by Nature and embroidered by imagination. – Voltaire",
+        "Being deeply loved by someone gives you strength, while loving someone deeply gives you courage. – Lao Tzu",
+        "The more one judges, the less one loves. – Honoré de Balzac",
+        "You are my today and all of my tomorrows. – Leo Christopher",
+        "True love is eternal, infinite, and always like itself. – Honoré de Balzac",
+        "You yourself, as much as anybody in the entire universe, deserve your love and affection. – Buddha",
+        "Love and compassion are necessities, not luxuries. Without them, humanity cannot survive. – Dalai Lama",
+        "The most powerful weapon on earth is the human soul on fire. – Ferdinand Foch",
+        "Love doesn't make the world go 'round. Love is what makes the ride worthwhile. – Franklin P. Jones",
+        "The best and most beautiful things in this world cannot be seen or even heard, but must be felt with the heart. – Helen Keller",
+        "To love is nothing. To be loved is something. But to love and be loved, that’s everything. – T. Tolis",
+        "There is always some madness in love. But there is also always some reason in madness. – Friedrich Nietzsche",
+        "Love is a friendship set to music. – Joseph Campbell",
+        "You don't love someone because they're perfect. You love them in spite of the fact that they're not. – Jodi Picoult",
+        "The art of love is largely the art of persistence. – Albert Ellis",
+        "All you need is love. But a little chocolate now and then doesn’t hurt. – Charles M. Schulz",
+        "There is no love without forgiveness, and there is no forgiveness without love. – Bryant H. McGill",
+        "A dull mind gets bored easily. A curious mind expands forever. – Unknown",
+        "Love yourself. Love the world. There is no power stronger than love. – Unknown",
+        "The only person you are destined to become is the person you decide to be. – Ralph Waldo Emerson",
+        "Do not go where the path may lead, go instead where there is no path and leave a trail. – Ralph Waldo Emerson",
+        "You need to have faith in yourself. Be brave and take risks. You don't have to have it all figured out to move forward. – Roy T. Bennett",
+        "What you're supposed to do when you don't like a thing is change it. If you can't change it, change the way you think about it. – Maya Angelou",
+        "I am different. Not less. – Temple Grandin",
+        "Be happy for this moment. This moment is your life. – Omar Khayyam",
+        "If you always do what you've always done, you'll always get what you've always got. – Henry Ford",
+        "The difference in winning and losing is most often... not quitting. – Walt Disney",
+        "When we are no longer able to change a situation, we are challenged to change ourselves. – Viktor Frankl",
+        "Appreciation is a wonderful thing: It makes what is excellent in others belong to us as well. – Voltaire",
+        "Our business in life is not to get ahead of others, but to get ahead of ourselves. – Thomas Carlyle",
+        "Be stronger than your strongest excuse. – Unknown",
+        "Every noble work is at first impossible. – Thomas Carlyle",
+        "Every day may not be good, but there is some good in every day. – Alice Morse Earle",
+        "Success is failing nine times and getting up ten. – Jon Bon Jovi",
+        "Don't let somebody who gave up on their dreams talk you out of yours. – Unknown",
+        "Even if you stumble, you're still moving forward. – Vernon Howard",
+        "Whether you think you can, or think you can't. You're right. – Henry Ford",
+        "The only way of discovering the limits of the possible is to venture a little way past them into the impossible. – Arthur C. Clarke",
+        "Do not ruin today with mourning tomorrow. – Catherynne M. Valente",
+        "There's a crack in everything. That's how the light gets in. – Leonard Cohen",
+        "It's only when you're able to let go that you truly have a choice. – Deepak Chopra",
+        "Happiness is not something ready made. It comes from your own actions. – Dalai Lama",
+        "Act as if what you do makes a difference. It does. – William James",
+        "Don’t wait. The time will never be just right. – Napoleon Hill",
+        "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+        "Believe you can and you're halfway there. – Theodore Roosevelt",
+        "Courage doesn't always roar. Sometimes courage is the quiet voice at the end of the day saying, ‘I will try again tomorrow.’ – Mary Anne Radmacher",
+        "The mind is everything. What you think you become. – Buddha",
+        "Life shrinks or expands in proportion to one's courage. – Anaïs Nin",
+        "It does not matter how slowly you go as long as you do not stop. – Confucius",
+        "If you’re going through hell, keep going. – Winston Churchill",
+        "Fall seven times, stand up eight. – Japanese Proverb",
+        "Everything you’ve ever wanted is on the other side of fear. – George Addair",
+        "Start where you are. Use what you have. Do what you can. – Arthur Ashe",
+        "Keep your face always toward the sunshine—and shadows will fall behind you. – Walt Whitman",
+        "It always seems impossible until it’s done. – Nelson Mandela",
+        "You miss 100% of the shots you don’t take. – Wayne Gretzky",
+        "Try to be a rainbow in someone's cloud. – Maya Angelou",
+        "There are no shortcuts to any place worth going. – Beverly Sills",
+        "Don’t count the days, make the days count. – Muhammad Ali",
+        "You are never too old to set another goal or to dream a new dream. – C.S. Lewis",
+        "Nothing will work unless you do. – Maya Angelou",
+        "It is never too late to be what you might have been. – George Eliot",
+        "What lies behind us and what lies before us are tiny matters compared to what lies within us. – Ralph Waldo Emerson",
+        "You must do the things you think you cannot do. – Eleanor Roosevelt",
+        "You must be the change you wish to see in the world. – Mahatma Gandhi",
+        "The only journey is the one within. – Rainer Maria Rilke",
+        "He who is not courageous enough to take risks will accomplish nothing in life. – Muhammad Ali",
+        "To handle yourself, use your head; to handle others, use your heart. – Eleanor Roosevelt",
+        "You are never too small to make a difference. – Greta Thunberg",
+        "Don’t let the noise of others’ opinions drown out your own inner voice. – Steve Jobs",
+        "I am not afraid of storms for I am learning how to sail my ship. – Louisa May Alcott",
+        "What lies behind us and what lies before us are tiny matters compared to what lies within us. – Ralph Waldo Emerson",
+        "Your time is limited, so don’t waste it living someone else’s life. – Steve Jobs",
+        "Everything has beauty, but not everyone sees it. – Confucius",
+        "Life is really simple, but we insist on making it complicated. – Confucius",
+        "It is not length of life, but depth of life. – Ralph Waldo Emerson",
+        "In the middle of difficulty lies opportunity. – Albert Einstein",
+        "Success is not how high you have climbed, but how you make a positive difference to the world. – Roy T. Bennett",
+        "If you want to fly, you have to give up the things that weigh you down. – Toni Morrison",
+        "Go confidently in the direction of your dreams. Live the life you have imagined. – Henry David Thoreau",
+        "Turn your wounds into wisdom. – Oprah Winfrey",
+        "Doubt kills more dreams than failure ever will. – Suzy Kassem",
+        "If you hear a voice within you say ‘you cannot paint,’ then by all means paint, and that voice will be silenced. – Vincent Van Gogh",
+        "Great things are not done by impulse, but by a series of small things brought together. – Vincent Van Gogh",
+        "Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome. – Booker T. Washington",
+        "The greatest weapon against stress is our ability to choose one thought over another. – William James",
+        "You don't have to see the whole staircase, just take the first step. – Martin Luther King Jr.",
+        "It’s not whether you get knocked down, it’s whether you get up. – Vince Lombardi",
+        "Happiness depends upon ourselves. – Aristotle",
+        "To live is the rarest thing in the world. Most people exist, that is all. – Oscar Wilde",
+        "Do what you can, with what you have, where you are. – Theodore Roosevelt",
+        "The future belongs to those who believe in the beauty of their dreams. – Eleanor Roosevelt",
+        "What you do makes a difference, and you have to decide what kind of difference you want to make. – Jane Goodall",
+        "Start each day with a positive thought and a grateful heart. – Roy T. Bennett",
+        "Don’t compromise yourself. You’re all you’ve got. – Janis Joplin",
+        "If opportunity doesn’t knock, build a door. – Milton Berle",
+        "Dream big and dare to fail. – Norman Vaughan",
+        "Sometimes you win, sometimes you learn. – John C. Maxwell",
+        "Keep going. Everything you need will come to you at the perfect time. – Unknown",
+        "You are braver than you believe, stronger than you seem, and smarter than you think. – A.A. Milne",
+        "The most common way people give up their power is by thinking they don’t have any. – Alice Walker",
+        "You are the sky. Everything else – it’s just the weather. – Pema Chödrön",
+        "It’s not the load that breaks you down, it’s the way you carry it. – Lou Holtz",
+        "You can’t go back and change the beginning, but you can start where you are and change the ending. – C.S. Lewis",
+        "Pain is inevitable. Suffering is optional. – Haruki Murakami",
+        "You cannot swim for new horizons until you have courage to lose sight of the shore. – William Faulkner",
+        "Live as if you were to die tomorrow. Learn as if you were to live forever. – Mahatma Gandhi",
+        "Action is the foundational key to all success. – Pablo Picasso",
+        "When you arise in the morning, think of what a precious privilege it is to be alive. – Marcus Aurelius",
+        "If you don’t like the road you’re walking, start paving another one. – Dolly Parton",
+        "Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray. – Rumi",
+        "Be fearless in the pursuit of what sets your soul on fire. – Jennifer Lee",
+        "What is remembered, lives. – Old Norse Proverb",
+        "The gods help those who help themselves. – Old Norse Proverb",
+        "It is better to stand and fall than to kneel and live. – Volsunga Saga",
+        "Look deep into nature, and then you will understand everything better. – Albert Einstein",
+        "Adopt the pace of nature: her secret is patience. – Ralph Waldo Emerson",
+        "The earth has music for those who listen. – George Santayana",
+        "Nature does not hurry, yet everything is accomplished. – Lao Tzu",
+        "In every walk with nature one receives far more than he seeks. – John Muir",
+        "To forget how to dig the earth and to tend the soil is to forget ourselves. – Mahatma Gandhi",
+        "The clearest way into the Universe is through a forest wilderness. – John Muir",
+        "Wilderness is not a luxury but a necessity of the human spirit. – Edward Abbey",
+        "We do not inherit the earth from our ancestors, we borrow it from our children. – Native American Proverb",
+        "Time spent amongst trees is never time wasted. – Katrina Mayer",
+        "The goal of life is to make your heartbeat match the beat of the universe, to match your nature with Nature. – Joseph Campbell",
+        "Nature is not a place to visit. It is home. – Gary Snyder",
+        "A walk in nature walks the soul back home. – Mary Davis",
+        "Nature teaches more than she preaches. – John Muir",
+        "Each moment of the year has its own beauty. – Ralph Waldo Emerson",
+        "Sunsets are proof that no matter what happens, every day can end beautifully. – Kristen Butler",
+        "If you truly love nature, you will find beauty everywhere. – Laura Ingalls Wilder",
+        "Live in each season as it passes; breathe the air, drink the drink, taste the fruit. – Henry David Thoreau",
+        "I am different. Not less. – Temple Grandin",
+        "There’s no greater gift than being different and owning it. – Dan Harmon",
+        "You don’t outgrow ADHD. You grow into it with strategies, structure, and self-understanding. – Dr. Russell Barkley",
+        "Creativity is the brain’s way of having fun. ADHD just turns up the volume. – Sari Solden",
+        "People with ADHD have kaleidoscope minds. They are beautiful, but hard to follow. – Unknown",
+        "The same wiring that can make life harder also gives us incredible resilience and insight. – Ned Hallowell",
+        "Brains like mine are built for bursts, not brakes. – Rick Green",
+        "I prefer the term ‘multi-minded’ instead of scatterbrained. – Thom Hartmann",
+        "Neurodivergent minds are wired for pattern, possibility, and passion. – Samantha Craft",
+        "You don’t grow out of it. You grow around it. – Jessica McCabe",
+        "I see a million angles where others see just one. – Anonymous",
+        "The same mind that forgets an appointment can write a symphony in the shower. – Ned Hallowell",
+        "Many of our greatest thinkers had minds that didn’t fit the mold. – Dr. Russell Barkley",
+        "Give me a spark, and I’ll give you a wildfire. – Unknown",
+        "You can't grow flowers without a little disorder in the soil. – Unknown",
+        "The neurodivergent brain is not broken. It’s just blazing a different trail. – Temple Grandin",
+        "My thoughts are stars I cannot fathom into constellations—but I see galaxies. – John Green",
+        "Your brain isn’t disobedient—it’s divergent. – Anonymous",
+        "When I stopped trying to be normal, I started being brilliant. – Unknown",
+        "I am not inattentive. I am just attentive to what matters to me. – Dr. Gabor Maté",
+        "You have to embrace your quirks; they are your soul’s fingerprints. – Temple Grandin",
+        "Being different is not a curse. It’s a call to create new things. – Thom Hartmann",
+        "If you judge a fish by its ability to climb a tree… – Albert Einstein (attributed)",
+        "I never made one of my discoveries through the process of rational thinking. – Albert Einstein",
+        "Don’t suppress your weird. It’s where your magic lives. – Sari Solden",
+        "The ones who are crazy enough to think they can change the world are the ones who do. – Steve Jobs",
+        "I don't need to be like everyone else. I need to be the best version of me. – Thom Hartmann",
+        "What seems like chaos to others is often creativity in motion. – Dr. Gabor Maté",
+        "I don’t need a cure. I need a compass. – Kati Morton",
+        "Every time I thought I failed, I was actually building resilience. – Ned Hallowell",
+        "I don't fall behind. I leap sideways. – Neurodivergent Quote",
+        "It’s not that I don’t focus—it’s that I focus too much on what excites me. – Dr. Russell Barkley",
+        "I don't need less energy. I need better direction. – Rick Green",
+        "The world needs nonlinear thinkers. That’s how we get breakthroughs. – Temple Grandin",
+        "ADHD means sometimes forgetting where you put your keys and remembering how stars form in the same breath. – Jessica McCabe",
+        "Being different isn’t the problem. Not being accepted is. – Kati Morton",
+        "I’ve never fit the mold. So I stopped trying. I make my own form. – Rick Green",
+        "What’s seen as inconsistency might actually be range. – Dr. Russell Barkley",
+        "I work best when I’m allowed to work weird. – Jessica McCabe",
+        "It takes a wild mind to dream wild dreams. – Samantha Craft",
+        "The world wasn’t made for people like us. But we’re the ones who remake it. – Temple Grandin",
+        "Not all those who wander are lost. Some just have ADHD. – Unknown",
+        "Just because I move fast doesn’t mean I’m out of control. – Rick Green",
+        "Normal is a setting on a washing machine. That’s it. – Patsy Clairmont"
+        ];
+
+    const nicknames = [
+        "min Flammedanser",
+        "min Himmeldanser",
+        "min Blomsterskat",
+        "min Månedronning",
+        "min Valkyrie",
+        "mit Ulvehjerte",
+        "min Engdanser",
+        "min Stjernesanger",
+        "min Aurora",
+        "min Lysling",
+        "min Kærlighedsblomst",
+        "min Muse",
+        "mit Hjertelys",
+        "min Strandperle",
+        "min Skydanser",
+        "min Drømmeelsker",
+        "min Himmelsjæl",
+        "min Solbregne",
+        "mit Solbær",
+        "min Sjælesang",
+        "min Dugrose",
+        "min Belle",
+        "mit Opalhjerte",
+        "min Solengel",
+        "min Regnbuedanser",
+        "min Måneblomst",
+        "min Solstråle",
+        "min Månedråbe",
+        "mit Stormkys",
+        "min Rose",
+        "min Lilje",
+        "min Fjersjæl",
+        "min Eventyrblomst",
+        "min Sommerdrage",
+    ];
+
+    const year = new Date().getFullYear();
+
+    function getWeightedIndex(array, keyPrefix, maxUses = 3) {
+      const usageKey = `${keyPrefix}-${year}`;
+      const usageMap = JSON.parse(localStorage.getItem(usageKey)) || {};
+
+      const weights = array.map((_, i) => {
+        const count = usageMap[i] || 0;
+        return count >= maxUses ? 0 : 1 / (1 + count);
+      });
+
+      const total = weights.reduce((sum, w) => sum + w, 0);
+      const cumulative = [];
+      let running = 0;
+      for (let i = 0; i < weights.length; i++) {
+        running += weights[i] / total;
+        cumulative.push(running);
+      }
+
+      const rand = Math.random();
+      const index = cumulative.findIndex(c => rand <= c);
+
+      usageMap[index] = (usageMap[index] || 0) + 1;
+      localStorage.setItem(usageKey, JSON.stringify(usageMap));
+
+      return index;
+    }
+
+    function showQuoteAndNickname() {
+      const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
+      const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
+
+      document.getElementById("quote").textContent = quotes[quoteIndex];
+      document.getElementById("nickname").textContent = "Til " + nicknames[nicknameIndex];
+    }
+
+    function resetCounters() {
+      localStorage.removeItem(`quoteUsage-${year}`);
+      localStorage.removeItem(`nicknameUsage-${year}`);
+      location.reload();
+    }
+
+    showQuoteAndNickname();
+  </script>
+</body>
+</html>
