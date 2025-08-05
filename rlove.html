@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>For My Love</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text x='52%' y='60%' font-size='34' text-anchor='middle' dominant-baseline='middle'>❤️</text></svg>">
+  
   <style>
     :root {
       --primary: #ff6b81;
@@ -104,8 +106,9 @@
     <button class="reset-button" onclick="resetCounter()">Reset</button>
     <h1>Dagens Citat</h1>
     <br>
-    <div class="nickname" id="nickname"></div>
+    <div class="nickname" id="nickname">N/A</div>
     <div class="quote" id="quote">Loading...</div>
+    <div id="emoji-of-the-day" style="font-size: 2em; margin-top: 1em;"></div>
   </div>
 
   <script>
@@ -329,6 +332,7 @@
         "min Solbregne",
         "mit Solbær",
         "min Sjælesang",
+        //---
         "min Dugrose",
         "min Belle",
         "mit Opalhjerte",
@@ -349,6 +353,7 @@
         "min Ledestjerne",
         "min Morgensol",
         "min Vinterglød",
+        //---
         "min Lysrose",
         "min Tågedanser",
         "min Ravsjæl",
@@ -357,18 +362,20 @@
         "min Sølvflamme",
         "min Hjertedrøm",
         "min Sangfugl",
+        //---
         "mit Enebær",
         "min Himmelrose",
         "min Glimmerfugl",
         "min Solbrise",
-        "min Natlysengel",
+        "min Lysengel",
         "min Birkeblomst",
         "min Hjertehvisker",
         "min Fabelrose",
         "mit Himmelkys",
         "min Månefugl",
         "min Ildblomst",
-        "min Tinderdue",
+        //---
+        "min Svane",
         "min Fyrfryd",
         "min Sommerfugl",
         "mit Hjerte",
@@ -436,6 +443,38 @@
         "min Regndanser"
     ];
 
+    const nicknameEmojis = [
+      "🔥", "💃🏻", "🌸", "🌕", "🛡️", "🐺", "🪽", "🎶", "🌌", "✨", "🌺", "🎨", "💡", "🏖️", "💃", "💞", "☀️", "🌿", "🫐", "🎵",
+      "🌹", "🌷", "💜", "👼", "🌈", "🌙", "🌞", "💧", "💋", "🌹", "🌼", "🪶", "🌼", "🐉", "🐦‍🔥", "❤️‍🔥", "👑", "⭐", "🌅", "❄️",
+      "🌻", "🩵", "🧡", "❄️", "🍃", "🔥", "💗", "🐦",
+      "🌿", "💫", "🦜", "😎", "🕯️", "🌸", "💞", "❤️", "💋", "🕊️", "🔥",
+      "🦢", "🧡", "🦋", "❤️", "💧", "🌺", "🎤", "🪨", "🌈", "❄️", "🍎", "🌿", "🖤", "❤️", "✨", "💛", "💙", "🥰", "🌲", "🌤️", "✨",
+      "🌙", "🕊️", "💋", "🌟", "🌹", "🧝‍♀️", "💭", "🌇", "🩷", "⚪", "🌟", "💓", "💎", "🌺", "🧚", "🌠", "❄️", "🌹", "🧝", "✨", "🌞", "🌑",
+      "🤍","🌌","❄️","💋","💧","🌹","🌱","🌙","☀️","🕯️", "🧡", "🌼", "💫", "❄️", "🌸", "🎵", "💖", "💋", "🌺", "🔥", "🌹", "🕊️", "🌧️"
+    ];
+
+    const quoteEmojis = [
+      "🧲", "🌈", "🎁", "⏳", "🎯", "🪞", "☀️", "👂", "💓", "👀",
+      "🎵", "📝", "🤍", "✨", "🚧", "🌀", "🎓", "📖", "🎨", "💪",
+      "⚖️", "🗓️", "♾️", "🧘", "☮️", "🔥", "🎢", "❤️", "💞", "🌀",
+      "🎻", "🙃", "🏁", "🍫", "🤝", "🧠", "🌍", "🧭", "🌿", "🧠",
+      "💪", "🔄", "🧬", "🎯", "📊", "🔨", "🏆", "🧱", "☀️", "⛅",
+      "👊", "🎯", "🌈", "🛣️", "⏳", "🎂", "🛠️", "⏰", "🪙", "🏁",
+      "🎯", "🦁", "🤫", "🧠", "💪", "🔥", "📉", "🏃", "🔓", "✊",
+      "🌻", "🧗", "🧊", "🏀", "🧮", "🌈", "🧘", "🧭", "🥊", "⚖️",
+      "🐘", "🔇", "🌪️", "🕰️", "🔓", "🧠", "👣", "🎯", "🌤️", "✔️",
+      "🏹", "🫀", "🌅", "🌙", "🌲", "🍄", "🏞️", "🌌", "👣", "🌻",
+      "🌳", "🌿", "🌍", "🌲", "🌈", "🕊️", "🌀", "🌅", "🍃", "🌸",
+      "🌼", "🌻", "💗", "📚", "🧠", "🌀", "🌪️", "🌟", "🌌", "🧬",
+      "🌋", "🌺", "🛤️", "💫", "🧭", "🎇", "🎨", "🎨", "🎯", "🧠",
+      "🧗", "📶", "🧠", "💎", "💓", "🏞️", "🎯", "🌄", "📬", "🎯",
+      "🌟", "🎭", "🔑", "🍀", "🌞", "🌱", "🚧", "📦", "🏁", "🐛",
+      "🎯", "🐘", "🎭", "🌿", "🗣️", "⛵", "🧠", "🎯", "⏳", "🪷",
+      "🤗", "🌱", "🌍", "🌲", "🧠", "🧠", "🎯", "🧠", "🧭", "🙌",
+      "✨", "🎯", "⚡", "🧭", "🌊", "🌱", "🪞", "📅", "🛤️", "🌻",
+      "📬", "🗺️", "🌀", "🌠"
+    ];
+
     const year = new Date().getFullYear();
 
     function getWeightedIndex(array, keyPrefix, maxUses = 3) {
@@ -468,11 +507,21 @@
       const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
       const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
 
-      document.getElementById("quote").textContent = quotes[quoteIndex];
-      document.getElementById("nickname").textContent = "Til " + nicknames[nicknameIndex];
+      const nickname = nicknames[nicknameIndex];
+      const quote = quotes[quoteIndex];
+      const nicknameEmoji = nicknameEmojis[nicknameIndex] || "💖";
+      const quoteEmoji = quoteEmojis[quoteIndex] || "✨";
+      const combinedEmoji = `${nicknameEmoji} ${quoteEmoji}`;
+
+      document.getElementById("quote").textContent = quote;
+      document.getElementById("nickname").textContent = "Til " + nickname;
+      document.getElementById("emoji-of-the-day").textContent = `${combinedEmoji}` + "🌟";
+
+      console.log(nicknames.length, nicknameEmojis.length); // Should be equal
+      console.log(quotes.length, quoteEmojis.length);       // Should be equal
     }
 
-    function resetCounters() {
+    function resetCounter() {
       localStorage.removeItem(`quoteUsage-${year}`);
       localStorage.removeItem(`nicknameUsage-${year}`);
       location.reload();
