@@ -477,57 +477,86 @@
 
     const year = new Date().getFullYear();
 
-    function getWeightedIndex(array, keyPrefix, maxUses = 3) {
-      const usageKey = `${keyPrefix}-${year}`;
-      const usageMap = JSON.parse(localStorage.getItem(usageKey)) || {};
+    const QUOTE_KEY = "quoteUsage-" + year;
+  const NICKNAME_KEY = "nicknameUsage-" + year;
+  const DISPLAY_STATE_KEY = "displayState";
 
-      const weights = array.map((_, i) => {
-        const count = usageMap[i] || 0;
-        return count >= maxUses ? 0 : 1 / (1 + count);
-      });
+  const TWENTY_HOURS_MS = 20 * 60 * 60 * 1000;
 
-      const total = weights.reduce((sum, w) => sum + w, 0);
-      const cumulative = [];
-      let running = 0;
-      for (let i = 0; i < weights.length; i++) {
-        running += weights[i] / total;
-        cumulative.push(running);
-      }
+  function getWeightedIndex(array, keyPrefix, maxUses = 3) {
+    const usageKey = `${keyPrefix}-${year}`;
+    const usageMap = JSON.parse(localStorage.getItem(usageKey)) || {};
 
-      const rand = Math.random();
-      const index = cumulative.findIndex(c => rand <= c);
+    const weights = array.map((_, i) => {
+      const count = usageMap[i] || 0;
+      return count >= maxUses ? 0 : 1 / (1 + count);
+    });
 
-      usageMap[index] = (usageMap[index] || 0) + 1;
-      localStorage.setItem(usageKey, JSON.stringify(usageMap));
-
-      return index;
+    const total = weights.reduce((sum, w) => sum + w, 0);
+    const cumulative = [];
+    let running = 0;
+    for (let i = 0; i < weights.length; i++) {
+      running += weights[i] / total;
+      cumulative.push(running);
     }
 
-    function showQuoteAndNickname() {
+    const rand = Math.random();
+    const index = cumulative.findIndex(c => rand <= c);
+
+    usageMap[index] = (usageMap[index] || 0) + 1;
+    localStorage.setItem(usageKey, JSON.stringify(usageMap));
+
+    return index;
+  }
+
+  function showQuoteAndNickname(forceRefresh = false) {
+    const now = Date.now();
+    const stored = JSON.parse(localStorage.getItem(DISPLAY_STATE_KEY));
+
+    if (
+      stored &&
+      !forceRefresh &&
+      stored.timestamp &&
+      now - stored.timestamp < TWENTY_HOURS_MS
+    ) {
+      // Show saved quote & nickname
+      renderDisplay(stored.nicknameIndex, stored.quoteIndex);
+    } else {
+      // Generate new
       const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
       const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
 
-      const nickname = nicknames[nicknameIndex];
-      const quote = quotes[quoteIndex];
-      const nicknameEmoji = nicknameEmojis[nicknameIndex] || "💖";
-      const quoteEmoji = quoteEmojis[quoteIndex] || "✨";
-      const combinedEmoji = `${nicknameEmoji} ${quoteEmoji}`;
+      const newState = {
+        quoteIndex,
+        nicknameIndex,
+        timestamp: now,
+      };
 
-      document.getElementById("quote").textContent = quote;
-      document.getElementById("nickname").textContent = "Til " + nickname;
-      document.getElementById("emoji-of-the-day").textContent = `${combinedEmoji}` + " 🌟";
-
-      console.log(nicknames.length, nicknameEmojis.length); // Should be equal
-      console.log(quotes.length, quoteEmojis.length);       // Should be equal
+      localStorage.setItem(DISPLAY_STATE_KEY, JSON.stringify(newState));
+      renderDisplay(nicknameIndex, quoteIndex);
     }
+  }
 
-    function resetCounter() {
-      localStorage.removeItem(`quoteUsage-${year}`);
-      localStorage.removeItem(`nicknameUsage-${year}`);
-      location.reload();
-    }
+  function renderDisplay(nicknameIndex, quoteIndex) {
+    const nickname = nicknames[nicknameIndex];
+    const quote = quotes[quoteIndex];
+    const nicknameEmoji = nicknameEmojis[nicknameIndex] || "💖";
+    const quoteEmoji = quoteEmojis[quoteIndex] || "✨";
+    const combinedEmoji = `${nicknameEmoji} ${quoteEmoji}`;
 
-    showQuoteAndNickname();
+    document.getElementById("quote").textContent = quote;
+    document.getElementById("nickname").textContent = "Til " + nickname;
+    document.getElementById("emoji-of-the-day").textContent = `${combinedEmoji}` + " 🌟";
+  }
+
+  function resetCounter() {
+    localStorage.removeItem(QUOTE_KEY);
+    localStorage.removeItem(NICKNAME_KEY);
+    localStorage.removeItem(DISPLAY_STATE_KEY);
+    location.reload();
+  }
+
+  showQuoteAndNickname();
   </script>
 </body>
 </html>
