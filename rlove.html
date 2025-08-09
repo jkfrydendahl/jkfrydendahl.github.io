@@ -113,6 +113,31 @@
   </div>
 
   <script>
+    function scheduleDailyRefresh(hour = 8, minute = 0) {
+        const now = new Date();
+        const nextRefresh = new Date();
+    
+        nextRefresh.setHours(hour, minute, 0, 0);
+    
+        // If the time has already passed today, schedule for tomorrow
+        if (nextRefresh <= now) {
+            nextRefresh.setDate(nextRefresh.getDate() + 1);
+        }
+    
+        const timeUntilRefresh = nextRefresh - now;
+    
+        console.log(`Next refresh in ${timeUntilRefresh / 1000 / 60} minutes`);
+    
+        setTimeout(() => {
+            location.reload(); // refresh page
+        }, timeUntilRefresh);
+    }
+    
+  // Run the scheduler when the page loads
+  scheduleDailyRefresh(8, 0);
+  </script>
+  
+  <script>
     const quotes = [
         "Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray. – Rumi",
         "Be a rainbow in someone else's cloud. – Maya Angelou",
@@ -560,30 +585,7 @@
     localStorage.removeItem(DISPLAY_STATE_KEY);
     location.reload();
   }
-
-   function scheduleDailyRefresh(hour = 8, minute = 0) {
-        const now = new Date();
-        const nextRefresh = new Date();
     
-        nextRefresh.setHours(hour, minute, 0, 0);
-    
-        // If the time has already passed today, schedule for tomorrow
-        if (nextRefresh <= now) {
-            nextRefresh.setDate(nextRefresh.getDate() + 1);
-        }
-    
-        const timeUntilRefresh = nextRefresh - now;
-    
-        console.log(`Next refresh in ${timeUntilRefresh / 1000 / 60} minutes`);
-    
-        setTimeout(() => {
-            location.reload(); // refresh page
-        }, timeUntilRefresh);
-    }
-    
-  // Run the scheduler when the page loads
-  scheduleDailyRefresh(8, 0);
-  
   showQuoteAndNickname();
   </script>
 </body>
