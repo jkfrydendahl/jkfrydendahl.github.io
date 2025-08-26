@@ -1,0 +1,9 @@
+{
+  "name": "for-my-love-push-backend",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@vercel/kv": "1.0.1",
+    "web-push": "3.6.6"
+  }
+}
