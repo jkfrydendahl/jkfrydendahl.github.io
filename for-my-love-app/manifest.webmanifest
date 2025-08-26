@@ -1,0 +1,11 @@
+{
+  "name": "For My Love",
+  "short_name": "For My Love",
+  "id": "/for-my-love/",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffe9ec",
+  "theme_color": "#ff6b81",
+  "description": "Daily nickname + quote for my love 💖"
+}
