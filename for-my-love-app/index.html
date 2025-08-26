@@ -181,34 +181,54 @@
         async function enablePush(){
 
             function isIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent); }
-              function isStandalone(){ return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone; }
+            function isStandalone(){ return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone; }
+            function urlBase64ToUint8Array(s){const p='='.repeat((4-s.length%4)%4);const b=(s+p).replace(/-/g,'+').replace(/_/g,'/');const r=atob(b),a=new Uint8Array(r.length);for(let i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a;}
 
-              async function enablePush(){
-                if (!('serviceWorker' in navigator)) { alert('Service workers not supported'); return; }
+            async function enablePushVerbose() {
+              try {
+                if (!('serviceWorker' in navigator)) throw new Error('ServiceWorker not supported');
+                if (isIOS() && !isStandalone()) throw new Error('Install to Home Screen first');
 
-                if (isIOS() && !isStandalone()) {  // In Safari tab
-                  alert('På iPhone: Tilføj siden til hjemmeskærmen og åbn appen derfra for at aktivere push.');
-                  return;
-                }
+                // Confirm the file exists (quick network sanity check)
+                const probe = await fetch('./sw.js', { cache: 'no-store' });
+                console.log('sw.js status:', probe.status, probe.url);
+                if (!probe.ok) throw new Error('sw.js not reachable (' + probe.status + ')');
 
-                // Ensure SW is ready in the PWA
+                // Register + ensure activated
                 const reg = await navigator.serviceWorker.register('./sw.js');
-                const perm = await Notification.requestPermission();
-                if (perm !== 'granted') { alert('Tillad notifikationer for at modtage push.'); return; }
+                await navigator.serviceWorker.ready;
+                await reg.update(); // pull fresh code if cached
 
-                // Use the registration’s pushManager; don’t rely on `PushManager` in window
+                // Ask permission
+                const perm = await Notification.requestPermission();
+                if (perm !== 'granted') throw new Error('Permission not granted');
+
+                // VAPID key sanity check (should be 65 bytes)
+                const keyBytes = urlBase64ToUint8Array(PUBLIC_VAPID_KEY);
+                console.log('VAPID key length:', keyBytes.length);
+                if (keyBytes.length < 65) throw new Error('Bad VAPID public key');
+
+                // Subscribe
                 const sub = await reg.pushManager.subscribe({
                   userVisibleOnly: true,
-                  applicationServerKey: urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
+                  applicationServerKey: keyBytes
                 });
+                console.log('Subscribed endpoint:', sub.endpoint);
 
-                await fetch(`${VERCEL_BACKEND}/api/subscribe`, {
-                  method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(sub)
+                // Send to backend
+                const resp = await fetch(`${VERCEL_BACKEND}/api/subscribe`, {
+                  method: 'POST', headers: { 'Content-Type':'application/json' },
+                  body: JSON.stringify(sub)
                 });
+                console.log('subscribe status:', resp.status);
+                if (!resp.ok) throw new Error('Subscribe API failed: ' + resp.status);
 
                 alert('Push enabled 🎉');
+              } catch (err) {
+                console.error('enablePush failed:', err, err?.name, err?.message);
+                alert('Push failed: ' + (err?.message || err));
               }
-
+            }
 
             if (isIOS() && !isStandalone()) { alert('På iPhone: Tilføj til hjemmeskærmen og åbn appen derfra.'); return; }
             const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
@@ -223,9 +243,7 @@
             });
             alert('Push enabled 🎉');
         }
-        document.getElementById('enable-push').addEventListener('click', () => {
-            enablePush().catch(e => { console.error(e); alert('Kunne ikke aktivere push: ' + e.message); });
-        });
+        document.getElementById('enable-push').addEventListener('click', enablePushVerbose);
 </script>
   
   <script>
