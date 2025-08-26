@@ -20,8 +20,8 @@ export default async function handler(req, res) {
   if (!shouldSend) return res.json({ ok: true, skippedAt: now });
 
   const payload = JSON.stringify({
-    title: req.body?.title || 'For My Love',
-    body:  req.body?.body  || '💖 Dagens citat er klar!',
+    title: req.body?.title || '💖 For My Love 💖',
+    body:  req.body?.body  || 'Dit daglige citat og kælenavn er klar!',
     url:   req.body?.url   || '/'
   });
 

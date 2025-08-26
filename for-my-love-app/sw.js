@@ -6,8 +6,8 @@ self.addEventListener('push', (event) => {
   try { data = event.data?.json() || {}; } catch {}
   const url = data.url || APP_URL;
   event.waitUntil(
-    self.registration.showNotification(data.title || 'For My Love', {
-      body: data.body || '💖 Dagens citat er klar!',
+    self.registration.showNotification(data.title || '💖 For My Love 💖', {
+      body: data.body || 'Dit daglige citat og kælenavn er klar!',
       data: { url }
     })
   );
