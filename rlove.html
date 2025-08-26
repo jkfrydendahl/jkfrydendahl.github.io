@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text x='52%' y='60%' font-size='34' text-anchor='middle' dominant-baseline='middle'>❤️</text></svg>">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text x='52%' y='60%' font-size='34' text-anchor='middle' dominant-baseline='middle'>❤️</text></svg>">
-  <meta name="theme-color" content="#ff6b81">
+  
   <style>
     :root {
       --primary: #ff6b81;
@@ -60,9 +60,10 @@
       color: var(--primary);
     }
 
-    .reset-button, .notif-button {
+    .reset-button {
       position: absolute;
       top: 1rem;
+      right: 1rem;
       background: rgba(255, 107, 129, 0.1);
       border: none;
       color: var(--primary);
@@ -74,19 +75,10 @@
       backdrop-filter: blur(4px);
     }
 
-    .reset-button { right: 1rem; }
-    .notif-button { left: 1rem; }
-
-    .reset-button:hover, .notif-button:hover {
+    .reset-button:hover {
       background: rgba(255, 107, 129, 0.2);
       color: #d43d56;
       box-shadow: 0 2px 6px rgba(255, 107, 129, 0.3);
-    }
-
-    footer {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      color: #666;
     }
 
     @media (max-width: 480px) {
@@ -94,9 +86,16 @@
         padding: 1.5rem;
         border-radius: 1rem;
       }
-      .quote { font-size: 1rem; }
-      .nickname { font-size: 1.3rem; }
-      .reset-button, .notif-button {
+
+      .quote {
+        font-size: 1rem;
+      }
+
+      .nickname {
+        font-size: 1.3rem;
+      }
+
+      .reset-button {
         padding: 0.3rem 0.7rem;
         font-size: 0.75rem;
       }
@@ -104,31 +103,40 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <button class="notif-button" id="enable-notifs">Enable Notifications 🔔</button>
+<div class="container">
     <button class="reset-button" onclick="resetCounter()">Get Another 💕</button>
     <h1>Dagens Citat</h1>
     <br>
     <div class="nickname" id="nickname">N/A</div>
     <div class="quote" id="quote">Loading...</div>
     <div id="emoji-of-the-day" style="font-size: 2em; margin-top: 1em;"></div>
-    <footer id="notif-footer">🔔 For at modtage notifikationer skal siden være åben i din browser (ikke lukket). Ingen server-push.</footer>
   </div>
 
-  <!-- Daily refresh (keeps your existing behavior) -->
   <script>
     function scheduleDailyRefresh(hour = 8, minute = 0) {
-      const now = new Date();
-      const nextRefresh = new Date();
-      nextRefresh.setHours(hour, minute, 0, 0);
-      if (nextRefresh <= now) nextRefresh.setDate(nextRefresh.getDate() + 1);
-      const timeUntilRefresh = nextRefresh - now;
-      setTimeout(() => location.reload(), timeUntilRefresh);
+        const now = new Date();
+        const nextRefresh = new Date();
+    
+        nextRefresh.setHours(hour, minute, 0, 0);
+    
+        // If the time has already passed today, schedule for tomorrow
+        if (nextRefresh <= now) {
+            nextRefresh.setDate(nextRefresh.getDate() + 1);
+        }
+    
+        const timeUntilRefresh = nextRefresh - now;
+    
+        console.log(`Next refresh in ${timeUntilRefresh / 1000 / 60} minutes`);
+    
+        setTimeout(() => {
+            location.reload(); // refresh page
+        }, timeUntilRefresh);
     }
-    scheduleDailyRefresh(8, 0);
+    
+  // Run the scheduler when the page loads
+  scheduleDailyRefresh(8, 0);
   </script>
-
-  <!-- App logic + local Notifications API -->
+  
   <script>
     const quotes = [
         "Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray. – Rumi",
@@ -502,202 +510,87 @@
     ];
 
     const year = new Date().getFullYear();
+
     const QUOTE_KEY = "quoteUsage-" + year;
-    const NICKNAME_KEY = "nicknameUsage-" + year;
-    const DISPLAY_STATE_KEY = "displayState";
-    const TWENTY_HOURS_MS = 20 * 60 * 60 * 1000;
+  const NICKNAME_KEY = "nicknameUsage-" + year;
+  const DISPLAY_STATE_KEY = "displayState";
 
-    function getWeightedIndex(array, keyPrefix, maxUses = 3) {
-      const usageKey = `${keyPrefix}-${year}`;
-      const usageMap = JSON.parse(localStorage.getItem(usageKey)) || {};
-      const weights = array.map((_, i) => {
-        const count = usageMap[i] || 0;
-        return count >= maxUses ? 0 : 1 / (1 + count);
-      });
-      const total = weights.reduce((sum, w) => sum + w, 0);
-      const cumulative = [];
-      let running = 0;
-      for (let i = 0; i < weights.length; i++) {
-        running += total ? (weights[i] / total) : 0;
-        cumulative.push(running);
-      }
-      const rand = Math.random();
-      const index = cumulative.findIndex(c => rand <= c);
-      usageMap[index] = (usageMap[index] || 0) + 1;
-      localStorage.setItem(usageKey, JSON.stringify(usageMap));
-      return index;
-    }
+  const TWENTY_HOURS_MS = 20 * 60 * 60 * 1000;
 
-    function renderDisplay(nicknameIndex, quoteIndex) {
-      const nickname = nicknames[nicknameIndex];
-      const quote = quotes[quoteIndex];
-      const nicknameEmoji = nicknameEmojis[nicknameIndex] || "💖";
-      const quoteEmoji = quoteEmojis[quoteIndex] || "✨";
-      const combinedEmoji = `${nicknameEmoji} ${quoteEmoji}`;
-      document.getElementById("quote").textContent = quote;
-      document.getElementById("nickname").textContent = "Til " + nickname;
-      document.getElementById("emoji-of-the-day").textContent = `${combinedEmoji} 🌟`;
-    }
+  function getWeightedIndex(array, keyPrefix, maxUses = 3) {
+    const usageKey = `${keyPrefix}-${year}`;
+    const usageMap = JSON.parse(localStorage.getItem(usageKey)) || {};
 
-    function showQuoteAndNickname(forceRefresh = false) {
-      const now = Date.now();
-      const stored = JSON.parse(localStorage.getItem(DISPLAY_STATE_KEY));
-      if (stored && !forceRefresh && stored.timestamp && now - stored.timestamp < TWENTY_HOURS_MS) {
-        renderDisplay(stored.nicknameIndex, stored.quoteIndex);
-      } else {
-        const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
-        const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
-        const newState = { quoteIndex, nicknameIndex, timestamp: now };
-        localStorage.setItem(DISPLAY_STATE_KEY, JSON.stringify(newState));
-        renderDisplay(nicknameIndex, quoteIndex);
-      }
-    }
-
-    function resetCounter() {
-      localStorage.removeItem(QUOTE_KEY);
-      localStorage.removeItem(NICKNAME_KEY);
-      localStorage.removeItem(DISPLAY_STATE_KEY);
-      location.reload();
-    }
-
-    // -------------------------------
-    // Notifications (local, no server)
-    // -------------------------------
-
-    const NOTIF_SCHEDULED_KEY = "notifScheduled";
-    const NOTIF_LAST_DATE_KEY = "notifLastDate"; // YYYY-MM-DD last time we actually fired
-
-    function notificationsSupported() {
-      return 'Notification' in window;
-    }
-
-    function permissionGranted() {
-      return notificationsSupported() && Notification.permission === 'granted';
-    }
-
-    async function requestNotificationPermission() {
-      if (!notificationsSupported()) throw new Error('Notifications not supported on this browser');
-      const res = await Notification.requestPermission();
-      if (res !== 'granted') throw new Error('Permission not granted');
-      return true;
-    }
-
-    function scheduleDailyNotification(hour = 10, minute = 0) {
-      // Avoid re-scheduling multiple timers if the page has been open for a long time.
-      if (localStorage.getItem(NOTIF_SCHEDULED_KEY) === '1') return;
-
-      const now = new Date();
-      const next = new Date();
-      next.setHours(hour, minute, 0, 0);
-      if (next <= now) next.setDate(next.getDate() + 1);
-      const delay = next - now;
-
-      const armNext = () => {
-        // fire today
-        try { showDailyNotification(); } catch(_) {}
-        // mark the date we fired to avoid double-sending on reloads
-        localStorage.setItem(NOTIF_LAST_DATE_KEY, formatYMD(new Date()));
-        // schedule tomorrow
-        setTimeout(armNext, 24 * 60 * 60 * 1000);
-      };
-
-      setTimeout(armNext, delay);
-      localStorage.setItem(NOTIF_SCHEDULED_KEY, '1');
-    }
-
-    function formatYMD(d) {
-      const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,'0');
-      const day = String(d.getDate()).padStart(2,'0');
-      return `${y}-${m}-${day}`;
-    }
-
-    function showDailyNotification() {
-      if (!permissionGranted()) return;
-      // Use the currently selected quote/nickname (ensures the message matches what's on screen)
-      const state = JSON.parse(localStorage.getItem(DISPLAY_STATE_KEY));
-      const nickname = state ? nicknames[state.nicknameIndex] : 'min elskede';
-      const quote = state ? quotes[state.quoteIndex] : 'Dagens citat er klar 💖';
-
-      const title = 'For My Love';
-      const body = `🌅 Godmorgen, ${nickname}! Dagens citat venter.\n— ${quote}`;
-      // Show a native notification. Most browsers will display even if tab isn’t foreground,
-      // as long as the page process is alive.
-      try {
-        new Notification(title, { body });
-      } catch (e) {
-        // Some browsers require the page to be visible to show Notification(); we just no-op if blocked.
-        console.warn('Notification show failed:', e);
-      }
-    }
-
-    // If user opens the page *after* 08:00, optionally fire once that day (polite catch-up)
-    function maybeNotifyIfMissed(hour = 8, minute = 0) {
-      if (!permissionGranted()) return;
-      const now = new Date();
-      const pastTarget = (now.getHours() > hour) || (now.getHours() === hour && now.getMinutes() >= minute);
-      const today = formatYMD(now);
-      const last = localStorage.getItem(NOTIF_LAST_DATE_KEY);
-      if (pastTarget && last !== today) {
-        showDailyNotification();
-        localStorage.setItem(NOTIF_LAST_DATE_KEY, today);
-      }
-    }
-
-    // Wire up the UI button
-    document.addEventListener('DOMContentLoaded', () => {
-      showQuoteAndNickname();
-
-      const btn = document.getElementById('enable-notifs');
-      const footer = document.getElementById('notif-footer');
-
-      const refreshUI = () => {
-        if (!notificationsSupported()) {
-          btn.textContent = 'Notifications not supported';
-          btn.disabled = true;
-          footer.textContent = '🔔 Din browser understøtter ikke notifikationer.';
-          return;
-        }
-        if (permissionGranted()) {
-          btn.textContent = 'Notifications enabled ✅';
-          btn.disabled = true;
-          footer.textContent = '🔔 Notifikationer er aktiveret. Husk: siden skal være åben for at modtage dem.';
-          
-          // Enable to test notifications on demand
-          // Remember to comment out scheduleDailyNotification below when testing, and vice versa
-          const now = new Date();
-          now.setMinutes(now.getMinutes() + 2);
-          scheduleDailyNotification(now.getHours(), now.getMinutes());
-
-          // Ensure scheduling is armed
-          //scheduleDailyNotification(10, 0);
-          // Catch-up if opened after 10:00
-          maybeNotifyIfMissed(10, 0);
-        } else {
-          btn.textContent = 'Enable Notifications 🔔';
-          btn.disabled = false;
-          footer.textContent = '🔔 For at modtage notifikationer skal siden forblive åben i din browser.';
-        }
-      };
-
-      btn.addEventListener('click', async () => {
-        try {
-          await requestNotificationPermission();
-          refreshUI();
-        } catch (e) {
-          alert('Kunne ikke aktivere notifikationer: ' + e.message);
-        }
-      });
-
-      // If the user already granted earlier, update immediately
-      refreshUI();
-
-      // Optional: if the tab regains focus, re-check (Android sometimes resets)
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) refreshUI();
-      });
+    const weights = array.map((_, i) => {
+      const count = usageMap[i] || 0;
+      return count >= maxUses ? 0 : 1 / (1 + count);
     });
+
+    const total = weights.reduce((sum, w) => sum + w, 0);
+    const cumulative = [];
+    let running = 0;
+    for (let i = 0; i < weights.length; i++) {
+      running += weights[i] / total;
+      cumulative.push(running);
+    }
+
+    const rand = Math.random();
+    const index = cumulative.findIndex(c => rand <= c);
+
+    usageMap[index] = (usageMap[index] || 0) + 1;
+    localStorage.setItem(usageKey, JSON.stringify(usageMap));
+
+    return index;
+  }
+
+  function showQuoteAndNickname(forceRefresh = false) {
+    const now = Date.now();
+    const stored = JSON.parse(localStorage.getItem(DISPLAY_STATE_KEY));
+
+    if (
+      stored &&
+      !forceRefresh &&
+      stored.timestamp &&
+      now - stored.timestamp < TWENTY_HOURS_MS
+    ) {
+      // Show saved quote & nickname
+      renderDisplay(stored.nicknameIndex, stored.quoteIndex);
+    } else {
+      // Generate new
+      const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
+      const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
+
+      const newState = {
+        quoteIndex,
+        nicknameIndex,
+        timestamp: now,
+      };
+
+      localStorage.setItem(DISPLAY_STATE_KEY, JSON.stringify(newState));
+      renderDisplay(nicknameIndex, quoteIndex);
+    }
+  }
+
+  function renderDisplay(nicknameIndex, quoteIndex) {
+    const nickname = nicknames[nicknameIndex];
+    const quote = quotes[quoteIndex];
+    const nicknameEmoji = nicknameEmojis[nicknameIndex] || "💖";
+    const quoteEmoji = quoteEmojis[quoteIndex] || "✨";
+    const combinedEmoji = `${nicknameEmoji} ${quoteEmoji}`;
+
+    document.getElementById("quote").textContent = quote;
+    document.getElementById("nickname").textContent = "Til " + nickname;
+    document.getElementById("emoji-of-the-day").textContent = `${combinedEmoji}` + " 🌟";
+  }
+
+  function resetCounter() {
+    localStorage.removeItem(QUOTE_KEY);
+    localStorage.removeItem(NICKNAME_KEY);
+    localStorage.removeItem(DISPLAY_STATE_KEY);
+    location.reload();
+  }
+    
+  showQuoteAndNickname();
   </script>
 </body>
 </html>
-<!DOCTYPE html>
