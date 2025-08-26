@@ -2,7 +2,7 @@ import { kv } from '@vercel/kv';
 
 // For testing leave "*" then lock to your exact GH Pages origin.
 //const ALLOW_ORIGIN = "*"; // e.g. "https://<username>.github.io/<repo>"
-const ALLOW_ORIGIN = 'https://jkfrydendahl.github.io/for-my-love-app';
+const ALLOW_ORIGIN = 'https://jkfrydendahl.github.io/';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN);
