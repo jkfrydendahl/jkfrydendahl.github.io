@@ -179,7 +179,37 @@
         function urlBase64ToUint8Array(s){const p='='.repeat((4-s.length%4)%4);const b=(s+p).replace(/-/g,'+').replace(/_/g,'/');const r=atob(b),a=new Uint8Array(r.length);for(let i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a;}
 
         async function enablePush(){
-            if (!('serviceWorker' in navigator) || !('PushManager' in window)) { alert('Push not supported'); return; }
+
+            function isIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+              function isStandalone(){ return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone; }
+
+              async function enablePush(){
+                if (!('serviceWorker' in navigator)) { alert('Service workers not supported'); return; }
+
+                if (isIOS() && !isStandalone()) {  // In Safari tab
+                  alert('På iPhone: Tilføj siden til hjemmeskærmen og åbn appen derfra for at aktivere push.');
+                  return;
+                }
+
+                // Ensure SW is ready in the PWA
+                const reg = await navigator.serviceWorker.register('./sw.js');
+                const perm = await Notification.requestPermission();
+                if (perm !== 'granted') { alert('Tillad notifikationer for at modtage push.'); return; }
+
+                // Use the registration’s pushManager; don’t rely on `PushManager` in window
+                const sub = await reg.pushManager.subscribe({
+                  userVisibleOnly: true,
+                  applicationServerKey: urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
+                });
+
+                await fetch(`${VERCEL_BACKEND}/api/subscribe`, {
+                  method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(sub)
+                });
+
+                alert('Push enabled 🎉');
+              }
+
+
             if (isIOS() && !isStandalone()) { alert('På iPhone: Tilføj til hjemmeskærmen og åbn appen derfra.'); return; }
             const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
             const perm = await Notification.requestPermission();
