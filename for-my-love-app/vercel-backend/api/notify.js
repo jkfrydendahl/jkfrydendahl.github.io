@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   if (req.headers.authorization !== `Bearer ${NOTIFY_TOKEN}`) return res.status(401).json({ error: 'Unauthorized' });
 
   const now = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Copenhagen',hour12:false,hour:'2-digit',minute:'2-digit'}).format(new Date());
-  const shouldSend = (req.query.force === '1') || (now === '08:00');
+  const shouldSend = (req.query.force === '1') || (now === '10:00');
   if (!shouldSend) return res.json({ ok: true, skippedAt: now });
 
   const payload = JSON.stringify({
