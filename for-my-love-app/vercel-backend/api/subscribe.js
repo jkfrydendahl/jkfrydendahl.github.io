@@ -14,6 +14,7 @@ export default async function handler(req, res) {
   const sub = req.body;
   if (!sub?.endpoint) return res.status(400).json({ error: 'Invalid subscription' });
 
-  await kv.hset('subs', { [sub.endpoint]: JSON.stringify(sub) });
+  // store as object
+  await kv.hset('subs', { [sub.endpoint]: sub });
   return res.status(201).json({ ok: true });
 }

@@ -25,17 +25,24 @@ export default async function handler(req, res) {
     url:   req.body?.url   || '/'
   });
 
-  const subs = await kv.hgetall('subs');
+  const subs = await kv.hgetall('subs'); // { endpoint: object OR string }
   let sent = 0, removed = 0; const errors = [];
-  if (subs) for (const [endpoint, json] of Object.entries(subs)) {
-    try {
-      await webpush.sendNotification(JSON.parse(json), payload);
-      sent++;
-    } catch (e) {
-      const code = e.statusCode || e.code || 0;
-      if (code === 404 || code === 410) { await kv.hdel('subs', endpoint); removed++; }
-      else { errors.push({ endpoint: endpoint.slice(0, 50) + '…', code, msg: e.message }); }
+
+  if (subs) {
+    for (const [endpoint, value] of Object.entries(subs)) {
+      // tolerate either storage shape
+      const sub = (typeof value === 'string') ? JSON.parse(value) : value;
+
+      try {
+        await webpush.sendNotification(sub, payload);
+        sent++;
+      } catch (e) {
+        const code = e.statusCode || e.code || 0;
+        if (code === 404 || code === 410) { await kv.hdel('subs', endpoint); removed++; }
+        else { errors.push({ endpoint: endpoint.slice(0, 50) + '…', code, msg: e.message }); }
+      }
     }
   }
-  res.json({ ok: true, sent, removed, errors });
+
+return res.json({ ok: true, sent, removed, errors });
 }
