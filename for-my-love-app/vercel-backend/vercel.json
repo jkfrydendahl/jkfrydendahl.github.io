@@ -1,8 +1,6 @@
 {
+  "version": 2,
   "crons": [
-    {
-      "path": "/api/notify?cron_key=@CRON_KEY",
-      "schedule": "*/5 * * * *"
-    }
+    { "path": "/api/notify", "schedule": "*/5 * * * *" }
   ]
 }
