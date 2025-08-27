@@ -1,4 +1,4 @@
-name: Push Notify
+name: love-app-push-notify
 
 on:
   # Manual trigger (with optional inputs)
@@ -6,7 +6,7 @@ on:
     inputs:
       title:
         description: Notification title
-        default: "Dagens citat 💖"
+        default: "💖 New Update 💖"
         required: false
       body:
         description: Optional body (leave empty for title-only)
