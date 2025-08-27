@@ -43,7 +43,8 @@ export default async function handler(req, res) {
   }
 
   const payload = JSON.stringify({
-    body:  req.body?.title  || '💖 Dit daglige citat og kælenavn er klar! 💖',
+    title: req.body?.title || '💖 New Update 💖',
+    body:  req.body?.body  || 'Your daily quote is ready!',
     url:   req.body?.url   || '/'
   });
 
