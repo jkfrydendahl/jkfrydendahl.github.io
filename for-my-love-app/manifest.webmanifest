@@ -7,5 +7,9 @@
   "display": "standalone",
   "background_color": "#ffe9ec",
   "theme_color": "#ff6b81",
-  "description": "Daily nickname + quote for my love 💖"
+  "description": "Daily nickname + quote for my love 💖",
+  "icons": [
+  { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+  { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+]
 }
