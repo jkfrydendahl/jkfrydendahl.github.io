@@ -22,10 +22,10 @@ on:
 
   # Schedule (UTC)
   schedule:
-    # - cron: "0 8 * * *"    # runs at 08:00 UTC = 10:00 CEST (summer in DK)
+     - cron: "0 8 * * *"    # runs at 08:00 UTC = 10:00 CEST (summer in DK)
     # - cron: "0 12 * * *" # example: 12:00 UTC = 14:00 CEST
     # TESTING: uncomment to run every 5 minutes
-     - cron: "*/5 * * * *"
+    # - cron: "*/5 * * * *"
 
 jobs:
   send:
@@ -38,7 +38,7 @@ jobs:
           BODY="${{ github.event.inputs.body }}"
           URL_IN="${{ github.event.inputs.url }}"
           # Defaults for scheduled runs (no inputs present)
-          : "${TITLE:=Dagens citat 💖}"
+          : "${TITLE:=💖 New Update 💖}"
           : "${URL_IN:=https://jkfrydendahl.github.io/for-my-love-app/}"
 
           # Build payload; include "body" only if provided (non-empty)
