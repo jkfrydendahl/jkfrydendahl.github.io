@@ -9,7 +9,7 @@ webpush.setVapidDetails('mailto:you@example.com', VAPID_PUBLIC, VAPID_PRIVATE);
 
 // ---- time gate config ----
 const TZ = 'Europe/Copenhagen';
-const TARGET_HOUR = 12;        // 12:00 local time
+const TARGET_HOUR = 13;        // 12:00 local time
 const WINDOW_MINUTES = 5;      // send if 12:00–12:04 (inclusive)
 
 // return { hour, minute, hmString }
