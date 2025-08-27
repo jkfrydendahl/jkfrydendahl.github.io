@@ -22,10 +22,10 @@ on:
 
   # Schedule (UTC)
   schedule:
-    - cron: "0 8 * * *"    # runs at 08:00 UTC = 10:00 CEST (summer in DK)
+    # - cron: "0 8 * * *"    # runs at 08:00 UTC = 10:00 CEST (summer in DK)
     # - cron: "0 12 * * *" # example: 12:00 UTC = 14:00 CEST
     # TESTING: uncomment to run every 5 minutes
-    # - cron: "*/5 * * * *"
+     - cron: "*/5 * * * *"
 
 jobs:
   send:
