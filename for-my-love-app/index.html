@@ -692,8 +692,8 @@
   </script>
 
     <script>
-      // === Daily-at-08:00 logic (slot-based) ===
-      const CUTOVER_HOUR =11, CUTOVER_MINUTE = 20;
+      // === Slot-based daily refresh logic ===
+      const CUTOVER_HOUR =11, CUTOVER_MINUTE = 30;
       const REFRESH_DISPLAY_STATE_KEY = "displayState-v2"; // bump key to ignore old 20h cache
     
       function getCutoverSlot(d = new Date()) {
