@@ -155,7 +155,7 @@
 
 <script>
     // bump this whenever you deploy code changes
-    const APP_VERSION = '25.8.1.6';
+    const APP_VERSION = '25.8.28.1';
     const prev = localStorage.getItem('app-version');
     if (prev !== APP_VERSION) {
       localStorage.setItem('app-version', APP_VERSION);
@@ -699,7 +699,7 @@
         return `${y}-${m}-${day}`;
       }
       // --- Daily local-time refresh (robust) ---
-      const CUTOVER_HOUR = 11, CUTOVER_MINUTE = 40; // <-- your target local time
+      const CUTOVER_HOUR = 8, CUTOVER_MINUTE = 0; // <-- your target local time
       const DAILY_STATE_KEY = `dailyDisplayState-${CUTOVER_HOUR}-${CUTOVER_MINUTE}-v1`;
 
       function getCutoverSlot(d = new Date()) {
