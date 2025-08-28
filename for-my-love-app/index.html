@@ -146,68 +146,6 @@
   </div>
 
   <script>
-      // === Daily-at-08:00 logic (slot-based) ===
-      const CUTOVER_HOUR = 8, CUTOVER_MINUTE = 0;
-      const DISPLAY_STATE_KEY = "displayState-v2"; // bump key to ignore old 20h cache
-    
-      function getCutoverSlot(d = new Date()) {
-        // Returns YYYY-MM-DD for the "day that started at 08:00 local"
-        const now = new Date(d);
-        const cut = new Date(now);
-        cut.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
-        const slotDate = (now < cut)
-          ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
-          : new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        return slotDate.toISOString().slice(0, 10); // "YYYY-MM-DD"
-      }
-    
-      function msUntilNextCutover(d = new Date()) {
-        const next = new Date(d);
-        next.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
-        if (next <= d) next.setDate(next.getDate() + 1);
-        return next - d;
-      }
-    
-      async function ensureDailyDisplay(forceNew = false) {
-        const slot = getCutoverSlot();
-        const saved = JSON.parse(localStorage.getItem(DISPLAY_STATE_KEY) || 'null');
-    
-        if (!saved || saved.slot !== slot || forceNew) {
-          // pick fresh items for today's slot
-          const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
-          const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
-          const state = { slot, quoteIndex, nicknameIndex, ts: Date.now() };
-          localStorage.setItem(DISPLAY_STATE_KEY, JSON.stringify(state));
-          renderDisplay(nicknameIndex, quoteIndex);
-        } else {
-          renderDisplay(saved.nicknameIndex, saved.quoteIndex);
-        }
-    
-        // If the app stays open, refresh at the next cutover
-        clearTimeout(window.__cutoverTimer);
-        window.__cutoverTimer = setTimeout(() => ensureDailyDisplay(true), msUntilNextCutover() + 1000);
-      }
-    
-      // Run on load
-      ensureDailyDisplay();
-    
-      // Also run whenever the app returns to foreground
-      window.addEventListener('visibilitychange', () => {
-        if (!document.hidden) ensureDailyDisplay();
-      }, { passive: true });
-      window.addEventListener('focus', () => ensureDailyDisplay(), { passive: true });
-      window.addEventListener('pageshow', () => ensureDailyDisplay(), { passive: true });
-    
-      // Optional: update your reset to clear the new key too
-      function resetCounter() {
-        localStorage.removeItem("quoteUsage-" + new Date().getFullYear());
-        localStorage.removeItem("nicknameUsage-" + new Date().getFullYear());
-        localStorage.removeItem(DISPLAY_STATE_KEY);
-        location.reload();
-      }
-  </script>
-
-  <script>
     window.addEventListener('DOMContentLoaded', () => {
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js', { scope: './' })
@@ -727,6 +665,68 @@
   }
     
   showQuoteAndNickname();
+  </script>
+
+    <script>
+      // === Daily-at-08:00 logic (slot-based) ===
+      const CUTOVER_HOUR = 8, CUTOVER_MINUTE = 0;
+      const REFRESH_DISPLAY_STATE_KEY = "displayState-v2"; // bump key to ignore old 20h cache
+    
+      function getCutoverSlot(d = new Date()) {
+        // Returns YYYY-MM-DD for the "day that started at 08:00 local"
+        const now = new Date(d);
+        const cut = new Date(now);
+        cut.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
+        const slotDate = (now < cut)
+          ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+          : new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        return slotDate.toISOString().slice(0, 10); // "YYYY-MM-DD"
+      }
+    
+      function msUntilNextCutover(d = new Date()) {
+        const next = new Date(d);
+        next.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
+        if (next <= d) next.setDate(next.getDate() + 1);
+        return next - d;
+      }
+    
+      async function ensureDailyDisplay(forceNew = false) {
+        const slot = getCutoverSlot();
+        const saved = JSON.parse(localStorage.getItem(REFRESH_DISPLAY_STATE_KEY) || 'null');
+    
+        if (!saved || saved.slot !== slot || forceNew) {
+          // pick fresh items for today's slot
+          const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
+          const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
+          const state = { slot, quoteIndex, nicknameIndex, ts: Date.now() };
+          localStorage.setItem(REFRESH_DISPLAY_STATE_KEY, JSON.stringify(state));
+          renderDisplay(nicknameIndex, quoteIndex);
+        } else {
+          renderDisplay(saved.nicknameIndex, saved.quoteIndex);
+        }
+    
+        // If the app stays open, refresh at the next cutover
+        clearTimeout(window.__cutoverTimer);
+        window.__cutoverTimer = setTimeout(() => ensureDailyDisplay(true), msUntilNextCutover() + 1000);
+      }
+    
+      // Run on load
+      ensureDailyDisplay();
+    
+      // Also run whenever the app returns to foreground
+      window.addEventListener('visibilitychange', () => {
+        if (!document.hidden) ensureDailyDisplay();
+      }, { passive: true });
+      window.addEventListener('focus', () => ensureDailyDisplay(), { passive: true });
+      window.addEventListener('pageshow', () => ensureDailyDisplay(), { passive: true });
+    
+      // Optional: update your reset to clear the new key too
+      function resetCounter() {
+        localStorage.removeItem("quoteUsage-" + new Date().getFullYear());
+        localStorage.removeItem("nicknameUsage-" + new Date().getFullYear());
+        localStorage.removeItem(REFRESH_DISPLAY_STATE_KEY);
+        location.reload();
+      }
   </script>
 </body>
 </html>
