@@ -155,7 +155,7 @@
 
 <script>
     // bump this whenever you deploy code changes
-    const APP_VERSION = '25.8.1.3';
+    const APP_VERSION = '25.8.1.4';
     const prev = localStorage.getItem('app-version');
     if (prev !== APP_VERSION) {
       localStorage.setItem('app-version', APP_VERSION);
@@ -691,65 +691,82 @@
   showQuoteAndNickname();
   </script>
 
-    <script>
-      // === Slot-based daily refresh logic ===
-      const CUTOVER_HOUR =11, CUTOVER_MINUTE = 30;
-      const REFRESH_DISPLAY_STATE_KEY = "displayState-v2"; // bump key to ignore old 20h cache
-    
+  <script>
+      // --- Daily local-time refresh (robust) ---
+      const CUTOVER_HOUR = 11, CUTOVER_MINUTE = 30; // <-- your target local time
+      const DAILY_STATE_KEY = `dailyDisplayState-${CUTOVER_HOUR}-${CUTOVER_MINUTE}-v1`;
+
       function getCutoverSlot(d = new Date()) {
+        // Returns "YYYY-MM-DD" for the day that starts at CUTOVER local time
         const now = new Date(d);
         const cut = new Date(now);
         cut.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
         const slotDate = (now < cut)
           ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
           : new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        return slotDate.toISOString().slice(0, 10); // "YYYY-MM-DD"
+        return slotDate.toISOString().slice(0,10);
       }
-    
+
       function msUntilNextCutover(d = new Date()) {
         const next = new Date(d);
         next.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
         if (next <= d) next.setDate(next.getDate() + 1);
         return next - d;
       }
-    
-      async function ensureDailyDisplay(forceNew = false) {
+
+      function ensureDailyDisplay(forceNew = false) {
         const slot = getCutoverSlot();
-        const saved = JSON.parse(localStorage.getItem(REFRESH_DISPLAY_STATE_KEY) || 'null');
-    
+        const saved = JSON.parse(localStorage.getItem(DAILY_STATE_KEY) || 'null');
+
         if (!saved || saved.slot !== slot || forceNew) {
-          // pick fresh items for today's slot
           const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
           const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
-          const state = { slot, quoteIndex, nicknameIndex, ts: Date.now() };
-          localStorage.setItem(REFRESH_DISPLAY_STATE_KEY, JSON.stringify(state));
+          localStorage.setItem(DAILY_STATE_KEY, JSON.stringify({ slot, quoteIndex, nicknameIndex, ts: Date.now() }));
           renderDisplay(nicknameIndex, quoteIndex);
         } else {
           renderDisplay(saved.nicknameIndex, saved.quoteIndex);
         }
-    
-        // If the app stays open, refresh at the next cutover
+
+        // schedule a precise flip while app stays open
         clearTimeout(window.__cutoverTimer);
-        window.__cutoverTimer = setTimeout(() => ensureDailyDisplay(true), msUntilNextCutover() + 1000);
+        const ms = msUntilNextCutover();
+        console.log(`Next cutover in ${(ms/60000).toFixed(2)} min`);
+        window.__cutoverTimer = setTimeout(() => {
+          console.log('Cutover timer fired');
+          ensureDailyDisplay(true);
+        }, ms + 1000);
       }
-    
-      // Run on load
+
+      // heartbeat: catch throttled timers / drift every 30s
+      function startHeartbeat() {
+        clearInterval(window.__dailyHeartbeat);
+        window.__dailyHeartbeat = setInterval(() => {
+          const slotNow = getCutoverSlot();
+          const saved = JSON.parse(localStorage.getItem(DAILY_STATE_KEY) || 'null');
+          if (!saved || saved.slot !== slotNow) {
+            console.log('Heartbeat detected new slot → refreshing');
+            ensureDailyDisplay(true);
+          }
+        }, 30 * 1000);
+      }
+
+      // run on load + on foreground/resume
       ensureDailyDisplay();
-    
-      // Also run whenever the app returns to foreground
-      window.addEventListener('visibilitychange', () => {
-        if (!document.hidden) ensureDailyDisplay();
-      }, { passive: true });
+      startHeartbeat();
+      window.addEventListener('visibilitychange', () => { if (!document.hidden) ensureDailyDisplay(); }, { passive: true });
       window.addEventListener('focus', () => ensureDailyDisplay(), { passive: true });
       window.addEventListener('pageshow', () => ensureDailyDisplay(), { passive: true });
-    
-      // Update your reset to clear the new key too
-      function resetCounter() {
-        localStorage.removeItem("quoteUsage-" + new Date().getFullYear());
-        localStorage.removeItem("nicknameUsage-" + new Date().getFullYear());
-        localStorage.removeItem(REFRESH_DISPLAY_STATE_KEY);
+
+      // (optional) reset helper: clears both old & new keys
+      window.resetCounter = function resetCounter() {
+        const y = new Date().getFullYear();
+        localStorage.removeItem("quoteUsage-" + y);
+        localStorage.removeItem("nicknameUsage-" + y);
+        localStorage.removeItem("displayState"); // legacy
+        localStorage.removeItem(DAILY_STATE_KEY);
         location.reload();
-      }
+      };
   </script>
+
 </body>
 </html>
