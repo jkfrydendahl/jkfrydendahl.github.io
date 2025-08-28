@@ -132,6 +132,13 @@
         font-size: 0.75rem;
       }
     }
+
+    #app-version {
+      margin-top: 2rem;
+      font-size: 0.6rem;
+      color: #9aa0a6; /* subtle gray */
+      user-select: text;
+    }
   </style>
 </head>
 <body>
@@ -143,6 +150,7 @@
     <div class="nickname" id="nickname">N/A</div>
     <div class="quote" id="quote">Loading...</div>
     <div id="emoji-of-the-day" style="font-size: 2em; margin-top: 1em;"></div>
+    <div id="app-version"></div>
   </div>
 
 <script>
@@ -163,6 +171,10 @@
         navigator.serviceWorker.register('./sw.js', { scope: './' })
           .then(r => console.log('SW registered with scope:', r.scope))
           .catch(console.error);
+      }
+      const vel = document.getElementById('app-version');
+      if (vel && typeof APP_VERSION !== 'undefined') {
+        vel.textContent = `APP VERSION ${APP_VERSION}`;
       }
     });
 </script>
