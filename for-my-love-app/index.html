@@ -155,7 +155,7 @@
 
 <script>
     // bump this whenever you deploy code changes
-    const APP_VERSION = '25.8.1.1';
+    const APP_VERSION = '25.8.1.2';
     const prev = localStorage.getItem('app-version');
     if (prev !== APP_VERSION) {
       localStorage.setItem('app-version', APP_VERSION);
@@ -693,11 +693,10 @@
 
     <script>
       // === Daily-at-08:00 logic (slot-based) ===
-      const CUTOVER_HOUR = 8, CUTOVER_MINUTE = 0;
+      const CUTOVER_HOUR =11, CUTOVER_MINUTE = 20;
       const REFRESH_DISPLAY_STATE_KEY = "displayState-v2"; // bump key to ignore old 20h cache
     
       function getCutoverSlot(d = new Date()) {
-        // Returns YYYY-MM-DD for the "day that started at 08:00 local"
         const now = new Date(d);
         const cut = new Date(now);
         cut.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
