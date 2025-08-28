@@ -155,7 +155,7 @@
 
 <script>
     // bump this whenever you deploy code changes
-    const APP_VERSION = '25.8.1.5';
+    const APP_VERSION = '25.8.1.6';
     const prev = localStorage.getItem('app-version');
     if (prev !== APP_VERSION) {
       localStorage.setItem('app-version', APP_VERSION);
@@ -692,19 +692,24 @@
   </script>
 
   <script>
+      function ymdLocal(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
       // --- Daily local-time refresh (robust) ---
-      const CUTOVER_HOUR = 11, CUTOVER_MINUTE = 33; // <-- your target local time
+      const CUTOVER_HOUR = 11, CUTOVER_MINUTE = 40; // <-- your target local time
       const DAILY_STATE_KEY = `dailyDisplayState-${CUTOVER_HOUR}-${CUTOVER_MINUTE}-v1`;
 
       function getCutoverSlot(d = new Date()) {
-        // Returns "YYYY-MM-DD" for the day that starts at CUTOVER local time
         const now = new Date(d);
         const cut = new Date(now);
         cut.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
         const slotDate = (now < cut)
           ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
           : new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        return slotDate.toISOString().slice(0,10);
+        return ymdLocal(slotDate);               // <-- local date string
       }
 
       function msUntilNextCutover(d = new Date()) {
