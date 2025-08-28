@@ -154,6 +154,7 @@
       // Bust any cached bfcache instance and reload fresh
       location.replace(location.pathname + location.search + (location.search ? '&' : '?') + 'v=' + APP_VERSION);
     }
+    console.log('Web app launched with version:', APP_VERSION);
 </script>
 
 <script>
@@ -731,7 +732,7 @@
       window.addEventListener('focus', () => ensureDailyDisplay(), { passive: true });
       window.addEventListener('pageshow', () => ensureDailyDisplay(), { passive: true });
     
-      // Optional: update your reset to clear the new key too
+      // Update your reset to clear the new key too
       function resetCounter() {
         localStorage.removeItem("quoteUsage-" + new Date().getFullYear());
         localStorage.removeItem("nicknameUsage-" + new Date().getFullYear());
