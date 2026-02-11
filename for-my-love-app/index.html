@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <title>For My Love</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text x='52%' y='60%' font-size='34' text-anchor='middle' dominant-baseline='middle'>❤️</text></svg>">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-heart-180.png">
+
+
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#ff6b81">
+
   <style>
     :root {
       --primary: #ff6b81;
@@ -71,17 +78,40 @@
       transition: all 0.2s ease-in-out;
       backdrop-filter: blur(4px);
     }
+        .reset-button:hover {
+          background: rgba(255, 107, 129, 0.2);
+          color: #d43d56;
+          box-shadow: 0 2px 6px rgba(255, 107, 129, 0.3);
+        }
 
-    .reset-button:hover {
-      background: rgba(255, 107, 129, 0.2);
-      color: #d43d56;
-      box-shadow: 0 2px 6px rgba(255, 107, 129, 0.3);
+    .notif-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(255, 107, 129, 0.1);
+      border: none;
+      color: var(--primary);
+      padding: 0.4rem 0.9rem;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      backdrop-filter: blur(4px);
     }
+        .notif-button:hover {
+          background: rgba(255, 107, 129, 0.2);
+          color: #d43d56;
+          box-shadow: 0 2px 6px rgba(255, 107, 129, 0.3);
+        }
 
     @media (max-width: 480px) {
       .container {
         padding: 1.5rem;
         border-radius: 1rem;
+      }
+
+      .main-title {
+        margin-top: 30px;
       }
 
       .quote {
@@ -96,18 +126,115 @@
         padding: 0.3rem 0.7rem;
         font-size: 0.75rem;
       }
+
+      .notif-button {
+        padding: 0.3rem 0.7rem;
+        font-size: 0.75rem;
+      }
+    }
+
+    #app-version {
+      margin-top: 2rem;
+      font-size: 0.6rem;
+      color: #9aa0a6; /* subtle gray */
+      user-select: text;
     }
   </style>
 </head>
 <body>
 <div class="container">
-    <button class="reset-button" onclick="resetCounter()">Reset</button>
-    <h1>Dagens Citat</h1>
+    <button class="notif-button" id="enable-push" style="left:1rem;">Enable Push 🔔</button>
+    <button class="reset-button" onclick="resetCounter()">Get Another 💕</button>
+    <h1 class="main-title">Dagens Citat</h1>
     <br>
-    <div class="nickname" id="nickname"></div>
+    <div class="nickname" id="nickname">N/A</div>
     <div class="quote" id="quote">Loading...</div>
+    <div id="emoji-of-the-day" style="font-size: 2em; margin-top: 1em;"></div>
+    <div id="app-version"></div>
   </div>
 
+<script>
+    // bump this whenever you deploy code changes
+    const APP_VERSION = '25.8.28.1';
+    const prev = localStorage.getItem('app-version');
+    if (prev !== APP_VERSION) {
+      localStorage.setItem('app-version', APP_VERSION);
+      // Bust any cached bfcache instance and reload fresh
+      location.replace(location.pathname + location.search + (location.search ? '&' : '?') + 'v=' + APP_VERSION);
+    }
+    console.log('Web app launched with version:', APP_VERSION);
+</script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js', { scope: './' })
+          .then(r => console.log('SW registered with scope:', r.scope))
+          .catch(console.error);
+      }
+      const vel = document.getElementById('app-version');
+      if (vel && typeof APP_VERSION !== 'undefined') {
+        vel.textContent = `APP VERSION ${APP_VERSION}`;
+      }
+    });
+</script>
+
+<script>
+        const VERCEL_BACKEND = 'https://for-my-love-app.vercel.app';
+        const PUBLIC_VAPID_KEY = 'BOsuQtHamndZH8ZUivuNCyZhoiBzx_n7SGbf0wwm0yIxQi0tTnk1Idb4Du9qDOgFeiRKD_-ZROf8iIchAUNJy5E';
+
+        function isIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+        function isStandalone(){ return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone; }
+        function urlBase64ToUint8Array(s){const p='='.repeat((4-s.length%4)%4);const b=(s+p).replace(/-/g,'+').replace(/_/g,'/');const r=atob(b),a=new Uint8Array(r.length);for(let i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a;}
+
+        async function enablePushVerbose() {
+          try {
+            if (!('serviceWorker' in navigator)) throw new Error('ServiceWorker not supported');
+            if (isIOS() && !isStandalone()) throw new Error('Install to Home Screen first');
+
+            // Confirm the file exists (quick network sanity check)
+            const probe = await fetch('./sw.js', { cache: 'no-store' });
+            console.log('sw.js status:', probe.status, probe.url);
+            if (!probe.ok) throw new Error('sw.js not reachable (' + probe.status + ')');
+
+            // Register + ensure activated
+            const reg = await navigator.serviceWorker.register('./sw.js');
+            await navigator.serviceWorker.ready;
+            await reg.update(); // pull fresh code if cached
+
+            // Ask permission
+            const perm = await Notification.requestPermission();
+            if (perm !== 'granted') throw new Error('Permission not granted');
+
+            // VAPID key sanity check (should be 65 bytes)
+            const keyBytes = urlBase64ToUint8Array(PUBLIC_VAPID_KEY);
+            console.log('VAPID key length:', keyBytes.length);
+            if (keyBytes.length < 65) throw new Error('Bad VAPID public key');
+
+            // Subscribe
+            const sub = await reg.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: keyBytes
+            });
+            console.log('Subscribed endpoint:', sub.endpoint);
+
+            // Send to backend
+            const resp = await fetch(`${VERCEL_BACKEND}/api/subscribe`, {
+              method: 'POST', headers: { 'Content-Type':'application/json' },
+              body: JSON.stringify(sub)
+            });
+            console.log('subscribe status:', resp.status);
+            if (!resp.ok) throw new Error('Subscribe API failed: ' + resp.status);
+
+            alert('Push enabled 🎉');
+          } catch (err) {
+            console.error('enablePush failed:', err, err?.name, err?.message);
+            alert('Push failed: ' + (err?.message || err));
+          }
+        }
+        document.getElementById('enable-push').addEventListener('click', enablePushVerbose);
+</script>
+  
   <script>
     const quotes = [
         "Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray. – Rumi",
@@ -305,7 +432,8 @@
         "The world wasn’t made for people like us. But we’re the ones who remake it. – Temple Grandin",
         "Not all those who wander are lost. Some just have ADHD. – Unknown",
         "Just because I move fast doesn’t mean I’m out of control. – Rick Green",
-        "Normal is a setting on a washing machine. That’s it. – Patsy Clairmont"
+        "Normal is a setting on a washing machine. That’s it. – Patsy Clairmont",
+        "Failure is just another way to learn how to do something right. – Marian W. Edelman"
         ];
 
     const nicknames = [
@@ -329,6 +457,7 @@
         "min Solbregne",
         "mit Solbær",
         "min Sjælesang",
+        //---
         "min Dugrose",
         "min Belle",
         "mit Opalhjerte",
@@ -349,6 +478,7 @@
         "min Ledestjerne",
         "min Morgensol",
         "min Vinterglød",
+        //---
         "min Lysrose",
         "min Tågedanser",
         "min Ravsjæl",
@@ -357,18 +487,20 @@
         "min Sølvflamme",
         "min Hjertedrøm",
         "min Sangfugl",
+        //---
         "mit Enebær",
         "min Himmelrose",
         "min Glimmerfugl",
         "min Solbrise",
-        "min Natlysengel",
+        "min Lysengel",
         "min Birkeblomst",
         "min Hjertehvisker",
         "min Fabelrose",
         "mit Himmelkys",
         "min Månefugl",
         "min Ildblomst",
-        "min Tinderdue",
+        //---
+        "min Svane",
         "min Fyrfryd",
         "min Sommerfugl",
         "mit Hjerte",
@@ -433,52 +565,213 @@
         "min Lysflamme",
         "min Månerose",
         "min Håbsfugl",
-        "min Regndanser"
+        "min Regndanser",
+        //---
+        "min Skat",
+        "min Kaos-fe",
+        "min Jagtgudinde",
+        "min Vølve",
+        "min Dragedronning"
+    ];
+
+    const nicknameEmojis = [
+      "🔥", "💃🏻", "🌸", "🌕", "🛡️", "🐺", "🪽", "🎶", "🌌", "✨", "🌺", "🎨", "💡", "🏖️", "💃", "💞", "☀️", "🌿", "🫐", "🎵",
+      "🌹", "🌷", "💜", "👼", "🌈", "🌙", "🌞", "💧", "💋", "🌹", "🌼", "🪶", "🌼", "🐉", "🐦‍🔥", "❤️‍🔥", "👑", "⭐", "🌅", "❄️",
+      "🌻", "🩵", "🧡", "❄️", "🍃", "🔥", "💗", "🐦",
+      "🌿", "💫", "🦜", "😎", "🕯️", "🌸", "💞", "❤️", "💋", "🕊️", "🔥",
+      "🦢", "🧡", "🦋", "❤️", "💧", "🌺", "🎤", "🪨", "🌈", "❄️", "🍎", "🌿", "🖤", "❤️", "✨", "💛", "💙", "🥰", "🌲", "🌤️", "✨",
+      "🌙", "🕊️", "💋", "🌟", "🌹", "🧝‍♀️", "💭", "🌇", "🩷", "⚪", "🌟", "💓", "💎", "🌺", "🧚", "🌠", "❄️", "🌹", "🧝", "✨", "🌞", "🌑",
+      "🤍","🌌","❄️","💋","💧","🌹","🌱","🌙","☀️","🕯️", "🧡", "🌼", "💫", "❄️", "🌸", "🎵", "💖", "💋", "🌺", "🔥", "🌹", "🕊️", "🌧️",
+      "🍀", "🦄", "🐺", "🕯️", "👑"
+    ];
+
+    const quoteEmojis = [
+      "🧲", "🌈", "🎁", "⏳", "🎯", "🪞", "☀️", "👂", "💓", "👀",
+      "🎵", "📝", "🤍", "✨", "🚧", "🌀", "🎓", "📖", "🎨", "💪",
+      "⚖️", "🗓️", "♾️", "🧘", "☮️", "🔥", "🎢", "❤️", "💞", "🌀",
+      "🎻", "🙃", "🏁", "🍫", "🤝", "🧠", "🌍", "🧭", "🌿", "🧠",
+      "💪", "🔄", "⚡️", "🎯", "💪", "🔨", "🏆", "🧱", "☀️", "⛅",
+      "👊", "🎯", "🌈", "🛣️", "⏳", "🎂", "🛠️", "⏰", "🪙", "🏁",
+      "🎯", "🦁", "🤫", "🧠", "💪", "🔥", "📉", "🏃", "🔓", "✊",
+      "🌻", "🧗", "🧊", "🏀", "🧮", "🌈", "🧘", "🧭", "🥊", "⚖️",
+      "🐘", "🔇", "🌪️", "⚖️", "🔓", "🧠", "👣", "💚", "🌤️", "✔️",
+      "🏹", "🫀", "🌅", "🌙", "🌲", "🍄", "🏞️", "🌌", "👣", "🌻",
+      "🌳", "🌿", "🌍", "🌲", "🌈", "🕊️", "🌀", "🌅", "🍃", "🌸",
+      "🌼", "🌻", "💗", "📚", "🧠", "🌀", "🌪️", "🌟", "🌌", "⚡️",
+      "🌋", "🌺", "🛤️", "💫", "🧭", "🎇", "🎨", "🎨", "🎯", "🧠",
+      "🧗", "📶", "🧠", "💎", "💓", "🏞️", "🎯", "🌄", "📍", "🎯",
+      "🌟", "🎭", "🔑", "🍀", "🌞", "🌱", "🚧", "📦", "🏁", "🐛",
+      "🎯", "🐘", "🎭", "🌿", "🗣️", "⛵", "🧠", "🎯", "⏳", "🪷",
+      "🤗", "🌱", "🌍", "🌲", "🧠", "🧠", "🎯", "🧠", "🧭", "🙌",
+      "✨", "🎯", "⚡", "🧭", "🌊", "🌱", "🪞", "💫", "🛤️", "🌻",
+      "🌍", "🗺️", "🌀", "🌠", "🎉"
     ];
 
     const year = new Date().getFullYear();
 
-    function getWeightedIndex(array, keyPrefix, maxUses = 3) {
-      const usageKey = `${keyPrefix}-${year}`;
-      const usageMap = JSON.parse(localStorage.getItem(usageKey)) || {};
+    const QUOTE_KEY = "quoteUsage-" + year;
+    const NICKNAME_KEY = "nicknameUsage-" + year;
+    const DISPLAY_STATE_KEY = "displayState";
 
-      const weights = array.map((_, i) => {
-        const count = usageMap[i] || 0;
-        return count >= maxUses ? 0 : 1 / (1 + count);
-      });
+  const TWENTY_HOURS_MS = 20 * 60 * 60 * 1000;
 
-      const total = weights.reduce((sum, w) => sum + w, 0);
-      const cumulative = [];
-      let running = 0;
-      for (let i = 0; i < weights.length; i++) {
-        running += weights[i] / total;
-        cumulative.push(running);
-      }
+  function getWeightedIndex(array, keyPrefix, maxUses = 3) {
+    const usageKey = `${keyPrefix}-${year}`;
+    const usageMap = JSON.parse(localStorage.getItem(usageKey)) || {};
 
-      const rand = Math.random();
-      const index = cumulative.findIndex(c => rand <= c);
+    const weights = array.map((_, i) => {
+      const count = usageMap[i] || 0;
+      return count >= maxUses ? 0 : 1 / (1 + count);
+    });
 
-      usageMap[index] = (usageMap[index] || 0) + 1;
-      localStorage.setItem(usageKey, JSON.stringify(usageMap));
-
-      return index;
+    const total = weights.reduce((sum, w) => sum + w, 0);
+    const cumulative = [];
+    let running = 0;
+    for (let i = 0; i < weights.length; i++) {
+      running += weights[i] / total;
+      cumulative.push(running);
     }
 
-    function showQuoteAndNickname() {
+    const rand = Math.random();
+    const index = cumulative.findIndex(c => rand <= c);
+
+    usageMap[index] = (usageMap[index] || 0) + 1;
+    localStorage.setItem(usageKey, JSON.stringify(usageMap));
+
+    return index;
+  }
+
+  function showQuoteAndNickname(forceRefresh = false) {
+    const now = Date.now();
+    const stored = JSON.parse(localStorage.getItem(DISPLAY_STATE_KEY));
+
+    if (
+      stored &&
+      !forceRefresh &&
+      stored.timestamp &&
+      now - stored.timestamp < TWENTY_HOURS_MS
+    ) {
+      // Show saved quote & nickname
+      renderDisplay(stored.nicknameIndex, stored.quoteIndex);
+    } else {
+      // Generate new
       const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
       const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
 
-      document.getElementById("quote").textContent = quotes[quoteIndex];
-      document.getElementById("nickname").textContent = "Til " + nicknames[nicknameIndex];
-    }
+      const newState = {
+        quoteIndex,
+        nicknameIndex,
+        timestamp: now,
+      };
 
-    function resetCounters() {
-      localStorage.removeItem(`quoteUsage-${year}`);
-      localStorage.removeItem(`nicknameUsage-${year}`);
-      location.reload();
+      localStorage.setItem(DISPLAY_STATE_KEY, JSON.stringify(newState));
+      renderDisplay(nicknameIndex, quoteIndex);
     }
+  }
 
-    showQuoteAndNickname();
+  function renderDisplay(nicknameIndex, quoteIndex) {
+    const nickname = nicknames[nicknameIndex];
+    const quote = quotes[quoteIndex];
+    const nicknameEmoji = nicknameEmojis[nicknameIndex] || "💖";
+    const quoteEmoji = quoteEmojis[quoteIndex] || "✨";
+    const combinedEmoji = `${nicknameEmoji} ${quoteEmoji}`;
+
+    document.getElementById("quote").textContent = quote;
+    document.getElementById("nickname").textContent = "Til " + nickname;
+    document.getElementById("emoji-of-the-day").textContent = `${combinedEmoji}` + " 🌟";
+  }
+
+  function resetCounter() {
+    localStorage.removeItem(QUOTE_KEY);
+    localStorage.removeItem(NICKNAME_KEY);
+    localStorage.removeItem(DISPLAY_STATE_KEY);
+    location.reload();
+  }
+    
+  showQuoteAndNickname();
   </script>
+
+  <script>
+      function ymdLocal(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
+      // --- Daily local-time refresh (robust) ---
+      const CUTOVER_HOUR = 8, CUTOVER_MINUTE = 0; // <-- your target local time
+      const DAILY_STATE_KEY = `dailyDisplayState-${CUTOVER_HOUR}-${CUTOVER_MINUTE}-v1`;
+
+      function getCutoverSlot(d = new Date()) {
+        const now = new Date(d);
+        const cut = new Date(now);
+        cut.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
+        const slotDate = (now < cut)
+          ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+          : new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        return ymdLocal(slotDate);               // <-- local date string
+      }
+
+      function msUntilNextCutover(d = new Date()) {
+        const next = new Date(d);
+        next.setHours(CUTOVER_HOUR, CUTOVER_MINUTE, 0, 0);
+        if (next <= d) next.setDate(next.getDate() + 1);
+        return next - d;
+      }
+
+      function ensureDailyDisplay(forceNew = false) {
+        const slot = getCutoverSlot();
+        const saved = JSON.parse(localStorage.getItem(DAILY_STATE_KEY) || 'null');
+
+        if (!saved || saved.slot !== slot || forceNew) {
+          const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
+          const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
+          localStorage.setItem(DAILY_STATE_KEY, JSON.stringify({ slot, quoteIndex, nicknameIndex, ts: Date.now() }));
+          renderDisplay(nicknameIndex, quoteIndex);
+        } else {
+          renderDisplay(saved.nicknameIndex, saved.quoteIndex);
+        }
+
+        // schedule a precise flip while app stays open
+        clearTimeout(window.__cutoverTimer);
+        const ms = msUntilNextCutover();
+        console.log(`Next cutover in ${(ms/60000).toFixed(2)} min`);
+        window.__cutoverTimer = setTimeout(() => {
+          console.log('Cutover timer fired');
+          ensureDailyDisplay(true);
+        }, ms + 1000);
+      }
+
+      // heartbeat: catch throttled timers / drift every 30s
+      function startHeartbeat() {
+        clearInterval(window.__dailyHeartbeat);
+        window.__dailyHeartbeat = setInterval(() => {
+          const slotNow = getCutoverSlot();
+          const saved = JSON.parse(localStorage.getItem(DAILY_STATE_KEY) || 'null');
+          if (!saved || saved.slot !== slotNow) {
+            console.log('Heartbeat detected new slot → refreshing');
+            ensureDailyDisplay(true);
+          }
+        }, 30 * 1000);
+      }
+
+      // run on load + on foreground/resume
+      ensureDailyDisplay();
+      startHeartbeat();
+      window.addEventListener('visibilitychange', () => { if (!document.hidden) ensureDailyDisplay(); }, { passive: true });
+      window.addEventListener('focus', () => ensureDailyDisplay(), { passive: true });
+      window.addEventListener('pageshow', () => ensureDailyDisplay(), { passive: true });
+
+      // (optional) reset helper: clears both old & new keys
+      window.resetCounter = function resetCounter() {
+        const y = new Date().getFullYear();
+        localStorage.removeItem("quoteUsage-" + y);
+        localStorage.removeItem("nicknameUsage-" + y);
+        localStorage.removeItem("displayState"); // legacy
+        localStorage.removeItem(DAILY_STATE_KEY);
+        location.reload();
+      };
+  </script>
+
 </body>
 </html>

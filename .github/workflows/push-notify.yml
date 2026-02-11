@@ -1,0 +1,72 @@
+name: love-app-push-notify
+#------------------------#
+on:
+  # Manual trigger (with optional inputs)
+  workflow_dispatch:
+    inputs:
+      title:
+        description: Notification title
+        default: "💖 New Update 💖"
+        required: false
+      body:
+        description: Optional body (leave empty for title-only)
+        required: false
+      url:
+        description: Open URL
+        default: "https://jkfrydendahl.github.io/for-my-love-app/"
+        required: false
+      force:
+        description: Ignore time gate (?force=1)
+        type: boolean
+        default: true
+
+  # Schedule (UTC)
+  schedule:
+     - cron: "0 8 * * *"    # runs at 08:00 UTC = 10:00 CEST (summer in DK)
+    # - cron: "0 12 * * *" # example: 12:00 UTC = 14:00 CEST
+    # TESTING: uncomment to run every 5 minutes
+    # - cron: "*/5 * * * *"
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build JSON payload
+        id: payload
+        run: |
+          TITLE="${{ github.event.inputs.title }}"
+          BODY="${{ github.event.inputs.body }}"
+          URL_IN="${{ github.event.inputs.url }}"
+          # Defaults for scheduled runs (no inputs present)
+          : "${TITLE:=💖 New Update 💖}"
+          : "${URL_IN:=https://jkfrydendahl.github.io/for-my-love-app/}"
+
+          # Build payload; include "body" only if provided (non-empty)
+          if [ -n "$BODY" ]; then
+            jq -n --arg t "$TITLE" --arg u "$URL_IN" --arg b "$BODY" \
+              '{title:$t, url:$u, body:$b}' > payload.json
+          else
+            jq -n --arg t "$TITLE" --arg u "$URL_IN" \
+              '{title:$t, url:$u}' > payload.json
+          fi
+
+          echo "Payload:"
+          cat payload.json
+
+      - name: Call notify endpoint
+        run: |
+          URL="${{ secrets.VERCEL_NOTIFY_URL }}"
+          # For manual runs, optionally add ?force=1
+          FORCE="${{ github.event.inputs.force }}"
+          if [ "$FORCE" = "true" ]; then
+            URL="$URL?force=1"
+          fi
+
+          echo "POST $URL"
+          curl -sS -X POST "$URL" \
+            -H "Authorization: Bearer ${{ secrets.NOTIFY_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data-binary @payload.json | tee response.json
+
+          echo "---- Response ----"
+          cat response.json
