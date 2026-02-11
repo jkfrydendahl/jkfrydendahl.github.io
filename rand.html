@@ -113,17 +113,22 @@
 	.reset:hover {
 		background-color: #ff6a9e;
 	}
+	.dice-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 6px;
+		margin-top: 8px;
+	}
 	.dice-btn {
-		margin-top: 10px;
-		margin-right: 4px;
 		background-color: #00ffc3;
 		color: #000;
 		border: none;
-		padding: 10px 14px;
+		padding: 10px 0;
 		border-radius: 6px;
 		cursor: pointer;
 		font-family: 'Fira Code', monospace;
 		font-size: 13px;
+		text-align: center;
 	}
 	.dice-btn:hover {
 		background-color: #33ffd4;
@@ -160,6 +165,21 @@
 
 var numArray = {};
 
+function D2(min, max) {
+
+	numArray.randomNumbers = [];
+
+	min = 1;
+	max = 2;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");	
+	
+	for(var i=numInputval; i>0; i--) {
+		numArray.randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("result").innerHTML = numArray.randomNumbers
+	}
+}
 function D4(min, max) {
 
 	numArray.randomNumbers = [];
@@ -271,6 +291,15 @@ function D100(min, max) {
 
 var diceType = [];
 
+function DT2() {
+
+	let numInputval = document.getElementById('numInput').value;
+	
+	for(var i=numInputval; i>0; i--) {
+		diceType.push("D2");
+		document.getElementById("current").innerHTML = diceType
+	}
+}
 function DT4() {
 
 	let numInputval = document.getElementById('numInput').value;
@@ -337,6 +366,19 @@ function DT100() {
 
 var histNumbers = [];
 
+function H2(min, max) {
+
+	min = 1;
+	max = 2;
+	
+	let numInputval = document.getElementById('numInput').value;
+	let numInput = document.getElementById("numInput");
+	
+	for(var i=numInputval; i>0; i--) {
+		histNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+		document.getElementById("history").innerHTML = histNumbers
+	}
+}
 function H4(min, max) {
 
 	min = 1;
@@ -471,7 +513,8 @@ function clearDiv() {
 
 	<form>
 	<label>Dice Type</label>
-	<div>
+	<div class="dice-grid">
+	<input type="button" name="2" value="D2" onclick="D2();H2();countSum();histSum();DT2()" class="dice-btn"/>
 	<input type="button" name="4" value="D4" onclick="D4();H4();countSum();histSum();DT4()" class="dice-btn"/>
 	<input type="button" name="6" value="D6" onclick="D6();H6();countSum();histSum();DT6()" class="dice-btn"/>
 	<input type="button" name="8" value="D8" onclick="D8();H8();countSum();histSum();DT8()" class="dice-btn"/>
