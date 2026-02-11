@@ -1,55 +1,158 @@
-<html>
-<meta name="viewport" content="width=device-width, intial-scale=1, maximum-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Dice Roller</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+	body {
 		font-size: 14px;
 		font-family: 'Fira Code', monospace;
 		color: #e4e4e4;
 		touch-action: manipulation;
 		background-color: #0d0d0d;
+		max-width: 480px;
+		margin: 0 auto;
+		padding: 20px;
 	}
-	body {
-		max-width: 415px;
-		margin: 0;
+	h1 {
+		font-size: 1.6rem;
+		font-weight: 700;
+		color: #00ffc3;
+		margin-bottom: 6px;
+		letter-spacing: 1px;
+	}
+	h1 span {
+		color: #ff4081;
+	}
+	.subtitle {
+		font-size: 0.85rem;
+		color: #888;
+		margin-bottom: 24px;
+		border-bottom: 1px solid #222;
+		padding-bottom: 16px;
 	}
 	#wrapper {
-		max-height: 800px;
 		background-color: #0d0d0d;
 		color: #e4e4e4;
-		padding: 10px;
+	}
+	section {
+		margin-bottom: 20px;
+	}
+	section > label,
+	section > strong {
+		display: block;
+		margin-bottom: 6px;
+		color: #aaa;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
 	}
 	#history {
-		background-color: #fff;
-		color: #0d0d0d;
+		background-color: #1a1a2e;
+		color: #e4e4e4;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		border: 1px solid #333;
+		border-radius: 6px;
+		padding: 12px;
+		height: 44px;
+		font-size: 0.85rem;
 	}
 	#current {
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		background-color: #111;
+		border: 1px solid #222;
+		border-radius: 6px;
+		padding: 10px;
+		height: 40px;
+		font-size: 0.85rem;
+		color: #ccc;
 	}
-	#numInput {
-		color: #0d0d0d;
-		background-color: #fff;
-		border: #fff;
-		margin-top: 5px;
+	#sumhist {
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: #00ffc3;
+		border-bottom: 2px solid #00ffc3;
+		padding: 8px 0;
+		height: 34px;
 	}
-	#modifier {
-		color: #0d0d0d;
-		background-color: #fff;
-		border: #fff;
+	#numInput, #modifier {
+		color: #e4e4e4;
+		background-color: #1a1a2e;
+		border: 1px solid #333;
+		border-radius: 4px;
 		margin-top: 5px;
+		padding: 6px 8px;
+		font-family: 'Fira Code', monospace;
+		font-size: 14px;
+		width: 70px;
 	}
 	.reset {
-		color: #0d0d0d;
+		color: #000;
 		background-color: #ff4081;
 		border: none;
-		border-radius: 5%;
+		border-radius: 4px;
 		margin-left: 10px;
-		padding: 5px;
+		padding: 5px 10px;
+		cursor: pointer;
+		font-family: 'Fira Code', monospace;
+		font-size: 13px;
+	}
+	.reset:hover {
+		background-color: #ff6a9e;
+	}
+	.dice-btn {
+		margin-top: 10px;
+		margin-right: 4px;
+		background-color: #00ffc3;
+		color: #000;
+		border: none;
+		padding: 10px 14px;
+		border-radius: 6px;
+		cursor: pointer;
+		font-family: 'Fira Code', monospace;
+		font-size: 13px;
+	}
+	.dice-btn:hover {
+		background-color: #33ffd4;
+	}
+	.clear-btn {
+		margin-bottom: 24px;
+		background-color: #ff4081;
+		color: #000;
+		border: none;
+		padding: 10px 16px;
+		border-radius: 6px;
+		cursor: pointer;
+		font-family: 'Fira Code', monospace;
+		font-size: 13px;
+	}
+	.clear-btn:hover {
+		background-color: #ff6a9e;
+	}
+	form {
+		margin-bottom: 14px;
+	}
+	form label {
+		display: block;
+		margin-bottom: 4px;
+		margin-top: 10px;
+		color: #aaa;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
 	}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -361,44 +464,51 @@ function clearDiv() {
 
 <body>
 <div id="wrapper">
-	<input type ="button" name="clear" value="Clear results" onclick="clearDiv()" style="margin-bottom: 30px; background-color: #ff4081; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/><br>
+	<h1>Dice <span>Roller</span></h1>
+	<p class="subtitle">Pick your dice, set the amount, and roll.</p>
+
+	<input type="button" name="clear" value="Clear results" onclick="clearDiv()" class="clear-btn"/>
 
 	<form>
-	<label>Dice Type</label ><br>
-	<input type ="button" name="4" value="D4" onclick="D4();H4();countSum();histSum();DT4()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="6" value="D6" onclick="D6();H6();countSum();histSum();DT6()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="8" value="D8" onclick="D8();H8();countSum();histSum();DT8()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="10" value="D10" onclick="D10();H10();countSum();histSum();DT10()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="12" value="D12" onclick="D12();H12();countSum();histSum();DT12()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="20" value="D20" onclick="D20();H20();countSum();histSum();DT20()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<input type ="button" name="100" value="D100" onclick="D100();H100();countSum();histSum();DT100()" style="margin-top: 15px; background-color: #00ffc3; color: #0d0d0d; border: none; padding: 10px; border-radius: 5%;"/>
-	<p></p>
-	<label>Dice Amount</label><br>
-	<input type="number" id="numInput" value="1" name="numInput" style="padding: 5px;">
-	<input type="reset" value="Reset" class="reset">
-	</form>
-	<form>
-	<label>Modifier</label><br>
-		<input type="number" id="modifier" value="0" name="modifier" style="padding: 5px;">
-		<input type="reset" value="Reset" class="reset">
-	</form>
-
-	<!--<label><strong>Results</strong></label><br>-->
-	<div id="result" style="border: 1px solid white; width: 60%; min-height: 50px; padding: 5px; display: none;"></div>
-
-	<!--<label>Sum of results</label><br>-->
-	<div id ="summary" style="border-bottom: 3px solid white; width: 40%; min-height: 38px; padding: 5px; margin-bottom: 5px; display: none;"></div>
-
-	<label><i>Currently rolling</i></label>
-	<div id="current" style="min-height: 50px; padding: 5px;"></div>
-
-	<label><strong>Latest results</strong></label><br>
-	<div id="history" style="border: 1px solid white; width: 80%; min-height: 38px; padding: 10px; margin-bottom: 15px; margin-top:8px;">
+	<label>Dice Type</label>
+	<div>
+	<input type="button" name="4" value="D4" onclick="D4();H4();countSum();histSum();DT4()" class="dice-btn"/>
+	<input type="button" name="6" value="D6" onclick="D6();H6();countSum();histSum();DT6()" class="dice-btn"/>
+	<input type="button" name="8" value="D8" onclick="D8();H8();countSum();histSum();DT8()" class="dice-btn"/>
+	<input type="button" name="10" value="D10" onclick="D10();H10();countSum();histSum();DT10()" class="dice-btn"/>
+	<input type="button" name="12" value="D12" onclick="D12();H12();countSum();histSum();DT12()" class="dice-btn"/>
+	<input type="button" name="20" value="D20" onclick="D20();H20();countSum();histSum();DT20()" class="dice-btn"/>
+	<input type="button" name="100" value="D100" onclick="D100();H100();countSum();histSum();DT100()" class="dice-btn"/>
 	</div>
 
-	<label><i>Sum of latest results</i></label><br>
-	<div id ="sumhist" style="border-bottom: 2px solid white; width: 40%; min-height: 24px; padding: 5px; margin-bottom: 20px;"></div>
-	<br>
+	<label>Dice Amount</label>
+	<input type="number" id="numInput" value="1" name="numInput">
+	<input type="reset" value="Reset" class="reset">
+	</form>
+
+	<form>
+	<label>Modifier</label>
+	<input type="number" id="modifier" value="0" name="modifier">
+	<input type="reset" value="Reset" class="reset">
+	</form>
+
+	<div id="result" style="display: none;"></div>
+	<div id="summary" style="display: none;"></div>
+
+	<section>
+		<label>Currently rolling</label>
+		<div id="current"></div>
+	</section>
+
+	<section>
+		<label>Latest results</label>
+		<div id="history"></div>
+	</section>
+
+	<section>
+		<label>Sum of latest results</label>
+		<div id="sumhist"></div>
+	</section>
 </div>
 </body>
 </html>
