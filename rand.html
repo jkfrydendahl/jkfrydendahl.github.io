@@ -147,6 +147,50 @@
 	.clear-btn:hover {
 		background-color: #ff6a9e;
 	}
+	.top-bar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 24px;
+	}
+	.top-bar .clear-btn {
+		margin-bottom: 0;
+	}
+	.xp-counter {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.xp-counter label {
+		color: #aaa;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		margin-right: 2px;
+	}
+	.xp-btn {
+		background-color: #1a1a2e;
+		color: #e4e4e4;
+		border: 1px solid #333;
+		border-radius: 4px;
+		width: 28px;
+		height: 28px;
+		cursor: pointer;
+		font-family: 'Fira Code', monospace;
+		font-size: 14px;
+		text-align: center;
+		padding: 0;
+	}
+	.xp-btn:hover {
+		border-color: #00ffc3;
+		color: #00ffc3;
+	}
+	#xpCount {
+		color: #00ffc3;
+		font-size: 14px;
+		min-width: 20px;
+		text-align: center;
+	}
 	form {
 		margin-bottom: 14px;
 	}
@@ -502,6 +546,18 @@ function clearDiv() {
 	diceType = [];
 }
 
+var xp = 0;
+
+function xpAdd() {
+	xp++;
+	document.getElementById("xpCount").innerHTML = xp;
+}
+
+function xpSub() {
+	if (xp > 0) xp--;
+	document.getElementById("xpCount").innerHTML = xp;
+}
+
 </script>
 
 <body>
@@ -509,7 +565,15 @@ function clearDiv() {
 	<h1>Dice <span>Roller</span></h1>
 	<p class="subtitle">Pick your dice, set the amount, and roll.</p>
 
-	<input type="button" name="clear" value="Clear results" onclick="clearDiv()" class="clear-btn"/>
+	<div class="top-bar">
+		<input type="button" name="clear" value="Clear results" onclick="clearDiv()" class="clear-btn"/>
+		<div class="xp-counter">
+			<label>XP Beats</label>
+			<input type="button" value="-" onclick="xpSub()" class="xp-btn"/>
+			<span id="xpCount">0</span>
+			<input type="button" value="+" onclick="xpAdd()" class="xp-btn"/>
+		</div>
+	</div>
 
 	<form>
 	<label>Dice Type</label>
