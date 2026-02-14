@@ -6,5 +6,5 @@ Personal portfolio. Fun and work in equal measure. Give it a look!
 - Daily Electrician Joke (Danish): https://jkfrydendahl.github.io/rndel
 - Daily Love Quote (Danish/English): https://jkfrydendahl.github.io/for-my-love-app/
 - Guess a Fish Game (Danish): https://jkfrydendahl.github.io/rfish
-- Dice roller: https://jkfrydendahl.github.io/rand
 - RPG Character Designs: https://jkfrydendahl.github.io/character-gallery/
+- Dice roller: https://jkfrydendahl.github.io/rand
