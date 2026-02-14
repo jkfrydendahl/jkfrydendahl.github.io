@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Gallery - RPG Characters</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚔️ <span class="gradient-text">Character Gallery</span> ⚔️</h1>
+      <p class="subtitle">Heroes, Rogues and Wanderers of the Long Table</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-button active" onclick="switchTab('my-characters')">My Characters</button>
+      <button class="tab-button" onclick="switchTab('player-characters')">Player Characters</button>
+    </div>
+
+    <div id="my-characters" class="tab-content active">
+      <div class="character-grid">
+      
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Zenera.jpg" alt="Zenera Vas Equilar">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Zenera Vas Equilar</h2>
+          <p class="character-class">Wizard / Eladrin</p>
+          <p class="character-description">
+            Archmage of New Waterdeep, Scion of The Eternal Flame, Chosen of Corellon, Interdimensional Traveler.
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">Level 30</span>
+            <span class="stat-badge">Fall of Justice (DND 4e)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Ravix.png" alt="Ravix Stormborn">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Ravix Stormborn</h2>
+          <p class="character-class">Wizard Fighter (MC) / Air Genasi</p>
+          <p class="character-description">
+            Protector of Wedzyn, Student of The School of The Wind, Shade-Hunter.<br><br>
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">Level 8</span>
+            <span class="stat-badge">The Shadow War (DND 4e)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Gardain.png" alt="Gardain Dûraketh">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Gardain Dûraketh</h2>
+          <p class="character-class">Paladin / Dwarf</p>
+          <p class="character-description">
+            Harper Commander, Protector of Luruar, Tower Cleric of Eartheart, Champion of Light, Paladin of Moradin.
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">Level 30</span>
+            <span class="stat-badge">The Sundering (DND 4e)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Zathrax.png" alt="Zathrax">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Zathrax</h2>
+          <p class="character-class">Warlock / Tiefling</p>
+          <p class="character-description">
+            Redskin, Devil, Cursed One, Shadow's Vengeance, Champion of The Unseen. <br><br>
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">Level 24 †</span>
+            <span class="stat-badge">The Sundering (DND 4e)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Ilathnai.png" alt="Ilathnai Evanyia">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Ilathnai Evanyia</h2>
+          <p class="character-class">Invoker / Shardmind</p>
+          <p class="character-description">
+            Child of The Living Gate, Guardian of Faerun, Gatekeeper of Hestavar.<br><br>
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">Level 12 †</span>
+            <span class="stat-badge">The Sundering (DND 4e)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Aumund.png" alt="Aumund Merrion">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Aumund Merrion</h2>
+          <p class="character-class">Maester / Human</p>
+          <p class="character-description">
+            Grand Archivist of House Lyrion, Scholar of the Citadel, Sage of the Silver Mountain, Keeper of the Raven's Eye.
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">N/A</span>
+            <span class="stat-badge">Rain and Sand (ASoIaF)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Peter.png" alt="Peter Redmont">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Peter Redmont</h2>
+          <p class="character-class">Noble Lord / Human</p>
+          <p class="character-description">
+            Lord of House Redmont, Vassal of House Tyrell, Commander of the Red Legion.<br><br>
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">N/A †</span>
+            <span class="stat-badge">The Redmont Saga (ASoIaF)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Ventis.png" alt="Ventis Abn-Rai">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Ventis Abn-Rai</h2>
+          <p class="character-class">Monk / Air Genasi</p>
+          <p class="character-description">
+            Son of the Thundering Wind, Wayfinder of the Nephele Sage Monastery, Student of the Way of Balance.
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">Level 5</span>
+            <span class="stat-badge">ToA (DND 5e)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Claus.png" alt="Claus Bardwin">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Claus Bardwin</h2>
+          <p class="character-class">Technomancher / Dwarf</p>
+          <p class="character-description">
+            Digital Santa, Shadowrunner, Matrix Guide Extraordinnaire, Bardwin No. 2, Ghost-in-the-Machine.
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">N/A</span>
+            <span class="stat-badge">Kingmaker (Shadowrun 5e)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Arthur.png" alt="Arthur M. Pendrew">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Arthur M. Pendrew</h2>
+          <p class="character-class">Painter / Human</p>
+          <p class="character-description">
+            Extraordinary Artist, Master of the Macabre, Explorer of the Occult. <br><br> 
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">N/A †</span>
+            <span class="stat-badge">The Roads of Arkham (CoC)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/William.png" alt="William Cornwell">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">William Cornwell</h2>
+          <p class="character-class">War Veteran / Human</p>
+          <p class="character-description">
+            Discharged Soldier, Survivor of the Great War, Suicidal Alcoholic, Vagabond. <br><br> 
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">N/A †</span>
+            <span class="stat-badge">The Roads of Arkham (CoC)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Michael.png" alt="Michael Enslin">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Michael Enslin</h2>
+          <p class="character-class">Bachelor / Changeling</p>
+          <p class="character-description">
+            Gentleman Charmeur, College Dropout, Changeling of the Winter Court, The Tall Man, The Brownskin Killer.
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">N/A</span>
+            <span class="stat-badge">The Black Court (CoD)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Ulric.png" alt="Ulric Erynsson">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Ulric Erynsson</h2>
+          <p class="character-class">Scion of Thor / Demigod</p>
+          <p class="character-description">
+            Son of the Thunder-God, Scion of War, Guardian of the Sky, Wielder of Labrys, Champion of Liberty.
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">N/A</span>
+            <span class="stat-badge">Glass and Mirror (CoD)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Card - Duplicate and customize -->
+      <div class="character-card">
+        <div class="character-image">
+          <img src="images/Roland.png" alt="Roland Lethain">
+        </div>
+        <div class="character-info">
+          <h2 class="character-name">Roland Lethain</h2>
+          <p class="character-class">Gunslinger / Human</p>
+          <p class="character-description">
+            Sharshooter, Lone Wanderer, Bounty Hunter, The Red Hand of Justice, The Last Gunslinger of Gilraid.
+          </p>
+          <div class="character-stats">
+            <span class="stat-badge">N/A</span>
+            <span class="stat-badge">The Deadlands (SW)</span>
+          </div>
+        </div>
+      </div>
+      
+      </div>
+    </div>
+
+    <div id="player-characters" class="tab-content">
+      <div class="character-grid">
+        
+        <!-- Add player character cards here -->
+        
+      </div>
+    </div>
+
+    <footer>
+        <p>Copyright Jesper Frydendahl <script type="text/JavaScript"> document.write(new Date().getFullYear());</script></p>
+    </footer>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Remove active class from all buttons
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+      });
+      
+      // Show selected tab content
+      document.getElementById(tabId).classList.add('active');
+      
+      // Add active class to clicked button
+      event.currentTarget.classList.add('active');
+    }
+  </script>
+</body>
+</html>
