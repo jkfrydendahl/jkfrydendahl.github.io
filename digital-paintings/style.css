@@ -1,0 +1,183 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #0a0a0a;
+  color: #f5f5f5;
+  min-height: 100vh;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.top-nav {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.back-home {
+  color: #ea6645;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border: 1px solid #ea6645;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.back-home:hover {
+  background: #ea6645;
+  color: #fff;
+}
+
+header {
+  text-align: center;
+  padding: 60px 20px 40px;
+  margin-bottom: 60px;
+}
+
+header h1 {
+  font-size: clamp(1.75rem, 5vw, 3.5rem);
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+  color: #f5f5f5;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+}
+
+header h1 .gradient-text {
+  background: linear-gradient(180deg, #f0a27a 0%, #ea6645 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: #888;
+  font-weight: 400;
+}
+
+/* Painting Grid */
+.painting-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 28px;
+  margin-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+  .painting-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Painting Card */
+.painting-card {
+  background: #1a1a1a;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #2a2a2a;
+}
+
+.painting-card:hover {
+  transform: translateY(-4px);
+  border-color: #ea6645;
+  box-shadow: 0 12px 40px rgba(234, 102, 69, 0.15);
+}
+
+.painting-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.painting-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.painting-info {
+  padding: 24px;
+}
+
+.painting-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f5f5f5;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.painting-medium {
+  font-size: 0.95rem;
+  color: #ea6645;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.painting-description {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 60px 20px 40px;
+  margin-top: 40px;
+}
+
+.back-to-top {
+  display: inline-block;
+  color: #ea6645;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: 1px solid #ea6645;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  transition: all 0.2s ease;
+}
+
+.back-to-top:hover {
+  background: #ea6645;
+  color: #fff;
+}
+
+footer p {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
