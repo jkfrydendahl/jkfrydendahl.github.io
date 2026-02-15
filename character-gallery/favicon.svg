@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- D20 outer shape -->
+  <polygon points="32,2 58,17 58,47 32,62 6,47 6,17" fill="#222" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Inner triangle for icosahedron look -->
+  <polygon points="32,12 50,42 14,42" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Number 20 -->
+  <text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="18" fill="#c9a14a">20</text>
+</svg>
