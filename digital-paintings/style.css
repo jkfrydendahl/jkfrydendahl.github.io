@@ -100,6 +100,8 @@ header h1 .gradient-text {
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid #2a2a2a;
+  display: flex;
+  flex-direction: column;
 }
 
 .painting-card:hover {
@@ -127,6 +129,9 @@ header h1 .gradient-text {
 
 .painting-info {
   padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .painting-title {
@@ -149,6 +154,25 @@ header h1 .gradient-text {
   line-height: 1.7;
   color: #aaa;
   margin-bottom: 20px;
+  flex: 1;
+}
+
+.painting-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag-badge {
+  background: rgba(234, 102, 69, 0.1);
+  border: 1px solid rgba(234, 102, 69, 0.3);
+  color: #ea6645;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: default;
+  user-select: none;
 }
 
 /* Footer */
