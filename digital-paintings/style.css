@@ -175,6 +175,22 @@ header h1 .gradient-text {
   user-select: none;
 }
 
+a.tag-badge.source-badge {
+  background: rgba(120, 180, 240, 0.1);
+  border: 1px solid rgba(120, 180, 240, 0.3);
+  color: #78b4f0;
+  text-decoration: none;
+  text-transform: lowercase;
+  font-style: italic;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+a.tag-badge.source-badge:hover {
+  background: rgba(120, 180, 240, 0.2);
+  border-color: #78b4f0;
+}
+
 /* Footer */
 footer {
   text-align: center;
