@@ -186,6 +186,10 @@ a.tag-badge.source-badge {
   transition: all 0.2s ease;
 }
 
+a.tag-badge.source-badge::after {
+  content: " \01F517";
+}
+
 a.tag-badge.source-badge:hover {
   background: rgba(120, 180, 240, 0.2);
   border-color: #78b4f0;
