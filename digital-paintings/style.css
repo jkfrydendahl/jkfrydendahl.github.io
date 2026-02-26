@@ -191,6 +191,12 @@ a.tag-badge.source-badge:hover {
   border-color: #78b4f0;
 }
 
+.tag-badge.music-badge {
+  background: rgba(228, 160, 60, 0.1);
+  border: 1px solid rgba(228, 160, 60, 0.3);
+  color: #e4a03c;
+}
+
 /* Footer */
 footer {
   text-align: center;
