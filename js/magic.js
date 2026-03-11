@@ -10,14 +10,35 @@ function toggleTheme() {
 }
 
 let magicTimeout = null;
+let isFirstCast = true;
+let spellHistory = [];
 
 function magicFunction() {
     const button = document.getElementById('spell-toggle');
-    const randomNum = Math.floor(Math.random() * 11);
 
     if (button.textContent != '--> Cast a Spell !') {
       return;
     }
+
+    // Clean up spell history to only keep casts within the last 2 minutes
+    const now = Date.now();
+    spellHistory = spellHistory.filter(t => now - t < 120000);
+
+    let randomNum;
+
+    if (isFirstCast) {
+      // First cast is always Thunderwave
+      randomNum = 6;
+      isFirstCast = false;
+    } else if (spellHistory.length < 5) {
+      // Fewer than 5 spells in the last 2 minutes: exclude "nothing" (0-1) and "elder god" (10)
+      // Only roll from the valid range: 2-9
+      randomNum = Math.floor(Math.random() * 8) + 2;
+    } else {
+      randomNum = Math.floor(Math.random() * 11);
+    }
+
+    spellHistory.push(now);
 
     if (randomNum >= 0 && randomNum <= 1) 
     {
