@@ -12,6 +12,16 @@ function toggleTheme() {
 let magicTimeout = null;
 let isFirstCast = true;
 let spellHistory = [];
+let lastSpellBucket = -1;
+
+function getSpellBucket(num) {
+    if (num <= 1) return 0;
+    if (num <= 3) return 1;
+    if (num <= 5) return 2;
+    if (num <= 7) return 3;
+    if (num <= 9) return 4;
+    return 5;
+}
 
 function magicFunction() {
     const button = document.getElementById('spell-toggle');
@@ -33,11 +43,16 @@ function magicFunction() {
     } else if (spellHistory.length < 5) {
       // Fewer than 5 spells in the last 2 minutes: exclude "nothing" (0-1) and "elder god" (10)
       // Only roll from the valid range: 2-9
-      randomNum = Math.floor(Math.random() * 8) + 2;
+      do {
+        randomNum = Math.floor(Math.random() * 8) + 2;
+      } while (getSpellBucket(randomNum) === lastSpellBucket);
     } else {
-      randomNum = Math.floor(Math.random() * 11);
+      do {
+        randomNum = Math.floor(Math.random() * 11);
+      } while (getSpellBucket(randomNum) === lastSpellBucket);
     }
 
+    lastSpellBucket = getSpellBucket(randomNum);
     spellHistory.push(now);
 
     if (randomNum >= 0 && randomNum <= 1) 
