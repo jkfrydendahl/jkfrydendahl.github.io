@@ -84,7 +84,8 @@ function magicFunction() {
           count++;
           if (count > 10) {
             clearInterval(interval);
-            document.body.style.left = '0px';
+            document.body.style.left = '';
+            document.body.style.position = '';
           }
         }, 50);
         button.textContent = 'You cast Thunderwave !';
