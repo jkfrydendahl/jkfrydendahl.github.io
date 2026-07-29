@@ -12,7 +12,7 @@ function toggleTheme() {
 let revertTimeout = null;
 let hideTimeout = null;
 let isCasting = false;
-let lastSpellId = null;
+let recentSpellIds = []; // Most recent cast first; hard-excluded from the next pick
 let castCount = 0;
 
 const FORCED_FIRST_CAST_SPELL_ID = 'thunderwave';
@@ -115,7 +115,7 @@ const ELDER_GOD_REDIRECT_URL = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 function showElderGodOverlay() {
     const overlay = document.createElement('div');
     const secondsLeft = Math.ceil(ELDER_GOD_REDIRECT_DELAY_MS / 1000);
-    overlay.textContent = `An ELDER GOD gazes back at you from beyond the veil... (click anywhere to banish it, or it drags you under in ${secondsLeft}s)`;
+    overlay.innerHTML = `An ELDER GOD gazes back at you from beyond the veil...<br><br>(click anywhere to banish it, or it drags you under in ${secondsLeft}s)`;
     Object.assign(overlay.style, {
       position: 'fixed',
       inset: '0',
@@ -145,18 +145,21 @@ function showElderGodOverlay() {
 }
 
 // Picks a spell at random, weighted by SPELLS[].weight, restricted to spells
-// eligible at the current cast count and excluding one spell id (hard
-// anti-repeat for the immediately previous spell). On top of that, any spell
-// cast within RECENCY_WINDOW_MS gets its weight softly suppressed (down to
-// RECENCY_MIN_MULTIPLIER right after being cast, ramping back to full weight
-// as the window elapses) so the same spell recurring a couple of casts later
-// feels less repetitive, without ever making it fully unreachable.
-const RECENCY_WINDOW_MS = 25000;
-const RECENCY_MIN_MULTIPLIER = 0.2;
+// eligible at the current cast count and excluding the most recent
+// RECENT_HARD_EXCLUDE_COUNT spells outright (hard anti-repeat, not just the
+// immediately previous one — otherwise a spell from 2 casts ago could come
+// straight back). On top of that, any spell cast within RECENCY_WINDOW_MS
+// gets its weight softly suppressed (down to RECENCY_MIN_MULTIPLIER right
+// after being cast, ramping back to full weight as the window elapses).
+// With a ~6s button cooldown, a 45s window covers roughly the last 7-8
+// casts, so the same spell reappearing right away should feel much rarer.
+const RECENT_HARD_EXCLUDE_COUNT = 2;
+const RECENCY_WINDOW_MS = 45000;
+const RECENCY_MIN_MULTIPLIER = 0.15;
 const lastCastAt = {};
 
-function pickSpell(currentCastCount, excludeId, now) {
-    const eligible = SPELLS.filter(s => currentCastCount >= s.minCastCount && s.id !== excludeId);
+function pickSpell(currentCastCount, excludeIds, now) {
+    const eligible = SPELLS.filter(s => currentCastCount >= s.minCastCount && !excludeIds.includes(s.id));
     const weights = eligible.map(s => {
       const castAt = lastCastAt[s.id];
       if (castAt == null) {
@@ -191,9 +194,10 @@ function magicFunction() {
     const now = Date.now();
     const spell = castCount === 1
       ? SPELLS.find(s => s.id === FORCED_FIRST_CAST_SPELL_ID)
-      : pickSpell(castCount, lastSpellId, now);
+      : pickSpell(castCount, recentSpellIds, now);
 
-    lastSpellId = spell.id;
+    recentSpellIds.unshift(spell.id);
+    recentSpellIds = recentSpellIds.slice(0, RECENT_HARD_EXCLUDE_COUNT);
     lastCastAt[spell.id] = now;
     spell.run(button);
 
