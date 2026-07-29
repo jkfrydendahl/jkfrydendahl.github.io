@@ -131,15 +131,36 @@ function showElderGodOverlay() {
 }
 
 // Picks a spell at random, weighted by SPELLS[].weight, restricted to spells
-// eligible at the current cast count and excluding one spell id (anti-repeat)
-// — a single weighted pass, no rerolling/looping involved.
-function pickSpell(currentCastCount, excludeId) {
+// eligible at the current cast count and excluding one spell id (hard
+// anti-repeat for the immediately previous spell). On top of that, any spell
+// cast within RECENCY_WINDOW_MS gets its weight softly suppressed (down to
+// RECENCY_MIN_MULTIPLIER right after being cast, ramping back to full weight
+// as the window elapses) so the same spell recurring a couple of casts later
+// feels less repetitive, without ever making it fully unreachable.
+const RECENCY_WINDOW_MS = 25000;
+const RECENCY_MIN_MULTIPLIER = 0.2;
+const lastCastAt = {};
+
+function pickSpell(currentCastCount, excludeId, now) {
     const eligible = SPELLS.filter(s => currentCastCount >= s.minCastCount && s.id !== excludeId);
-    const total = eligible.reduce((sum, s) => sum + s.weight, 0);
+    const weights = eligible.map(s => {
+      const castAt = lastCastAt[s.id];
+      if (castAt == null) {
+        return s.weight;
+      }
+      const elapsed = now - castAt;
+      if (elapsed >= RECENCY_WINDOW_MS) {
+        return s.weight;
+      }
+      const progress = elapsed / RECENCY_WINDOW_MS;
+      const multiplier = RECENCY_MIN_MULTIPLIER + (1 - RECENCY_MIN_MULTIPLIER) * progress;
+      return s.weight * multiplier;
+    });
+    const total = weights.reduce((sum, w) => sum + w, 0);
     let roll = Math.random() * total;
-    for (const spell of eligible) {
-      if (roll < spell.weight) return spell;
-      roll -= spell.weight;
+    for (let i = 0; i < eligible.length; i++) {
+      if (roll < weights[i]) return eligible[i];
+      roll -= weights[i];
     }
     return eligible[eligible.length - 1]; // Fallback for floating point edge cases
 }
@@ -153,11 +174,13 @@ function magicFunction() {
     isCasting = true;
     castCount++;
 
+    const now = Date.now();
     const spell = castCount === 1
       ? SPELLS.find(s => s.id === FORCED_FIRST_CAST_SPELL_ID)
-      : pickSpell(castCount, lastSpellId);
+      : pickSpell(castCount, lastSpellId, now);
 
     lastSpellId = spell.id;
+    lastCastAt[spell.id] = now;
     spell.run(button);
 
     if (revertTimeout) {
