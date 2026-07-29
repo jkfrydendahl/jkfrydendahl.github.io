@@ -128,54 +128,57 @@ const SPELLS = [
     minCastCount: 1,
     run(button) {
       button.textContent = 'You cast Mage Hand !';
-      const duration = 3000;
-      const spawnIntervalMs = 60;
-      const sparkles = ['✨', '💫', '⭐'];
-      let pointerX = null;
-      let pointerY = null;
+      const duration = 3500;
+      const fadeOutMs = 600;
 
-      function spawnSparkle(x, y) {
-        const sparkle = document.createElement('span');
-        sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
-        Object.assign(sparkle.style, {
-          position: 'fixed',
-          left: `${x}px`,
-          top: `${y}px`,
-          fontSize: '1.2rem',
-          zIndex: '9999',
-          pointerEvents: 'none',
-          transform: 'translate(-50%, -50%) scale(1)',
-          opacity: '1',
-          transition: 'transform 0.6s ease-out, opacity 0.6s ease-out'
-        });
-        document.body.appendChild(sparkle);
-        requestAnimationFrame(() => {
-          sparkle.style.transform = 'translate(-50%, -50%) translateY(-20px) scale(0.3)';
-          sparkle.style.opacity = '0';
-        });
-        setTimeout(() => sparkle.remove(), 650);
-      }
+      const hamsa = document.createElement('span');
+      hamsa.textContent = '🪬';
+      Object.assign(hamsa.style, {
+        position: 'fixed',
+        left: '0',
+        top: '0',
+        fontSize: '2.5rem',
+        zIndex: '9999',
+        pointerEvents: 'none',
+        opacity: '1',
+        transition: `opacity ${fadeOutMs}ms ease-out`
+      });
+      document.body.appendChild(hamsa);
 
-      // Track the latest pointer position on every move (cheap: just two numbers),
-      // and spawn sparkles on a fixed interval instead of directly on each move
-      // event — this keeps a steady trail even if the mouse isn't moving fast or
-      // constantly, rather than being limited by how often mousemove actually fires.
-      function handlePointerMove(e) {
-        pointerX = e.clientX;
-        pointerY = e.clientY;
-      }
+      // Scripted swirling path (a Lissajous-style curve) rather than following
+      // the pointer, so this works identically on touch devices — no drag/hover
+      // input required, unlike a pointer-tracked trail.
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const radiusX = Math.min(window.innerWidth * 0.4, 350);
+      const radiusY = Math.min(window.innerHeight * 0.3, 250);
+      const startTime = performance.now();
+      let rafId;
 
-      document.addEventListener('pointermove', handlePointerMove);
-      const spawnTimer = setInterval(() => {
-        if (pointerX !== null) {
-          spawnSparkle(pointerX, pointerY);
+      function animate(now) {
+        const elapsed = now - startTime;
+        const t = elapsed / 1000;
+        const x = centerX + radiusX * Math.sin(t * 1.3);
+        const y = centerY + radiusY * Math.sin(t * 2.1 + 1.5);
+        const rotation = t * 180;
+        hamsa.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(${rotation}deg)`;
+
+        if (elapsed >= duration - fadeOutMs) {
+          hamsa.style.opacity = '0';
         }
-      }, spawnIntervalMs);
 
+        if (elapsed < duration) {
+          rafId = requestAnimationFrame(animate);
+        } else {
+          hamsa.remove();
+        }
+      }
+
+      rafId = requestAnimationFrame(animate);
       setTimeout(() => {
-        clearInterval(spawnTimer);
-        document.removeEventListener('pointermove', handlePointerMove);
-      }, duration);
+        cancelAnimationFrame(rafId);
+        hamsa.remove();
+      }, duration + fadeOutMs);
     }
   },
   {
