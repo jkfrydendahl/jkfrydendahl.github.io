@@ -9,10 +9,16 @@ function toggleTheme() {
       }
 }
 
-let magicTimeout = null;
+let revertTimeout = null;
+let hideTimeout = null;
 let isFirstCast = true;
-let spellHistory = [];
 let lastSpellBucket = -1;
+
+// Bucket weights (must sum to 100): 0=nothing, 1=Alakazam, 2=Bardic/Mockery,
+// 3=Thunderwave, 4=Emoji Meteor Shower, 5=Elder God.
+const SPELL_WEIGHTS = [8, 20, 27, 20, 20, 5];
+// Inclusive [low, high] range of randomNum values represented by each bucket.
+const BUCKET_RANGES = [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9], [10, 10]];
 
 function getSpellBucket(num) {
     if (num <= 1) return 0;
@@ -23,6 +29,28 @@ function getSpellBucket(num) {
     return 5;
 }
 
+// Picks a bucket at random according to SPELL_WEIGHTS, optionally excluding one
+// bucket (used for anti-repeat) without ever looping.
+function pickWeightedBucket(excludeBucket) {
+    const total = SPELL_WEIGHTS.reduce((sum, weight, i) => i === excludeBucket ? sum : sum + weight, 0);
+    let roll = Math.random() * total;
+    for (let i = 0; i < SPELL_WEIGHTS.length; i++) {
+      if (i === excludeBucket) continue;
+      if (roll < SPELL_WEIGHTS[i]) return i;
+      roll -= SPELL_WEIGHTS[i];
+    }
+    // Fallback for floating point edge cases: last non-excluded bucket.
+    for (let i = SPELL_WEIGHTS.length - 1; i >= 0; i--) {
+      if (i !== excludeBucket) return i;
+    }
+    return 0;
+}
+
+function randomNumForBucket(bucket) {
+    const [low, high] = BUCKET_RANGES[bucket];
+    return low + Math.floor(Math.random() * (high - low + 1));
+}
+
 function magicFunction() {
     const button = document.getElementById('spell-toggle');
 
@@ -30,30 +58,18 @@ function magicFunction() {
       return;
     }
 
-    // Clean up spell history to only keep casts within the last 2 minutes
-    const now = Date.now();
-    spellHistory = spellHistory.filter(t => now - t < 120000);
-
     let randomNum;
 
     if (isFirstCast) {
       // First cast is always Thunderwave
       randomNum = 6;
       isFirstCast = false;
-    } else if (spellHistory.length < 5) {
-      // Fewer than 5 spells in the last 2 minutes: exclude "nothing" (0-1) and "elder god" (10)
-      // Only roll from the valid range: 2-9
-      do {
-        randomNum = Math.floor(Math.random() * 8) + 2;
-      } while (getSpellBucket(randomNum) === lastSpellBucket);
     } else {
-      do {
-        randomNum = Math.floor(Math.random() * 11);
-      } while (getSpellBucket(randomNum) === lastSpellBucket);
+      const bucket = pickWeightedBucket(lastSpellBucket);
+      randomNum = randomNumForBucket(bucket);
     }
 
     lastSpellBucket = getSpellBucket(randomNum);
-    spellHistory.push(now);
 
     if (randomNum >= 0 && randomNum <= 1) 
     {
@@ -116,15 +132,18 @@ function magicFunction() {
         }, 4000);
     }
 
-    if (magicTimeout) {
-      clearTimeout(magicTimeout);
+    if (revertTimeout) {
+      clearTimeout(revertTimeout);
+    }
+    if (hideTimeout) {
+      clearTimeout(hideTimeout);
     }
 
-    magicTimeout = setTimeout(() => {
+    revertTimeout = setTimeout(() => {
       button.textContent = '--> Cast a Spell !';
     }, 6000);
 
-    magicTimeout = setTimeout(() => {
+    hideTimeout = setTimeout(() => {
        typewritersection.style.display = 'none';
     }, 60000); // 60 seconds
 }
