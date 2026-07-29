@@ -202,7 +202,7 @@ const SPELLS = [
     minCastCount: 4, // Can't appear before the 4th cast
     run(button) {
       button.textContent = 'You’re calling an ELDER GOD !';
-      showElderGodOverlay();
+      showElderGodOverlay(button);
     }
   }
 ];
@@ -214,7 +214,7 @@ const SPELLS = [
 const ELDER_GOD_REDIRECT_DELAY_MS = 4000;
 const ELDER_GOD_REDIRECT_URL = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
-function showElderGodOverlay() {
+function showElderGodOverlay(button) {
     const overlay = document.createElement('div');
     const secondsLeft = Math.ceil(ELDER_GOD_REDIRECT_DELAY_MS / 1000);
     overlay.innerHTML = `An ELDER GOD gazes back at you from beyond the veil...<br><br>(click anywhere to banish it, or it drags you under in ${secondsLeft}s)`;
@@ -241,6 +241,14 @@ function showElderGodOverlay() {
     overlay.addEventListener('click', () => {
       clearTimeout(redirectTimeout);
       overlay.remove();
+      // Revert the button immediately instead of waiting on the generic 6s
+      // timer, since the overlay's own lifecycle (4s or dismissed early) is
+      // what should drive it here, not a fixed duration tuned for other spells.
+      if (revertTimeout) {
+        clearTimeout(revertTimeout);
+      }
+      button.textContent = '--> Cast a Spell !';
+      isCasting = false;
     });
 
     document.body.appendChild(overlay);
