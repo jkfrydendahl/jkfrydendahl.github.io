@@ -119,7 +119,7 @@ const SPELLS = [
         root.style.removeProperty('--accent');
         root.style.removeProperty('--fg');
         root.style.removeProperty('--code');
-      }, 2000);
+      }, 6000);
     }
   },
   {
@@ -128,7 +128,7 @@ const SPELLS = [
     minCastCount: 1,
     run(button) {
       button.textContent = 'You cast Mage Hand !';
-      const duration = 3500;
+      const duration = 5400;
       const fadeOutMs = 600;
 
       const hamsa = document.createElement('span');
@@ -186,7 +186,6 @@ const SPELLS = [
     weight: 15,
     minCastCount: 1,
     run(button) {
-      button.textContent = 'You cast Detect Magic !';
       const messages = [
         'You detect a faint aura of technical debt nearby...',
         "You sense residual magic: someone forgot a semicolon here once.",
@@ -194,25 +193,7 @@ const SPELLS = [
         'You detect powerful enchantments... it\'s just !important, again.',
         "You sense an old prophecy: 'It works on my machine.'"
       ];
-      const toast = document.createElement('div');
-      toast.textContent = messages[Math.floor(Math.random() * messages.length)];
-      Object.assign(toast.style, {
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        background: 'rgba(0, 0, 0, 0.85)',
-        color: '#39ff14',
-        padding: '0.75rem 1.25rem',
-        borderRadius: '6px',
-        fontSize: '1rem',
-        maxWidth: '90vw',
-        textAlign: 'center',
-        zIndex: '9999',
-        pointerEvents: 'none'
-      });
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 4000);
+      button.textContent = messages[Math.floor(Math.random() * messages.length)];
     }
   },
   {
