@@ -105,12 +105,17 @@ const SPELLS = [
   }
 ];
 
-// A dismissible full-screen "jumpscare" overlay, standing in for the old
-// forced window.location redirect: keeps the joke without hijacking the
-// visitor's browser or navigating them away without consent.
+// A dismissible full-screen "jumpscare" overlay: gives the visitor a clear,
+// immediate way to cancel (click anywhere), but if they don't act within the
+// countdown, it auto-navigates — same spirit as the old forced redirect,
+// minus the "only way out is refreshing the browser" hijack.
+const ELDER_GOD_REDIRECT_DELAY_MS = 4000;
+const ELDER_GOD_REDIRECT_URL = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+
 function showElderGodOverlay() {
     const overlay = document.createElement('div');
-    overlay.textContent = 'An ELDER GOD gazes back at you from beyond the veil... (click anywhere to banish it)';
+    const secondsLeft = Math.ceil(ELDER_GOD_REDIRECT_DELAY_MS / 1000);
+    overlay.textContent = `An ELDER GOD gazes back at you from beyond the veil... (click anywhere to banish it, or it drags you under in ${secondsLeft}s)`;
     Object.assign(overlay.style, {
       position: 'fixed',
       inset: '0',
@@ -126,7 +131,16 @@ function showElderGodOverlay() {
       cursor: 'pointer',
       zIndex: '10000'
     });
-    overlay.addEventListener('click', () => overlay.remove());
+
+    const redirectTimeout = setTimeout(() => {
+      window.location.href = ELDER_GOD_REDIRECT_URL;
+    }, ELDER_GOD_REDIRECT_DELAY_MS);
+
+    overlay.addEventListener('click', () => {
+      clearTimeout(redirectTimeout);
+      overlay.remove();
+    });
+
     document.body.appendChild(overlay);
 }
 
