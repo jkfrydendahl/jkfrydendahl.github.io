@@ -95,6 +95,85 @@ const SPELLS = [
     }
   },
   {
+    id: 'prestidigitation',
+    weight: 15,
+    minCastCount: 1,
+    run(button) {
+      button.textContent = 'You cast Prestidigitation !';
+      const root = document.documentElement;
+      const hues = [330, 45, 130, 200, 280];
+      let i = 0;
+      const interval = setInterval(() => {
+        root.style.setProperty('--accent', `hsl(${hues[i % hues.length]}, 90%, 55%)`);
+        i++;
+      }, 200);
+      setTimeout(() => {
+        clearInterval(interval);
+        root.style.removeProperty('--accent'); // Falls back to the theme's normal accent
+      }, 2000);
+    }
+  },
+  {
+    id: 'mage-hand',
+    weight: 15,
+    minCastCount: 1,
+    run(button) {
+      button.textContent = 'You cast Mage Hand !';
+      const hand = document.createElement('span');
+      hand.textContent = '🖐️';
+      Object.assign(hand.style, {
+        position: 'fixed',
+        top: `${Math.random() * 60 + 15}%`,
+        left: '-60px',
+        fontSize: '2.5rem',
+        zIndex: '9999',
+        pointerEvents: 'none',
+        transition: 'transform 3s linear, opacity 3s linear'
+      });
+      document.body.appendChild(hand);
+      // Defer to the next frame so the transition actually animates from the start position.
+      requestAnimationFrame(() => {
+        hand.style.transform = `translateX(${window.innerWidth + 120}px) rotate(360deg)`;
+        hand.style.opacity = '0.15';
+      });
+      setTimeout(() => hand.remove(), 3200);
+    }
+  },
+  {
+    id: 'detect-magic',
+    weight: 15,
+    minCastCount: 1,
+    run(button) {
+      button.textContent = 'You cast Detect Magic !';
+      const messages = [
+        'You detect a faint aura of technical debt nearby...',
+        "You sense residual magic: someone forgot a semicolon here once.",
+        "A hidden ward reveals itself: 'TODO: fix this later' (written 3 years ago).",
+        'You detect powerful enchantments... it\'s just !important, again.',
+        "You sense an old prophecy: 'It works on my machine.'"
+      ];
+      const toast = document.createElement('div');
+      toast.textContent = messages[Math.floor(Math.random() * messages.length)];
+      Object.assign(toast.style, {
+        position: 'fixed',
+        bottom: '2rem',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: 'rgba(0, 0, 0, 0.85)',
+        color: '#39ff14',
+        padding: '0.75rem 1.25rem',
+        borderRadius: '6px',
+        fontSize: '1rem',
+        maxWidth: '90vw',
+        textAlign: 'center',
+        zIndex: '9999',
+        pointerEvents: 'none'
+      });
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+  },
+  {
     id: 'elder-god',
     weight: 5,
     minCastCount: 4, // Can't appear before the 4th cast
