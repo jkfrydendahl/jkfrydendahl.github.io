@@ -119,7 +119,7 @@ const SPELLS = [
         root.style.removeProperty('--accent');
         root.style.removeProperty('--fg');
         root.style.removeProperty('--code');
-      }, 6000);
+      }, 4500);
     }
   },
   {
