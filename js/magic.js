@@ -119,7 +119,7 @@ const SPELLS = [
         root.style.removeProperty('--accent');
         root.style.removeProperty('--fg');
         root.style.removeProperty('--code');
-      }, 4500);
+      }, 4000);
     }
   },
   {
@@ -216,6 +216,7 @@ const ELDER_GOD_REDIRECT_URL = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
 function showElderGodOverlay(button) {
     const overlay = document.createElement('div');
+    overlay.className = 'elder-god-overlay';
     const secondsLeft = Math.ceil(ELDER_GOD_REDIRECT_DELAY_MS / 1000);
     overlay.innerHTML = `An ELDER GOD gazes back at you from beyond the veil...<br><br>(click anywhere to banish it, or it drags you under in ${secondsLeft}s)`;
     Object.assign(overlay.style, {
@@ -253,6 +254,30 @@ function showElderGodOverlay(button) {
 
     document.body.appendChild(overlay);
 }
+
+// Browsers can restore a page from the back-forward cache (bfcache) instead of
+// doing a full reload when navigating back — e.g. after Elder God's redirect
+// sends the visitor to YouTube and they hit "back". That restores the frozen
+// DOM exactly as it was at navigation time, so a dismissed-by-navigating-away
+// overlay (and its "isCasting" lock) would otherwise persist forever. Clean
+// both up whenever the page is restored this way.
+window.addEventListener('pageshow', (event) => {
+  if (!event.persisted) {
+    return;
+  }
+  document.querySelectorAll('.elder-god-overlay').forEach((overlay) => overlay.remove());
+  if (revertTimeout) {
+    clearTimeout(revertTimeout);
+  }
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+  }
+  isCasting = false;
+  const button = document.getElementById('spell-toggle');
+  if (button) {
+    button.textContent = '--> Cast a Spell !';
+  }
+});
 
 // Picks a spell at random, weighted by SPELLS[].weight, restricted to spells
 // eligible at the current cast count and excluding the most recent
