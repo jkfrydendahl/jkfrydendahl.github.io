@@ -95,11 +95,11 @@ const SPELLS = [
     }
   },
   {
-    id: 'prestidigitation',
+    id: 'prismatic-spray',
     weight: 15,
     minCastCount: 1,
     run(button) {
-      button.textContent = 'You cast Prestidigitation !';
+      button.textContent = 'You cast Prismatic Spray !';
       const root = document.documentElement;
       const hues = [330, 45, 130, 200, 280];
       let i = 0;
