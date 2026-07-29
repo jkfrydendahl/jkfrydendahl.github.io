@@ -104,12 +104,21 @@ const SPELLS = [
       const hues = [330, 45, 130, 200, 280];
       let i = 0;
       const interval = setInterval(() => {
-        root.style.setProperty('--accent', `hsl(${hues[i % hues.length]}, 90%, 55%)`);
+        const hue = hues[i % hues.length];
+        // Vary accent (headings/buttons), fg (body text) and code (links/highlighted
+        // projects) together so the effect is visible across the whole page, not
+        // just the header/theme-toggle button.
+        root.style.setProperty('--accent', `hsl(${hue}, 90%, 55%)`);
+        root.style.setProperty('--fg', `hsl(${hue}, 70%, 75%)`);
+        root.style.setProperty('--code', `hsl(${(hue + 40) % 360}, 85%, 60%)`);
         i++;
       }, 200);
       setTimeout(() => {
         clearInterval(interval);
-        root.style.removeProperty('--accent'); // Falls back to the theme's normal accent
+        // Falls back to the active theme's normal colors.
+        root.style.removeProperty('--accent');
+        root.style.removeProperty('--fg');
+        root.style.removeProperty('--code');
       }, 2000);
     }
   },
@@ -120,9 +129,10 @@ const SPELLS = [
     run(button) {
       button.textContent = 'You cast Mage Hand !';
       const duration = 3000;
-      const throttleMs = 40;
+      const spawnIntervalMs = 60;
       const sparkles = ['✨', '💫', '⭐'];
-      let lastSpawnAt = 0;
+      let pointerX = null;
+      let pointerY = null;
 
       function spawnSparkle(x, y) {
         const sparkle = document.createElement('span');
@@ -146,17 +156,24 @@ const SPELLS = [
         setTimeout(() => sparkle.remove(), 650);
       }
 
+      // Track the latest pointer position on every move (cheap: just two numbers),
+      // and spawn sparkles on a fixed interval instead of directly on each move
+      // event — this keeps a steady trail even if the mouse isn't moving fast or
+      // constantly, rather than being limited by how often mousemove actually fires.
       function handlePointerMove(e) {
-        const now = Date.now();
-        if (now - lastSpawnAt < throttleMs) {
-          return;
-        }
-        lastSpawnAt = now;
-        spawnSparkle(e.clientX, e.clientY);
+        pointerX = e.clientX;
+        pointerY = e.clientY;
       }
 
       document.addEventListener('pointermove', handlePointerMove);
+      const spawnTimer = setInterval(() => {
+        if (pointerX !== null) {
+          spawnSparkle(pointerX, pointerY);
+        }
+      }, spawnIntervalMs);
+
       setTimeout(() => {
+        clearInterval(spawnTimer);
         document.removeEventListener('pointermove', handlePointerMove);
       }, duration);
     }
@@ -178,9 +195,9 @@ const SPELLS = [
       toast.textContent = messages[Math.floor(Math.random() * messages.length)];
       Object.assign(toast.style, {
         position: 'fixed',
-        bottom: '2rem',
+        top: '50%',
         left: '50%',
-        transform: 'translateX(-50%)',
+        transform: 'translate(-50%, -50%)',
         background: 'rgba(0, 0, 0, 0.85)',
         color: '#39ff14',
         padding: '0.75rem 1.25rem',
