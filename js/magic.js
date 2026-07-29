@@ -23,7 +23,7 @@ const FORCED_FIRST_CAST_SPELL_ID = 'thunderwave';
 const SPELLS = [
   {
     id: 'nothing',
-    weight: 8,
+    weight: 12,
     minCastCount: 1,
     run(button) {
       button.textContent = 'You cast... nothing?! Oh well, better luck next time!';
@@ -31,7 +31,7 @@ const SPELLS = [
   },
   {
     id: 'alakazam',
-    weight: 20,
+    weight: 16,
     minCastCount: 1,
     run(button) {
       button.textContent = 'Alakazam !';
@@ -40,7 +40,7 @@ const SPELLS = [
   },
   {
     id: 'bardic-mockery',
-    weight: 27,
+    weight: 17,
     minCastCount: 1,
     run(button) {
       const messages = [
@@ -55,7 +55,7 @@ const SPELLS = [
   },
   {
     id: 'thunderwave',
-    weight: 20,
+    weight: 16,
     minCastCount: 1,
     run(button) {
       document.body.style.position = 'relative';
@@ -74,7 +74,7 @@ const SPELLS = [
   },
   {
     id: 'emoji-meteor',
-    weight: 20,
+    weight: 16,
     minCastCount: 1,
     run(button) {
       const emojis = ['💻', '🔥', '✨', '🎲', '👾', '🧠', '🍕', '📚', '🎧'];
@@ -96,7 +96,7 @@ const SPELLS = [
   },
   {
     id: 'prismatic-spray',
-    weight: 15,
+    weight: 14,
     minCastCount: 1,
     run(button) {
       button.textContent = 'You cast Prismatic Spray !';
@@ -124,7 +124,7 @@ const SPELLS = [
   },
   {
     id: 'mage-hand',
-    weight: 15,
+    weight: 14,
     minCastCount: 1,
     run(button) {
       button.textContent = 'You cast Mage Hand !';
@@ -183,7 +183,7 @@ const SPELLS = [
   },
   {
     id: 'detect-magic',
-    weight: 15,
+    weight: 14,
     minCastCount: 1,
     run(button) {
       const messages = [
@@ -197,7 +197,7 @@ const SPELLS = [
   },
   {
     id: 'elder-god',
-    weight: 5,
+    weight: 6,
     minCastCount: 4, // Can't appear before the 4th cast
     run(button) {
       button.textContent = 'You’re calling an ELDER GOD !';
