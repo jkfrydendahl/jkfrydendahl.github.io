@@ -119,24 +119,46 @@ const SPELLS = [
     minCastCount: 1,
     run(button) {
       button.textContent = 'You cast Mage Hand !';
-      const hand = document.createElement('span');
-      hand.textContent = '🖐️';
-      Object.assign(hand.style, {
-        position: 'fixed',
-        top: `${Math.random() * 60 + 15}%`,
-        left: '-60px',
-        fontSize: '2.5rem',
-        zIndex: '9999',
-        pointerEvents: 'none',
-        transition: 'transform 3s linear, opacity 3s linear'
-      });
-      document.body.appendChild(hand);
-      // Defer to the next frame so the transition actually animates from the start position.
-      requestAnimationFrame(() => {
-        hand.style.transform = `translateX(${window.innerWidth + 120}px) rotate(360deg)`;
-        hand.style.opacity = '0.15';
-      });
-      setTimeout(() => hand.remove(), 3200);
+      const duration = 3000;
+      const throttleMs = 40;
+      const sparkles = ['✨', '💫', '⭐'];
+      let lastSpawnAt = 0;
+
+      function spawnSparkle(x, y) {
+        const sparkle = document.createElement('span');
+        sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+        Object.assign(sparkle.style, {
+          position: 'fixed',
+          left: `${x}px`,
+          top: `${y}px`,
+          fontSize: '1.2rem',
+          zIndex: '9999',
+          pointerEvents: 'none',
+          transform: 'translate(-50%, -50%) scale(1)',
+          opacity: '1',
+          transition: 'transform 0.6s ease-out, opacity 0.6s ease-out'
+        });
+        document.body.appendChild(sparkle);
+        requestAnimationFrame(() => {
+          sparkle.style.transform = 'translate(-50%, -50%) translateY(-20px) scale(0.3)';
+          sparkle.style.opacity = '0';
+        });
+        setTimeout(() => sparkle.remove(), 650);
+      }
+
+      function handlePointerMove(e) {
+        const now = Date.now();
+        if (now - lastSpawnAt < throttleMs) {
+          return;
+        }
+        lastSpawnAt = now;
+        spawnSparkle(e.clientX, e.clientY);
+      }
+
+      document.addEventListener('pointermove', handlePointerMove);
+      setTimeout(() => {
+        document.removeEventListener('pointermove', handlePointerMove);
+      }, duration);
     }
   },
   {
