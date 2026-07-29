@@ -187,10 +187,9 @@ const SPELLS = [
     minCastCount: 1,
     run(button) {
       const messages = [
-        'You detect a faint aura of technical debt nearby...',
         "You sense residual magic: someone forgot a semicolon here once.",
         "A hidden ward reveals itself: 'TODO: fix this later' (written 3 years ago).",
-        'You detect powerful enchantments... it\'s just !important, again.',
+        'You detect powerful enchantments... Nope, it\'s just !important, again.',
         "You sense an old prophecy: 'It works on my machine.'"
       ];
       button.textContent = messages[Math.floor(Math.random() * messages.length)];
