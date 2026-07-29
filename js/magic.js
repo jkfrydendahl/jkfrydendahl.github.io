@@ -99,13 +99,36 @@ const SPELLS = [
     weight: 5,
     minCastCount: 4, // Can't appear before the 4th cast
     run(button) {
-      button.textContent = 'You’re calling an ELDER GOD (refresh browser to cancel) !';
-      setTimeout(() => {
-        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-      }, 4000);
+      button.textContent = 'You’re calling an ELDER GOD !';
+      showElderGodOverlay();
     }
   }
 ];
+
+// A dismissible full-screen "jumpscare" overlay, standing in for the old
+// forced window.location redirect: keeps the joke without hijacking the
+// visitor's browser or navigating them away without consent.
+function showElderGodOverlay() {
+    const overlay = document.createElement('div');
+    overlay.textContent = 'An ELDER GOD gazes back at you from beyond the veil... (click anywhere to banish it)';
+    Object.assign(overlay.style, {
+      position: 'fixed',
+      inset: '0',
+      background: 'rgba(0, 0, 0, 0.9)',
+      color: '#39ff14',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      fontSize: '1.75rem',
+      padding: '2rem',
+      boxSizing: 'border-box',
+      cursor: 'pointer',
+      zIndex: '10000'
+    });
+    overlay.addEventListener('click', () => overlay.remove());
+    document.body.appendChild(overlay);
+}
 
 // Picks a spell at random, weighted by SPELLS[].weight, restricted to spells
 // eligible at the current cast count and excluding one spell id (anti-repeat)
