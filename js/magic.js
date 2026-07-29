@@ -11,77 +11,38 @@ function toggleTheme() {
 
 let revertTimeout = null;
 let hideTimeout = null;
-let isFirstCast = true;
-let lastSpellBucket = -1;
+let isCasting = false;
+let lastSpellId = null;
+let castCount = 0;
 
-// Bucket weights (must sum to 100): 0=nothing, 1=Alakazam, 2=Bardic/Mockery,
-// 3=Thunderwave, 4=Emoji Meteor Shower, 5=Elder God.
-const SPELL_WEIGHTS = [8, 20, 27, 20, 20, 5];
-// Inclusive [low, high] range of randomNum values represented by each bucket.
-const BUCKET_RANGES = [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9], [10, 10]];
+const FORCED_FIRST_CAST_SPELL_ID = 'thunderwave';
 
-function getSpellBucket(num) {
-    if (num <= 1) return 0;
-    if (num <= 3) return 1;
-    if (num <= 5) return 2;
-    if (num <= 7) return 3;
-    if (num <= 9) return 4;
-    return 5;
-}
-
-// Picks a bucket at random according to SPELL_WEIGHTS, optionally excluding one
-// bucket (used for anti-repeat) without ever looping.
-function pickWeightedBucket(excludeBucket) {
-    const total = SPELL_WEIGHTS.reduce((sum, weight, i) => i === excludeBucket ? sum : sum + weight, 0);
-    let roll = Math.random() * total;
-    for (let i = 0; i < SPELL_WEIGHTS.length; i++) {
-      if (i === excludeBucket) continue;
-      if (roll < SPELL_WEIGHTS[i]) return i;
-      roll -= SPELL_WEIGHTS[i];
-    }
-    // Fallback for floating point edge cases: last non-excluded bucket.
-    for (let i = SPELL_WEIGHTS.length - 1; i >= 0; i--) {
-      if (i !== excludeBucket) return i;
-    }
-    return 0;
-}
-
-function randomNumForBucket(bucket) {
-    const [low, high] = BUCKET_RANGES[bucket];
-    return low + Math.floor(Math.random() * (high - low + 1));
-}
-
-function magicFunction() {
-    const button = document.getElementById('spell-toggle');
-
-    if (button.textContent != '--> Cast a Spell !') {
-      return;
-    }
-
-    let randomNum;
-
-    if (isFirstCast) {
-      // First cast is always Thunderwave
-      randomNum = 6;
-      isFirstCast = false;
-    } else {
-      const bucket = pickWeightedBucket(lastSpellBucket);
-      randomNum = randomNumForBucket(bucket);
-    }
-
-    lastSpellBucket = getSpellBucket(randomNum);
-
-    if (randomNum >= 0 && randomNum <= 1) 
-    {
+// Single source of truth for every spell: its odds, when it's allowed to
+// appear, and what it actually does. Add/remove/reweight a spell by editing
+// one entry here — nothing else needs to change in sync.
+const SPELLS = [
+  {
+    id: 'nothing',
+    weight: 8,
+    minCastCount: 1,
+    run(button) {
       button.textContent = 'You cast... nothing?! Oh well, better luck next time!';
-    } 
-    else if (randomNum >= 2 && randomNum <= 3) 
-    {
+    }
+  },
+  {
+    id: 'alakazam',
+    weight: 20,
+    minCastCount: 1,
+    run(button) {
       button.textContent = 'Alakazam !';
       toggleTheme();
-    } 
-    else if (randomNum >= 4 && randomNum <= 5) 
-    {
+    }
+  },
+  {
+    id: 'bardic-mockery',
+    weight: 27,
+    minCastCount: 1,
+    run(button) {
       const messages = [
         "You gained Bardic Inspiration: You're not a bug, you're a feature!",
         "You gained Bardic Inspiration: Code like no one's watching!",
@@ -90,47 +51,91 @@ function magicFunction() {
         "You cast Vicious Mockery: Good code is its own best documentation."
       ];
       button.textContent = messages[Math.floor(Math.random() * messages.length)];
-    } 
-    else if (randomNum >= 6 && randomNum <= 7) 
-    {
-        document.body.style.position = 'relative';
-        let count = 0;
-        const interval = setInterval(() => {
-          document.body.style.left = (count % 2 === 0 ? '5px' : '-5px');
-          count++;
-          if (count > 10) {
-            clearInterval(interval);
-            document.body.style.left = '';
-            document.body.style.position = '';
-          }
-        }, 50);
-        button.textContent = 'You cast Thunderwave !';
-    } 
-    else if (randomNum >= 8 && randomNum <= 9) 
-    {
-        const emojis = ['💻', '🔥', '✨', '🎲', '👾', '🧠', '🍕', '📚', '🎧'];
-          for (let i = 0; i < 20; i++) {
-            const span = document.createElement('span');
-            span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            span.style.position = 'fixed';
-            span.style.left = `${Math.random() * 100}%`;
-            span.style.top = '-50px';
-            span.style.fontSize = `${Math.random() * 32 + 32}px`;
-            span.style.animation = `fall ${Math.random() * 1 + 1}s linear`;
-            span.style.zIndex = 9999;
-            document.body.appendChild(span);
-
-            span.addEventListener('animationend', () => span.remove());
-          }
-        button.textContent = 'You summoned an Emoji Meteor Shower !';
-    } 
-    else if (randomNum === 10) 
-    {
-        button.textContent = 'You’re calling an ELDER GOD (refresh browser to cancel) !';
-        setTimeout(() => {
-          window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-        }, 4000);
     }
+  },
+  {
+    id: 'thunderwave',
+    weight: 20,
+    minCastCount: 1,
+    run(button) {
+      document.body.style.position = 'relative';
+      let count = 0;
+      const interval = setInterval(() => {
+        document.body.style.left = (count % 2 === 0 ? '5px' : '-5px');
+        count++;
+        if (count > 10) {
+          clearInterval(interval);
+          document.body.style.left = '';
+          document.body.style.position = '';
+        }
+      }, 50);
+      button.textContent = 'You cast Thunderwave !';
+    }
+  },
+  {
+    id: 'emoji-meteor',
+    weight: 20,
+    minCastCount: 1,
+    run(button) {
+      const emojis = ['💻', '🔥', '✨', '🎲', '👾', '🧠', '🍕', '📚', '🎧'];
+      for (let i = 0; i < 20; i++) {
+        const span = document.createElement('span');
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.position = 'fixed';
+        span.style.left = `${Math.random() * 100}%`;
+        span.style.top = '-50px';
+        span.style.fontSize = `${Math.random() * 32 + 32}px`;
+        span.style.animation = `fall ${Math.random() * 1 + 1}s linear`;
+        span.style.zIndex = 9999;
+        document.body.appendChild(span);
+
+        span.addEventListener('animationend', () => span.remove());
+      }
+      button.textContent = 'You summoned an Emoji Meteor Shower !';
+    }
+  },
+  {
+    id: 'elder-god',
+    weight: 5,
+    minCastCount: 4, // Can't appear before the 4th cast
+    run(button) {
+      button.textContent = 'You’re calling an ELDER GOD (refresh browser to cancel) !';
+      setTimeout(() => {
+        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      }, 4000);
+    }
+  }
+];
+
+// Picks a spell at random, weighted by SPELLS[].weight, restricted to spells
+// eligible at the current cast count and excluding one spell id (anti-repeat)
+// — a single weighted pass, no rerolling/looping involved.
+function pickSpell(currentCastCount, excludeId) {
+    const eligible = SPELLS.filter(s => currentCastCount >= s.minCastCount && s.id !== excludeId);
+    const total = eligible.reduce((sum, s) => sum + s.weight, 0);
+    let roll = Math.random() * total;
+    for (const spell of eligible) {
+      if (roll < spell.weight) return spell;
+      roll -= spell.weight;
+    }
+    return eligible[eligible.length - 1]; // Fallback for floating point edge cases
+}
+
+function magicFunction() {
+    const button = document.getElementById('spell-toggle');
+
+    if (isCasting) {
+      return;
+    }
+    isCasting = true;
+    castCount++;
+
+    const spell = castCount === 1
+      ? SPELLS.find(s => s.id === FORCED_FIRST_CAST_SPELL_ID)
+      : pickSpell(castCount, lastSpellId);
+
+    lastSpellId = spell.id;
+    spell.run(button);
 
     if (revertTimeout) {
       clearTimeout(revertTimeout);
@@ -141,9 +146,13 @@ function magicFunction() {
 
     revertTimeout = setTimeout(() => {
       button.textContent = '--> Cast a Spell !';
+      isCasting = false;
     }, 6000);
 
     hideTimeout = setTimeout(() => {
-       typewritersection.style.display = 'none';
+      const typewriterSection = document.getElementById('typewriter');
+      if (typewriterSection) {
+        typewriterSection.style.display = 'none';
+      }
     }, 60000); // 60 seconds
 }
