@@ -15,7 +15,9 @@ let isCasting = false;
 let recentSpellIds = []; // Most recent cast first; hard-excluded from the next pick
 let castCount = 0;
 
-const FORCED_FIRST_CAST_SPELL_ID = 'thunderwave';
+// The very first cast excludes "Nothing" so a first-time visitor always
+// sees an actual effect, but which spell it is stays a surprise.
+const FIRST_CAST_EXCLUDE_IDS = ['nothing'];
 
 // Single source of truth for every spell: its odds, when it's allowed to
 // appear, and what it actually does. Add/remove/reweight a spell by editing
@@ -327,7 +329,7 @@ function magicFunction() {
 
     const now = Date.now();
     const spell = castCount === 1
-      ? SPELLS.find(s => s.id === FORCED_FIRST_CAST_SPELL_ID)
+      ? pickSpell(castCount, FIRST_CAST_EXCLUDE_IDS, now)
       : pickSpell(castCount, recentSpellIds, now);
 
     recentSpellIds.unshift(spell.id);
