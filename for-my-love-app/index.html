@@ -155,7 +155,7 @@
 
 <script>
     // bump this whenever you deploy code changes
-    const APP_VERSION = '25.8.28.1';
+    const APP_VERSION = '26.8.26.1';
     const prev = localStorage.getItem('app-version');
     if (prev !== APP_VERSION) {
       localStorage.setItem('app-version', APP_VERSION);
@@ -609,12 +609,6 @@
 
     const year = new Date().getFullYear();
 
-    const QUOTE_KEY = "quoteUsage-" + year;
-    const NICKNAME_KEY = "nicknameUsage-" + year;
-    const DISPLAY_STATE_KEY = "displayState";
-
-  const TWENTY_HOURS_MS = 20 * 60 * 60 * 1000;
-
   function getWeightedIndex(array, keyPrefix, maxUses = 3) {
     const usageKey = `${keyPrefix}-${year}`;
     const usageMap = JSON.parse(localStorage.getItem(usageKey)) || {};
@@ -641,34 +635,6 @@
     return index;
   }
 
-  function showQuoteAndNickname(forceRefresh = false) {
-    const now = Date.now();
-    const stored = JSON.parse(localStorage.getItem(DISPLAY_STATE_KEY));
-
-    if (
-      stored &&
-      !forceRefresh &&
-      stored.timestamp &&
-      now - stored.timestamp < TWENTY_HOURS_MS
-    ) {
-      // Show saved quote & nickname
-      renderDisplay(stored.nicknameIndex, stored.quoteIndex);
-    } else {
-      // Generate new
-      const quoteIndex = getWeightedIndex(quotes, "quoteUsage");
-      const nicknameIndex = getWeightedIndex(nicknames, "nicknameUsage");
-
-      const newState = {
-        quoteIndex,
-        nicknameIndex,
-        timestamp: now,
-      };
-
-      localStorage.setItem(DISPLAY_STATE_KEY, JSON.stringify(newState));
-      renderDisplay(nicknameIndex, quoteIndex);
-    }
-  }
-
   function renderDisplay(nicknameIndex, quoteIndex) {
     const nickname = nicknames[nicknameIndex];
     const quote = quotes[quoteIndex];
@@ -681,14 +647,6 @@
     document.getElementById("emoji-of-the-day").textContent = `${combinedEmoji}` + " 🌟";
   }
 
-  function resetCounter() {
-    localStorage.removeItem(QUOTE_KEY);
-    localStorage.removeItem(NICKNAME_KEY);
-    localStorage.removeItem(DISPLAY_STATE_KEY);
-    location.reload();
-  }
-    
-  showQuoteAndNickname();
   </script>
 
   <script>
@@ -762,14 +720,9 @@
       window.addEventListener('focus', () => ensureDailyDisplay(), { passive: true });
       window.addEventListener('pageshow', () => ensureDailyDisplay(), { passive: true });
 
-      // (optional) reset helper: clears both old & new keys
+      // Generate another selection without clearing the annual usage history.
       window.resetCounter = function resetCounter() {
-        const y = new Date().getFullYear();
-        localStorage.removeItem("quoteUsage-" + y);
-        localStorage.removeItem("nicknameUsage-" + y);
-        localStorage.removeItem("displayState"); // legacy
-        localStorage.removeItem(DAILY_STATE_KEY);
-        location.reload();
+        ensureDailyDisplay(true);
       };
   </script>
 

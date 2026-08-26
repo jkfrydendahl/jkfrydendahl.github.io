@@ -10,10 +10,11 @@ const DEFAULT_URL   = process.env.DEFAULT_URL || '/';
 webpush.setVapidDetails('mailto:you@example.com', VAPID_PUBLIC, VAPID_PRIVATE);
 
 export default async function handler(req, res) {
-  // Auth: allow POST+Bearer (manual/Actions) OR GET with Vercel Cron header
-  const hasBearer = req.headers.authorization === `Bearer ${NOTIFY_TOKEN}`;
-  const isCron = req.headers['x-vercel-cron'] === '1' || typeof req.headers['x-vercel-cron'] !== 'undefined';
-  if (!hasBearer && !isCron) return res.status(401).json({ error: 'Unauthorized' });
+  // GitHub Actions and manual callers must authenticate with the shared token.
+  // Fail closed if the environment variable is missing.
+  if (!NOTIFY_TOKEN || req.headers.authorization !== `Bearer ${NOTIFY_TOKEN}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   // Optional dry-run: ?dry=1 just reports how many subs without sending
   const dryRun = req.query?.dry === '1';
@@ -45,7 +46,7 @@ export default async function handler(req, res) {
 
   return res.json({
     ok: true,
-    mode: dryRun ? 'dry' : (isCron ? 'cron' : 'manual'),
+    mode: dryRun ? 'dry' : 'send',
     total,
     sent,
     removed,
