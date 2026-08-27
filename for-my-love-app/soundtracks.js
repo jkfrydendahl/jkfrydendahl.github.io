@@ -207,7 +207,5 @@ window.SOUNDTRACKS = Object.freeze([
   soundtrack("7AonnmPTczSzmqPs32Po69", "Be Okay", "Oh Honey", "hope resilience joy"),
   soundtrack("0Cd4j6FDoH6WydnNUYysQR", "I Just Wanna Shine", "Fitz and The Tantrums", "confidence selfWorth joy"),
   soundtrack("15u254hThajkKs8ILIGgAw", "Where The Adventure Begins", "Tim Halperin", "journey courage possibility"),
-  soundtrack("3g3sMZrjQWfktLDTF2TEQM", "Good To Be Alive (Hallelujah)", "Andy Grammer", "joy gratitude presence"),
-  soundtrack("1mPhBlDYlxw4nDrbtt0kqu", "Keep Your Head Up", "Andy Grammer", "hope resilience courage"),
   soundtrack("5x4BgBSgr8hjmJqv7AUKTj", "Back Home", "Andy Grammer", "belonging friendship togetherness"),
 ]);
