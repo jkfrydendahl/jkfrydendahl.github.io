@@ -1,4 +1,4 @@
-const APP_VERSION = "26.8.27.1";
+const APP_VERSION = "26.8.27.2";
 const VERCEL_BACKEND = "https://for-my-love-app.vercel.app";
 const PUBLIC_VAPID_KEY = "BOsuQtHamndZH8ZUivuNCyZhoiBzx_n7SGbf0wwm0yIxQi0tTnk1Idb4Du9qDOgFeiRKD_-ZROf8iIchAUNJy5E";
 const CUTOVER_HOUR = 8;
