@@ -1,7 +1,7 @@
 {
   "name": "For My Love",
   "short_name": "For My Love",
-  "id": "/for-my-love/",
+  "id": "/for-my-love-app/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

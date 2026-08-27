@@ -1,0 +1,188 @@
+:root {
+  --primary: #ff6b81;
+  --accent: #ffe9ec;
+  --background: linear-gradient(135deg, #fff5f8, #ffe9ec);
+  --text: #3a3a3a;
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: var(--background);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 20px var(--shadow);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+.quote {
+  font-style: italic;
+  font-size: 1.2rem;
+  margin: 2rem 0;
+  color: #555;
+}
+
+.nickname {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.daily-emojis {
+  margin-top: 1em;
+  font-size: 2em;
+}
+
+.reset-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 107, 129, 0.1);
+  border: none;
+  color: var(--primary);
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(4px);
+}
+    .reset-button:hover {
+      background: rgba(255, 107, 129, 0.2);
+      color: #d43d56;
+      box-shadow: 0 2px 6px rgba(255, 107, 129, 0.3);
+    }
+
+.notif-button {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 107, 129, 0.1);
+  border: none;
+  color: var(--primary);
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(4px);
+}
+    .notif-button:hover {
+      background: rgba(255, 107, 129, 0.2);
+      color: #d43d56;
+      box-shadow: 0 2px 6px rgba(255, 107, 129, 0.3);
+    }
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem;
+    border-radius: 1rem;
+  }
+
+  .main-title {
+    margin-top: 30px;
+  }
+
+  .quote {
+    font-size: 1rem;
+  }
+
+  .nickname {
+    font-size: 1.3rem;
+  }
+
+  .reset-button {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .notif-button {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+  }
+}
+
+#app-version {
+  margin-top: 2rem;
+  font-size: 0.6rem;
+  color: #9aa0a6; /* subtle gray */
+  user-select: text;
+}
+
+.soundtrack {
+  margin-top: 1.75rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid rgba(255, 107, 129, 0.2);
+}
+
+.soundtrack-heading {
+  margin: 0 0 0.65rem;
+  color: var(--primary);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.soundtrack-link {
+  display: inline-flex;
+  max-width: 100%;
+  padding: 0.35rem 0.65rem;
+  flex-direction: column;
+  gap: 0.2rem;
+  border-radius: 0.6rem;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.2s ease-in-out;
+}
+
+.soundtrack-link:hover {
+  background: rgba(255, 107, 129, 0.08);
+}
+
+.soundtrack-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.soundtrack-track-title {
+  color: #444;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+  transition: color 0.2s ease-in-out;
+}
+
+.soundtrack-link:hover .soundtrack-track-title {
+  color: #d43d56;
+}
+
+.soundtrack-artist {
+  color: #777;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
