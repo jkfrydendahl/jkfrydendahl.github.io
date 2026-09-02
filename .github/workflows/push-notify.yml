@@ -15,14 +15,6 @@ on:
         default: "https://jkfrydendahl.github.io/for-my-love-app/"
         required: false
 
-  # GitHub schedules use UTC:
-  # 06:07 UTC = 08:07 CEST
-  # 07:07 UTC = 08:07 CET
-  schedule:
-    - cron: "7 6 * * *"
-    - cron: "7 7 * * *"
-
-# This workflow does not require repository or GitHub API access.
 permissions: {}
 
 jobs:
@@ -31,66 +23,7 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - name: Check Copenhagen send window
-        id: send_window
-        env:
-          TRIGGER_SCHEDULE: ${{ github.event.schedule }}
-        run: |
-          # Manual runs always bypass the scheduled time gate.
-          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            echo "Manual run: bypassing time gate."
-            echo "send=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          LOCAL_HOUR="$(TZ=Europe/Copenhagen date +%H)"
-          LOCAL_MINUTE="$(TZ=Europe/Copenhagen date +%M)"
-          LOCAL_OFFSET="$(TZ=Europe/Copenhagen date +%z)"
-          LOCAL_TIME="$(TZ=Europe/Copenhagen date '+%Y-%m-%d %H:%M:%S %Z')"
-
-          echo "Current Copenhagen time: $LOCAL_TIME"
-          echo "Trigger schedule: $TRIGGER_SCHEDULE"
-
-          # Select the correct cron for the current Danish UTC offset.
-          case "$LOCAL_OFFSET" in
-            "+0200")
-              EXPECTED_SCHEDULE="7 6 * * *"
-              ;;
-            "+0100")
-              EXPECTED_SCHEDULE="7 7 * * *"
-              ;;
-            *)
-              echo "Unexpected Copenhagen UTC offset: $LOCAL_OFFSET"
-              echo "send=false" >> "$GITHUB_OUTPUT"
-              exit 0
-              ;;
-          esac
-
-          # Reject the inactive summer/winter schedule.
-          # This also prevents duplicates if one schedule is delayed.
-          if [ "$TRIGGER_SCHEDULE" != "$EXPECTED_SCHEDULE" ]; then
-            echo "Skipping inactive seasonal schedule."
-            echo "send=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Convert the local time to minutes after midnight.
-          LOCAL_MINUTES=$((10#$LOCAL_HOUR * 60 + 10#$LOCAL_MINUTE))
-          WINDOW_START=$((8 * 60))
-          WINDOW_END=$((10 * 60 + 30))
-
-          # Allow scheduled notifications from 08:00 through 10:30.
-          if (( LOCAL_MINUTES < WINDOW_START || LOCAL_MINUTES > WINDOW_END )); then
-            echo "Skipping delayed run outside the 08:00–10:30 window."
-            echo "send=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          echo "Time gate passed."
-          echo "send=true" >> "$GITHUB_OUTPUT"
-
       - name: Build JSON payload
-        if: steps.send_window.outputs.send == 'true'
         env:
           TITLE_INPUT: ${{ github.event.inputs.title }}
           BODY_INPUT: ${{ github.event.inputs.body }}
@@ -119,7 +52,6 @@ jobs:
           cat payload.json
 
       - name: Call notify endpoint
-        if: steps.send_window.outputs.send == 'true'
         env:
           NOTIFY_URL: ${{ secrets.VERCEL_NOTIFY_URL }}
           NOTIFY_TOKEN: ${{ secrets.NOTIFY_TOKEN }}
