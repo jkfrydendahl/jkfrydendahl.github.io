@@ -188,11 +188,11 @@ export default async function handler(req, res) {
   let cronInfo = null;
 
   if (req.method === 'GET') {
-    const cronKey = process.env.CRON_KEY;
+    const cronSecret = process.env.CRON_SECRET;
 
     if (
-      !cronKey ||
-      authorization !== `Bearer ${cronKey}`
+      !cronSecret ||
+      authorization !== `Bearer ${cronSecret}`
     ) {
       return res.status(401).json({
         error: 'Unauthorized cron request'
