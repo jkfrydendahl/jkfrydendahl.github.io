@@ -46,7 +46,7 @@ export default function Home() {
     <a className="skip" href="#reading">Skip to content</a>
     <header className="masthead">
       <div><p className="eyebrow">A pocket reference</p><h1>Everyday Love<span className="title-period">.</span></h1></div>
-      <span className="book-mark" aria-hidden="true">e<span>l</span></span>
+      <img className="book-mark" src="/icons/mark.svg" width={44} height={44} alt="" aria-hidden="true" />
     </header>
     <nav className="navigation" aria-label="Sections">
       <div className="tabs" role="tablist" aria-label="Choose a section">
@@ -88,6 +88,6 @@ export default function Home() {
         </ul>
       </section>
     </main>
-    <footer><span aria-hidden="true">✧</span> Everyday Love</footer>
+    <footer>Everyday Love</footer>
   </div>;
 }

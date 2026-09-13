@@ -11,8 +11,7 @@ h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
 .eyebrow { font-size: .65rem; text-transform: uppercase; letter-spacing: .17em; color: var(--muted); margin-bottom: 4px; }
 h1 { font-size: clamp(1.85rem, 7.4vw, 2.5rem); line-height: 1.15; letter-spacing: -.04em; }
 .title-period { color: var(--wine); }
-.book-mark { width: 36px; height: 42px; flex-shrink: 0; border: 1px solid #b7a194; color: var(--wine); font: italic 29px/1 Georgia, serif; display: flex; align-items: center; justify-content: center; }
-.book-mark span { margin-left: -4px; transform: translateY(4px); }
+.book-mark { display: block; width: 44px; height: 44px; flex-shrink: 0; }
 .navigation { position: sticky; top: 0; z-index: 2; background: var(--paper); padding: 6px 0 10px; }
 .tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; background: var(--soft); border: 1px solid var(--line); border-radius: 7px; }
 .tabs button { min-height: 44px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: .9rem; }
@@ -20,15 +19,15 @@ h1 { font-size: clamp(1.85rem, 7.4vw, 2.5rem); line-height: 1.15; letter-spacing
 .section-intro { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 17px 0 13px; border-bottom: 1px solid var(--line); }
 .section-intro h2 { font-size: 1.45rem; }
 .section-intro > span { color: var(--muted); font-size: .68rem; letter-spacing: .08em; white-space: nowrap; }
-.stage { padding: 20px 0 22px; border-bottom: 1px solid var(--line); }
-.stage-heading { display: flex; gap: 12px; align-items: baseline; margin-bottom: 12px; }
+.stage { --heading-gutter: 30px; padding: 20px 0 22px; border-bottom: 1px solid var(--line); }
+.stage-heading { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 12px; align-items: baseline; margin-bottom: 12px; }
 .stage-number, .idea-number { color: var(--wine); font-size: .68rem; font-variant-numeric: tabular-nums; letter-spacing: .05em; }
 .stage h3 { font-size: 1.35rem; line-height: 1.25; }
 .descriptor { font-size: .83rem; color: var(--muted); margin-top: 2px; }
-.ritual { border-left: 2px solid var(--wine); padding: 9px 12px; background: var(--soft); }
+.ritual { margin-left: var(--heading-gutter); }
 .label { display: block; text-transform: uppercase; font-size: .62rem; font-weight: 700; letter-spacing: .12em; color: var(--wine); margin-bottom: 3px; }
-.ritual p { font-size: 1rem; font-weight: 550; line-height: 1.5; }
-.optional { font-size: .875rem; color: var(--muted); padding: 10px 0 0 14px; line-height: 1.55; }
+.ritual p { font-size: 1rem; font-weight: 600; line-height: 1.5; }
+.optional { font-size: .875rem; color: var(--muted); margin-left: var(--heading-gutter); padding-top: 12px; line-height: 1.55; }
 .optional .label { color: var(--muted); }
 .courtship-note { color: var(--muted); font-size: .8rem; margin: 12px 0 5px; }
 .courtship-list { list-style: none; margin: 0; padding: 0; }
@@ -42,7 +41,6 @@ h1 { font-size: clamp(1.85rem, 7.4vw, 2.5rem); line-height: 1.15; letter-spacing
 .used-button:hover .used-mark { border-color: var(--wine); box-shadow: 0 0 0 3px var(--soft); }
 .notice { padding: 10px; font-size: .85rem; border: 1px solid var(--wine); }
 footer { display: flex; justify-content: center; gap: 8px; align-items: center; padding-top: 24px; font: italic .8rem Georgia, serif; color: var(--muted); }
-footer span { color: var(--wine); }
 .skip { position: fixed; left: 16px; top: -100px; z-index: 5; background: var(--paper); color: var(--wine); padding: 12px; }
 .skip:focus { top: 10px; }
 #reading { scroll-margin-top: 76px; }
