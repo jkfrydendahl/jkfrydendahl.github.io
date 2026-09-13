@@ -64,9 +64,9 @@ export default function Home() {
     <main id="reading" tabIndex={-1}>
       <section role="tabpanel" id="panel-everyday" aria-labelledby="tab-everyday" hidden={section !== "everyday"} tabIndex={0}>
         <div className="section-intro"><h2>Daily Roadmap</h2><span aria-hidden="true">01 — 06</span></div>
-        {content.stages.map((stage, index) => <article className="stage" key={stage.title}>
-          <div className="stage-heading"><span className="stage-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-            <div><h3>{stage.title}</h3><p className="descriptor">{stage.descriptor}</p></div>
+        {content.stages.map(stage => <article className="stage" key={stage.title}>
+          <div className="stage-heading">
+            <h3>{stage.title}</h3><p className="descriptor">{stage.descriptor}</p>
           </div>
           <div className="ritual"><span className="label">Always</span><p>{stage.always}</p></div>
           <p className="optional"><span className="label">Optional</span>{stage.optional}</p>
