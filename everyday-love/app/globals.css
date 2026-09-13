@@ -19,15 +19,14 @@ h1 { font-size: clamp(1.85rem, 7.4vw, 2.5rem); line-height: 1.15; letter-spacing
 .section-intro { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 17px 0 13px; border-bottom: 1px solid var(--line); }
 .section-intro h2 { font-size: 1.45rem; }
 .section-intro > span { color: var(--muted); font-size: .68rem; letter-spacing: .08em; white-space: nowrap; }
-.stage { --heading-gutter: 30px; padding: 20px 0 22px; border-bottom: 1px solid var(--line); }
-.stage-heading { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 12px; align-items: baseline; margin-bottom: 12px; }
-.stage-number, .idea-number { color: var(--wine); font-size: .68rem; font-variant-numeric: tabular-nums; letter-spacing: .05em; }
+.stage { padding: 20px 0 22px; border-bottom: 1px solid var(--line); }
+.stage-heading { margin-bottom: 12px; }
+.idea-number { color: var(--wine); font-size: .68rem; font-variant-numeric: tabular-nums; letter-spacing: .05em; }
 .stage h3 { font-size: 1.35rem; line-height: 1.25; }
 .descriptor { font-size: .83rem; color: var(--muted); margin-top: 2px; }
-.ritual { margin-left: var(--heading-gutter); }
 .label { display: block; text-transform: uppercase; font-size: .62rem; font-weight: 700; letter-spacing: .12em; color: var(--wine); margin-bottom: 3px; }
 .ritual p { font-size: 1rem; font-weight: 600; line-height: 1.5; }
-.optional { font-size: .875rem; color: var(--muted); margin-left: var(--heading-gutter); padding-top: 12px; line-height: 1.55; }
+.optional { font-size: .875rem; color: var(--muted); padding-top: 12px; line-height: 1.55; }
 .optional .label { color: var(--muted); }
 .courtship-note { color: var(--muted); font-size: .8rem; margin: 12px 0 5px; }
 .courtship-list { list-style: none; margin: 0; padding: 0; }
