@@ -1,0 +1,194 @@
+{
+  "stages": [
+    {
+      "title": "Morning",
+      "descriptor": "start with affection",
+      "always": "Wake up with a kiss and give each other a proper hug before breakfast. Say \"I love you. Still.\"",
+      "optional": "cuddle for a moment, say good morning warmly, bring coffee/tea, make some affectionate physical contact before the practical day begins."
+    },
+    {
+      "title": "Leaving",
+      "descriptor": "always part properly",
+      "always": "Hug and kiss before either of you leaves for the day.",
+      "optional": "eye contact, “Love you,” “Have a good day,” walk them to the door or car."
+    },
+    {
+      "title": "During the day",
+      "descriptor": "show that they cross your mind",
+      "always": "Send one message that isn't practical or logistical.",
+      "optional": "say you're thinking about them, ask how something went, send something funny or flirtatious, tell them you're looking forward to seeing them."
+    },
+    {
+      "title": "Coming home",
+      "descriptor": "make the reunion matter",
+      "always": "Greet each other with a hug and a kiss before getting absorbed in everything else.",
+      "optional": "stop what you're doing, smile when they arrive, ask about their day, give them a few minutes of undivided attention."
+    },
+    {
+      "title": "Evening",
+      "descriptor": "actively choose each other",
+      "always": "Spend at least a little time deliberately together rather than only existing beside each other.",
+      "optional": "sit close, hold hands, talk without phones, make them a drink, watch something together, flirt, give a compliment, do something enjoyable together."
+    },
+    {
+      "title": "Bedtime",
+      "descriptor": "end as partners",
+      "always": "Kiss goodnight and say “I love you. Sleep well, until morning returns to remind us again.”",
+      "optional": "cuddle, talk for a few minutes, say something appreciative about the day, have physical closeness even when it isn't sexual."
+    }
+  ],
+  "courtship": [
+    {
+      "id": "courtship-01",
+      "text": "Invite her to dinner."
+    },
+    {
+      "id": "courtship-02",
+      "text": "Invite her to the opera."
+    },
+    {
+      "id": "courtship-03",
+      "text": "Invite her to a classical concert."
+    },
+    {
+      "id": "courtship-04",
+      "text": "Invite her to the theatre."
+    },
+    {
+      "id": "courtship-05",
+      "text": "Invite her to a ballet or dance performance."
+    },
+    {
+      "id": "courtship-06",
+      "text": "Plan a surprise date where she only knows when to be ready."
+    },
+    {
+      "id": "courtship-07",
+      "text": "Take her out for drinks or cocktails."
+    },
+    {
+      "id": "courtship-08",
+      "text": "Send her an actual invitation sometimes rather than simply asking if she wants to go out."
+    },
+    {
+      "id": "courtship-09",
+      "text": "Arrange a picnic."
+    },
+    {
+      "id": "courtship-10",
+      "text": "Take her somewhere beautiful for a walk."
+    },
+    {
+      "id": "courtship-11",
+      "text": "Plan a museum, exhibition or gallery visit."
+    },
+    {
+      "id": "courtship-12",
+      "text": "Book a special dining experience — tasting menu, afternoon tea, themed dinner, etc."
+    },
+    {
+      "id": "courtship-13",
+      "text": "Visit a castle, manor house, archaeological site or other historic place together."
+    },
+    {
+      "id": "courtship-14",
+      "text": "Attend a historical reenactment or living-history event."
+    },
+    {
+      "id": "courtship-15",
+      "text": "Attend a lecture, talk or special event around history, archaeology, mythology or literature."
+    },
+    {
+      "id": "courtship-16",
+      "text": "Take a workshop together — craft, blacksmithing, pottery, bookbinding, dancing, cooking, etc."
+    },
+    {
+      "id": "courtship-17",
+      "text": "Try something adventurous together — archery, horseback riding, fencing, climbing, kayaking, etc."
+    },
+    {
+      "id": "courtship-18",
+      "text": "Attend a fantasy, literary or tabletop convention."
+    },
+    {
+      "id": "courtship-19",
+      "text": "Visit a beautiful or unusual bookshop and choose something for each other."
+    },
+    {
+      "id": "courtship-20",
+      "text": "Attend an author talk, signing or literary event."
+    },
+    {
+      "id": "courtship-21",
+      "text": "Stay somewhere unusual — manor house, castle, old inn, cabin, historic hotel, etc."
+    },
+    {
+      "id": "courtship-22",
+      "text": "Revisit somewhere meaningful from early in the relationship."
+    },
+    {
+      "id": "courtship-23",
+      "text": "Take her somewhere she's casually mentioned wanting to visit."
+    },
+    {
+      "id": "courtship-24",
+      "text": "Buy tickets to something she would love and simply invite her."
+    },
+    {
+      "id": "courtship-25",
+      "text": "Ask her to dance."
+    },
+    {
+      "id": "courtship-26",
+      "text": "Buy flowers for no particular reason."
+    },
+    {
+      "id": "courtship-27",
+      "text": "Plan something slightly extravagant simply because you want to spoil her."
+    },
+    {
+      "id": "courtship-28",
+      "text": "Arrange an evening with a deliberately romantasy atmosphere — candles, music, wine, beautiful clothes, perhaps dinner somewhere old or dramatic."
+    },
+    {
+      "id": "courtship-29",
+      "text": "Read to each other — especially something romantic, gothic, mythological or a little provocative."
+    },
+    {
+      "id": "courtship-30",
+      "text": "Give her a massage as part of an intentionally romantic evening rather than as a purely practical thing."
+    },
+    {
+      "id": "courtship-31",
+      "text": "Run her a bath, set out candles/drinks/music, and turn it into being deliberately spoiled rather than simply “having a bath.”"
+    },
+    {
+      "id": "courtship-32",
+      "text": "Occasionally build a consensual fantasy or roleplaying element into the evening — characters, setting, costumes, power dynamic, etc."
+    },
+    {
+      "id": "courtship-33",
+      "text": "Create a “fantasy date” where one of you plans the setting and scenario and the other agrees to play along without knowing all the details beforehand."
+    },
+    {
+      "id": "courtship-34",
+      "text": "Book a romantic hotel room even when you aren't travelling anywhere, purely to get out of the household setting and be lovers for an evening."
+    },
+    {
+      "id": "courtship-35",
+      "text": "Give her something deliberately sensual rather than merely practical or sentimental — perfume, lingerie, jewellery, a dress, etc., provided it's something she actually enjoys receiving."
+    },
+    {
+      "id": "courtship-36",
+      "text": "Occasionally tell her in advance that you're taking her out and that you want her to wear something you particularly love seeing her in."
+    },
+    {
+      "id": "courtship-37",
+      "text": "Recreate the feeling of an early relationship date occasionally — anticipation, dressing up, picking her up, opening doors, flirting, not treating the evening like established-couple logistics."
+    },
+    {
+      "id": "courtship-38",
+      "text": "Write her a love letter, song or handwritten note occasionally."
+    }
+  ]
+}
