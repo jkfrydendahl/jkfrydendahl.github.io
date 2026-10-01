@@ -1,4 +1,4 @@
-// Tracks 1–100 mirror Live_Laugh_Love.csv in playlist order.
+// Tracks 1–104 come from Live_Laugh_Love(1).csv.
 // The final eight are explicitly retained additions.
 const soundtrack = (id, title, artist, themes) =>
   Object.freeze({ id, title, artist, themes: Object.freeze(themes.split(" ")) });
@@ -96,7 +96,7 @@ window.SOUNDTRACKS = Object.freeze([
   soundtrack("5tVA6TkbaAH9QMITTQRrNv", "Free Fallin'", "Tom Petty", "freedom journey selfWorth"),
   soundtrack("4T6HLdP6OcAtqC6tGnQelG", "Everything", "Michael Bublé", "love appreciation joy"),
   soundtrack("03wrmep5c3Dr9JlOXPvFUX", "You Raise Me Up", "Celtic Woman", "support strength hope"),
-  soundtrack("69vToJ9BMbbLlFZo7k7A7B", "You Are The Reason", "Calum Scott", "love devotion hope"),
+  soundtrack("1x3W8RZxW94lrVGhP95qA6", "You Are The Reason - Duet Version", "Calum Scott, Leona Lewis", "love devotion hope"),
   soundtrack("56sxN1yKg1dgOZXBcAHkJG", "Gone, Gone, Gone", "Phillip Phillips", "love devotion support"),
   soundtrack("1EAgPzRbK9YmdOESSMUm6P", "Home", "Phillip Phillips", "belonging support togetherness"),
   soundtrack("4ofwffwvvnbSkrMSCKQDaC", "Shotgun", "George Ezra", "freedom joy journey"),
@@ -104,6 +104,10 @@ window.SOUNDTRACKS = Object.freeze([
   soundtrack("15u254hThajkKs8ILIGgAw", "Where The Adventure Begins", "Tim Halperin", "journey courage possibility"),
   soundtrack("2lxBZVbkiCXC1soks2RXwV", "Love Like This", "Ben Rector", "love gratitude wonder"),
   soundtrack("5x4BgBSgr8hjmJqv7AUKTj", "Back Home", "Andy Grammer", "belonging friendship togetherness"),
+  soundtrack("7lPxGs556PD8H3bUd9LzHp", "I2I", "Tevin Campbell, Rosie Gaines", "connection joy togetherness"),
+  soundtrack("6y7KE9QqQfSaYsA3YqRt5c", "First Born Daughter", "Max McNown", "appreciation acceptance love"),
+  soundtrack("5bHseWHA6zofdrsWEl8jWC", "Gasoline", "Ian Elliott", "love confidence appreciation"),
+  soundtrack("3LeSaLcjfyeVER5BIl634d", "Love You I Do", "Jennifer Hudson", "love appreciation joy"),
   soundtrack("2QfiRTz5Yc8DdShCxG1tB2", "Johnny B. Goode", "Chuck Berry", "dreams confidence music"),
   soundtrack("1I6pKIyaBp4OebTGLJpCCC", "Perm", "Bruno Mars", "confidence joy expression"),
   soundtrack("0GONea6G2XdnHWjNZd6zt3", "Summer Of '69", "Bryan Adams", "memory dreams joy"),
