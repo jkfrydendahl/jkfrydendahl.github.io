@@ -1,4 +1,4 @@
-// Tracks 1–104 come from Live_Laugh_Love(1).csv.
+// Tracks 1–101 come from Live_Laugh_Love(2).csv.
 // The final eight are explicitly retained additions.
 const soundtrack = (id, title, artist, themes) =>
   Object.freeze({ id, title, artist, themes: Object.freeze(themes.split(" ")) });
@@ -35,9 +35,7 @@ window.SOUNDTRACKS = Object.freeze([
   soundtrack("0YfOnJWqmAKaUvEL1QcNop", "A Change Is Gonna Come", "Sam Cooke", "hope resilience change"),
   soundtrack("6PZby1bNMj2ZEPShwQwJnL", "Hold Back The River", "James Bay", "connection resilience presence"),
   soundtrack("7tqhbajSfrz2F7E1Z75ASX", "Ain't No Mountain High Enough", "Marvin Gaye, Tammi Terrell", "love perseverance devotion"),
-  soundtrack("13toFl1UwJPsRxDiD9jgtn", "As", "Stevie Wonder", "love devotion wonder"),
   soundtrack("6l8EbYRtQMgKOyc1gcDHF9", "Bridge Over Troubled Water", "Simon & Garfunkel", "kindness comfort togetherness"),
-  soundtrack("1l2Xmg54EUr3TDzNIaCr1z", "Coat of Many Colors", "Dolly Parton", "gratitude selfWorth love"),
   soundtrack("1wZ7o1mZysv1l26ZWawVfW", "Freedom! '90 - Remastered", "George Michael", "freedom selfWorth courage"),
   soundtrack("2gJDyiRxxIglLXp545SPVL", "I Knew You Were Waiting (For Me)", "Aretha Franklin, George Michael", "love hope perseverance"),
   soundtrack("5LxvwujISqiB8vpRYv887S", "I Want You Back", "The Jackson 5", "love hope renewal"),
@@ -53,7 +51,7 @@ window.SOUNDTRACKS = Object.freeze([
   soundtrack("2u2udGmop1z67EPpr91km7", "Man in the Mirror", "Michael Jackson", "change growth kindness"),
   soundtrack("0PDCewmZCp0P5s00bptcdd", "This Will Be (An Everlasting Love)", "Natalie Cole", "love joy devotion"),
   soundtrack("4o6BgsqLIBViaGVbx5rbRk", "You Make My Dreams (Come True)", "Daryl Hall & John Oates", "love dreams joy"),
-  soundtrack("5519RhpzObr9Mn3iqoeodJ", "Come and Get Your Love", "Redbone", "love confidence joy"),
+  soundtrack("7GVUmCP00eSsqc4tzj1sDD", "Come and Get Your Love - Single Version", "Redbone", "love confidence joy"),
   soundtrack("67INp2Tc9IqLnGy432baEN", "Get Up I Feel Like Being Like A Sex Machine", "James Brown", "confidence joy expression"),
   soundtrack("3yDhZq8f17SmumVmEyCaRN", "Give It Up", "KC & The Sunshine Band", "love joy connection"),
   soundtrack("4yrM5BVyJzy5Ed4GPO6e8j", "I Wanna Be Your Lover", "Prince", "love connection joy"),
@@ -63,7 +61,6 @@ window.SOUNDTRACKS = Object.freeze([
   soundtrack("6ek9SiEj5a65WIs2EV7qiM", "Son Of A Preacher Man", "Dusty Springfield", "love memory joy"),
   soundtrack("1hu2s7qkm5bo03eODpRQO3", "Wanna Be Startin' Somethin'", "Michael Jackson", "resilience selfWorth courage"),
   soundtrack("7e89621JPkKaeDSTQ3avtg", "Sweet Home Alabama", "Lynyrd Skynyrd", "belonging gratitude joy"),
-  soundtrack("0bRXwKfigvpKZUurwqAlEh", "Lovely Day", "Bill Withers", "joy gratitude presence"),
   soundtrack("5f5YqZZe34nsabun39eqo8", "Put Your Records On", "Corinne Bailey Rae", "selfWorth freedom joy"),
   soundtrack("5zCJvrT3C7cIfHsR5iG95l", "Lean on Me", "Bill Withers", "friendship support togetherness"),
   soundtrack("1lkvpmrCaXK8QtliFDcHBO", "Bubbly", "Colbie Caillat", "love joy comfort"),
