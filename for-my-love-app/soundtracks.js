@@ -1,4 +1,4 @@
-// Tracks 1–101 come from Live_Laugh_Love(2).csv.
+// Based on Live_Laugh_Love(2).csv, plus Higher and Higher.
 // The final eight are explicitly retained additions.
 const soundtrack = (id, title, artist, themes) =>
   Object.freeze({ id, title, artist, themes: Object.freeze(themes.split(" ")) });
@@ -105,6 +105,7 @@ window.SOUNDTRACKS = Object.freeze([
   soundtrack("6y7KE9QqQfSaYsA3YqRt5c", "First Born Daughter", "Max McNown", "appreciation acceptance love"),
   soundtrack("5bHseWHA6zofdrsWEl8jWC", "Gasoline", "Ian Elliott", "love confidence appreciation"),
   soundtrack("3LeSaLcjfyeVER5BIl634d", "Love You I Do", "Jennifer Hudson", "love appreciation joy"),
+  soundtrack("0SlpdJJzkw5KPItwkaK2QP", "(Your Love Keeps Lifting Me) Higher and Higher", "Jackie Wilson", "love joy gratitude"),
   soundtrack("2QfiRTz5Yc8DdShCxG1tB2", "Johnny B. Goode", "Chuck Berry", "dreams confidence music"),
   soundtrack("1I6pKIyaBp4OebTGLJpCCC", "Perm", "Bruno Mars", "confidence joy expression"),
   soundtrack("0GONea6G2XdnHWjNZd6zt3", "Summer Of '69", "Bryan Adams", "memory dreams joy"),
