@@ -9,11 +9,9 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text x='52%' y='60%' font-size='34' text-anchor='middle' dominant-baseline='middle'>❤️</text></svg>">
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-heart-180.png">
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="stylesheet" href="./styles.css?v=26.10.19.2">
+  <link rel="stylesheet" href="./styles.css?v=26.11.23.1">
 
-  <script defer src="./content.js?v=26.10.19.2"></script>
-  <script defer src="./soundtracks.js?v=26.10.19.2"></script>
-  <script defer src="./app.js?v=26.10.19.2"></script>
+  <script defer src="./app.js?v=26.11.23.1"></script>
 </head>
 <body>
   <main class="container">
@@ -52,7 +50,23 @@
       </a>
     </section>
 
+    <p class="sync-status" id="sync-status" role="status" aria-live="polite">Connecting…</p>
+    <button class="text-button" id="forget-change-code" type="button">Forget change code</button>
     <div id="app-version"></div>
   </main>
+  <dialog id="change-code-dialog" aria-labelledby="change-code-heading">
+    <form id="change-code-form">
+      <h2 id="change-code-heading">Change the shared entry</h2>
+      <p>Enter your change code to get another entry on every device. This device will remember it.</p>
+      <label for="change-code">Change code</label>
+      <input id="change-code" type="password" autocomplete="off" required maxlength="256" autofocus>
+      <p id="change-code-error" role="alert"></p>
+      <div class="dialog-actions">
+        <button id="cancel-change-code" type="button">Cancel</button>
+        <button id="save-change-code" type="submit">Get Another 💕</button>
+      </div>
+    </form>
+  </dialog>
 </body>
 </html>
+
