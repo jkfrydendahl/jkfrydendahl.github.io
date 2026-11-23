@@ -186,3 +186,46 @@ h1 {
   font-size: 0.82rem;
   line-height: 1.35;
 }
+
+.sync-status {
+  margin: 1.5rem 0 0.4rem;
+  color: #777;
+  font-size: 0.8rem;
+}
+
+.text-button {
+  border: 0;
+  background: transparent;
+  color: #777;
+  font: inherit;
+  font-size: 0.7rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+button:disabled { opacity: 0.55; cursor: wait; }
+
+#change-code-dialog {
+  width: min(90vw, 420px);
+  padding: 1.5rem;
+  border: 0;
+  border-radius: 1.25rem;
+  color: var(--text);
+  box-shadow: 0 10px 30px var(--shadow);
+}
+
+#change-code-dialog::backdrop { background: rgba(0, 0, 0, 0.25); }
+#change-code-dialog h2 { margin-top: 0; color: var(--primary); }
+#change-code-dialog p { line-height: 1.5; }
+#change-code-dialog label { display: block; margin-bottom: 0.5rem; }
+#change-code { width: 100%; padding: 0.6rem; font: inherit; }
+#change-code-error { color: #b22c49; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 0.75rem; }
+.dialog-actions button {
+  padding: 0.6rem 0.9rem;
+  border: 0;
+  border-radius: 0.6rem;
+  color: var(--text);
+  background: var(--accent);
+  cursor: pointer;
+}
