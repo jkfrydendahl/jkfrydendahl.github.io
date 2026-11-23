@@ -21,8 +21,7 @@ backend and KV database hold the current entry and selection history.
    also allows the previous frontend to keep working during rollout.
 5. On each device that should be able to change the entry, click **Get Another**
    and enter the change code once. A successful change saves the code in that
-   browser. **Forget change code** removes it from that device. Viewing needs
-   no code. Rotate the environment variable and redeploy to revoke saved codes.
+   browser. Viewing needs no code. Rotate the environment variable and redeploy to revoke saved codes.
 
 `DISPLAY_WRITE_TOKEN` is intentionally separate from administrative secrets.
 The code is stored in the device's browser storage, so use it only on devices

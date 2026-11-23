@@ -1,4 +1,4 @@
-const APP_VERSION = "26.11.23.1";
+const APP_VERSION = "26.11.23.2";
 const VERCEL_BACKEND = "https://for-my-love-app.vercel.app";
 const PUBLIC_VAPID_KEY = "BOsuQtHamndZH8ZUivuNCyZhoiBzx_n7SGbf0wwm0yIxQi0tTnk1Idb4Du9qDOgFeiRKD_-ZROf8iIchAUNJy5E";
 const DISPLAY_CACHE_KEY = 'sharedDailyDisplay-v1';
@@ -268,10 +268,6 @@ async function initializeApp() {
   document.getElementById('cancel-change-code').addEventListener('click', () => {
     document.getElementById('change-code-dialog').close();
     document.getElementById('change-code').value = '';
-  });
-  document.getElementById('forget-change-code').addEventListener('click', () => {
-    forgetChangeCode();
-    setSyncStatus('Change code forgotten on this device');
   });
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js', { scope: './' })

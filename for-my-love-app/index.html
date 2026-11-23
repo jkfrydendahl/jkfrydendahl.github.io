@@ -9,9 +9,9 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text x='52%' y='60%' font-size='34' text-anchor='middle' dominant-baseline='middle'>❤️</text></svg>">
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-heart-180.png">
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="stylesheet" href="./styles.css?v=26.11.23.1">
+  <link rel="stylesheet" href="./styles.css?v=26.11.23.2">
 
-  <script defer src="./app.js?v=26.11.23.1"></script>
+  <script defer src="./app.js?v=26.11.23.2"></script>
 </head>
 <body>
   <main class="container">
@@ -50,9 +50,10 @@
       </a>
     </section>
 
-    <p class="sync-status" id="sync-status" role="status" aria-live="polite">Connecting…</p>
-    <button class="text-button" id="forget-change-code" type="button">Forget change code</button>
-    <div id="app-version"></div>
+    <footer class="app-meta">
+      <p class="sync-status" id="sync-status" role="status" aria-live="polite">Connecting…</p>
+      <div id="app-version"></div>
+    </footer>
   </main>
   <dialog id="change-code-dialog" aria-labelledby="change-code-heading">
     <form id="change-code-form">
