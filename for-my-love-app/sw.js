@@ -1,8 +1,8 @@
 // sw.js
 const APP_URL = new URL('./', self.registration.scope).href;
 const CACHE_PREFIX = 'for-my-love-shell-';
-const CACHE_NAME = `${CACHE_PREFIX}26.11.23.1`;
-const SHELL = ['./', './app.js?v=26.11.23.1', './styles.css?v=26.11.23.1', './manifest.webmanifest'];
+const CACHE_NAME = `${CACHE_PREFIX}26.11.23.2`;
+const SHELL = ['./', './app.js?v=26.11.23.2', './styles.css?v=26.11.23.2', './manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then(async (cache) => {
